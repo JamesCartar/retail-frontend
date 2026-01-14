@@ -11,7 +11,7 @@ A production-ready Next.js application with Page Router, featuring comprehensive
 - **shadcn/ui** components
 - **React Hook Form** for form management
 - **Zustand** for state management
-- **Axios 1.3.4** for API calls
+- **Axios 1.13.2** for API calls
 - **cookies-next 4.1.1** for cookie management
 
 ### Key Features
