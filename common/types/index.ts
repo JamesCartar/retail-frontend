@@ -3,6 +3,8 @@
  * Shared types across the application
  */
 
+import React from 'react';
+
 // Base Entity
 export interface BaseEntity {
   id: string;
