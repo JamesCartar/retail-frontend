@@ -2,57 +2,66 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useAuthStore } from '@/lib/store/authStore'
 import { authService } from '@/lib/api/auth'
-import { productService, Product } from '@/lib/api/products'
+import { recordService } from '@/lib/api/records'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { StatsCard, QuickActions, RecentActivity } from '@/components/pages/home'
+import { RecordItem } from '@/common/types'
+import { APP_CONFIG, ROUTES } from '@/common/constants'
 
 export default function Home() {
   const router = useRouter()
   const { user, setUser, logout } = useAuthStore()
-  const [products, setProducts] = useState<Product[]>([])
+  const [records, setRecords] = useState<RecordItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string>('')
+  const [stats, setStats] = useState({
+    totalRecords: 0,
+    pendingRecords: 0,
+    completedRecords: 0,
+    totalRevenue: 0,
+  })
 
   useEffect(() => {
-    // Fetch current user
-    const fetchUser = async () => {
+    const fetchData = async () => {
       try {
+        // Fetch current user
         const userData = await authService.getCurrentUser()
         setUser(userData)
-      } catch (err) {
-        console.error('Failed to fetch user:', err)
-      }
-    }
 
-    // Fetch products (example)
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true)
-        const data = await productService.getAll({ page: 1, perPage: 10 })
-        setProducts(data.data || [])
-      } catch (err: any) {
-        setError(err.message || 'Failed to load products')
+        // Fetch recent records
+        const recordsData = await recordService.getAll({ page: 1, perPage: 10 })
+        setRecords(recordsData.data || [])
+
+        // Calculate stats (in real app, this would come from backend)
+        const total = recordsData.total || 0
+        const pending = recordsData.data?.filter((r: RecordItem) => r.status === 'pending').length || 0
+        const completed = recordsData.data?.filter((r: RecordItem) => r.status === 'completed').length || 0
+        const revenue = recordsData.data?.reduce((sum: number, r: RecordItem) => sum + (r.amount || 0), 0) || 0
+
+        setStats({
+          totalRecords: total,
+          pendingRecords: pending,
+          completedRecords: completed,
+          totalRevenue: revenue,
+        })
+      } catch (err) {
+        console.error('Failed to fetch data:', err)
       } finally {
         setIsLoading(false)
       }
     }
 
-    fetchUser()
-    // Uncomment to fetch products when backend is ready
-    // fetchProducts()
-    setIsLoading(false)
+    fetchData()
   }, [setUser])
 
   const handleLogout = async () => {
     try {
       await authService.logout()
       logout()
-      router.push('/login')
+      router.push(ROUTES.LOGIN)
     } catch (err) {
       console.error('Logout failed:', err)
-      // Force logout even if API fails
       logout()
-      router.push('/login')
+      router.push(ROUTES.LOGIN)
     }
   }
 
@@ -62,7 +71,7 @@ export default function Home() {
       <header className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <h1 className="text-2xl font-bold">Retail Dashboard</h1>
+            <h1 className="text-2xl font-bold">{APP_CONFIG.NAME}</h1>
             <div className="flex items-center gap-4">
               {user && (
                 <span className="text-sm text-gray-600">
@@ -79,138 +88,42 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {/* Welcome Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Welcome!</CardTitle>
-              <CardDescription>
-                Your Next.js retail frontend is ready
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                This application is configured with:
-              </p>
-              <ul className="mt-2 space-y-1 text-sm">
-                <li>✓ Next.js 14.0.4 with Page Router</li>
-                <li>✓ Axios API client</li>
-                <li>✓ Authentication & Authorization</li>
-                <li>✓ Zustand state management</li>
-                <li>✓ React Hook Form</li>
-                <li>✓ Tailwind CSS & shadcn/ui</li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          {/* API Status Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle>API Status</CardTitle>
-              <CardDescription>
-                Reusable CRUD operations ready
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-3">
-                The API client is configured with:
-              </p>
-              <ul className="space-y-1 text-sm">
-                <li>✓ Automatic token injection</li>
-                <li>✓ 401 handling & redirect</li>
-                <li>✓ GET, POST, PUT, PATCH, DELETE</li>
-                <li>✓ Error handling</li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          {/* Quick Actions Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-              <CardDescription>
-                Example operations
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Button 
-                className="w-full" 
-                variant="outline"
-                onClick={() => router.push('/products')}
-              >
-                View Products
-              </Button>
-              <Button 
-                className="w-full" 
-                variant="outline"
-                onClick={() => router.push('/products')}
-              >
-                Create Product
-              </Button>
-              <Button 
-                className="w-full" 
-                variant="outline"
-                onClick={() => router.push('/products')}
-              >
-                Manage Inventory
-              </Button>
-            </CardContent>
-          </Card>
+        {/* Stats Grid */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+          <StatsCard
+            title="Total Records"
+            value={stats.totalRecords}
+            description="All time records"
+          />
+          <StatsCard
+            title="Pending Records"
+            value={stats.pendingRecords}
+            description="Awaiting completion"
+          />
+          <StatsCard
+            title="Completed Records"
+            value={stats.completedRecords}
+            description="Successfully processed"
+          />
+          <StatsCard
+            title="Total Revenue"
+            value={`$${stats.totalRevenue.toFixed(2)}`}
+            description="From all records"
+          />
         </div>
 
-        {/* Products List Example */}
-        <div className="mt-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>Products (Example)</CardTitle>
-              <CardDescription>
-                This is a demo section. Connect to your backend to see real data.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isLoading ? (
-                <p className="text-sm text-muted-foreground">Loading...</p>
-              ) : error ? (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4">
-                  <p className="text-sm text-yellow-800">
-                    <strong>Note:</strong> Connect your backend API to see data. 
-                    Update the API_BASE_URL in the .env.local file.
-                  </p>
-                  <p className="text-xs text-yellow-700 mt-2">
-                    Error: {error}
-                  </p>
-                </div>
-              ) : products.length > 0 ? (
-                <div className="space-y-2">
-                  {products.map((product) => (
-                    <div
-                      key={product.id}
-                      className="flex justify-between items-center p-3 border rounded-md"
-                    >
-                      <div>
-                        <p className="font-medium">{product.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          ${product.price}
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button size="sm" variant="outline">
-                          Edit
-                        </Button>
-                        <Button size="sm" variant="destructive">
-                          Delete
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No products found. Make sure your backend is running.
-                </p>
-              )}
-            </CardContent>
-          </Card>
+        {/* Main Grid */}
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="md:col-span-2">
+            <RecentActivity
+              records={records}
+              isLoading={isLoading}
+              onViewAll={() => router.push(ROUTES.VIEW_RECORDS)}
+            />
+          </div>
+          <div>
+            <QuickActions />
+          </div>
         </div>
       </main>
     </div>
