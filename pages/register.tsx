@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { authService, RegisterCredentials } from '@/lib/api/auth'
 import { useAuthStore } from '@/lib/store/authStore'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { AnimatedInput } from '@/components/ui/animated-input'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { registerSchema, RegisterFormData } from '@/common/validators/schemas'
+import { User, Mail, Lock } from 'lucide-react'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -20,15 +22,18 @@ export default function RegisterPage() {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<RegisterCredentials & { confirmPassword: string }>()
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    mode: 'onChange', // Validate on change
+  })
 
-  const onSubmit = async (data: RegisterCredentials & { confirmPassword: string }) => {
+  const onSubmit = async (data: RegisterFormData) => {
     try {
       setIsLoading(true)
       setError('')
       
       const { confirmPassword, ...registerData } = data
-      const response = await authService.register(registerData)
+      const response = await authService.register(registerData as RegisterCredentials)
       
       // Update auth store
       setUser(response.user)
@@ -59,79 +64,41 @@ export default function RegisterPage() {
               </div>
             )}
             
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="John Doe"
-                {...register('name', {
-                  required: 'Name is required',
-                  minLength: {
-                    value: 2,
-                    message: 'Name must be at least 2 characters',
-                  },
-                })}
-              />
-              {errors.name && (
-                <p className="text-sm text-destructive">{errors.name.message}</p>
-              )}
-            </div>
+            <AnimatedInput
+              label="Name"
+              type="text"
+              placeholder="John Doe"
+              startIcon={<User className="h-4 w-4" />}
+              error={errors.name?.message}
+              {...register('name')}
+            />
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Invalid email address',
-                  },
-                })}
-              />
-              {errors.email && (
-                <p className="text-sm text-destructive">{errors.email.message}</p>
-              )}
-            </div>
+            <AnimatedInput
+              label="Email"
+              type="email"
+              placeholder="you@example.com"
+              startIcon={<Mail className="h-4 w-4" />}
+              error={errors.email?.message}
+              {...register('email')}
+            />
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                {...register('password', {
-                  required: 'Password is required',
-                  minLength: {
-                    value: 6,
-                    message: 'Password must be at least 6 characters',
-                  },
-                })}
-              />
-              {errors.password && (
-                <p className="text-sm text-destructive">{errors.password.message}</p>
-              )}
-            </div>
+            <AnimatedInput
+              label="Password"
+              type="password"
+              placeholder="••••••••"
+              startIcon={<Lock className="h-4 w-4" />}
+              error={errors.password?.message}
+              {...register('password')}
+            />
 
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="••••••••"
-                {...register('confirmPassword', {
-                  required: 'Please confirm your password',
-                  validate: (value) =>
-                    value === watch('password') || 'Passwords do not match',
-                })}
-              />
-              {errors.confirmPassword && (
-                <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
-              )}
-            </div>
+            <AnimatedInput
+              label="Confirm Password"
+              type="password"
+              placeholder="••••••••"
+              startIcon={<Lock className="h-4 w-4" />}
+              error={errors.confirmPassword?.message}
+              {...register('confirmPassword')}
+            />
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4">

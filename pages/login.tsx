@@ -1,13 +1,15 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { AnimatedInput } from '@/components/ui/animated-input'
 import { authService, LoginCredentials } from '@/lib/api/auth'
 import { useAuthStore } from '@/lib/store/authStore'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { loginSchema, LoginFormData } from '@/common/validators/schemas'
+import { Mail, Lock } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -19,14 +21,17 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginCredentials>()
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onChange', // Validate on change
+  })
 
-  const onSubmit = async (data: LoginCredentials) => {
+  const onSubmit = async (data: LoginFormData) => {
     try {
       setIsLoading(true)
       setError('')
       
-      const response = await authService.login(data)
+      const response = await authService.login(data as LoginCredentials)
       
       // Update auth store
       setUser(response.user)
@@ -57,43 +62,23 @@ export default function LoginPage() {
               </div>
             )}
             
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Invalid email address',
-                  },
-                })}
-              />
-              {errors.email && (
-                <p className="text-sm text-destructive">{errors.email.message}</p>
-              )}
-            </div>
+            <AnimatedInput
+              label="Email"
+              type="email"
+              placeholder="you@example.com"
+              startIcon={<Mail className="h-4 w-4" />}
+              error={errors.email?.message}
+              {...register('email')}
+            />
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                {...register('password', {
-                  required: 'Password is required',
-                  minLength: {
-                    value: 6,
-                    message: 'Password must be at least 6 characters',
-                  },
-                })}
-              />
-              {errors.password && (
-                <p className="text-sm text-destructive">{errors.password.message}</p>
-              )}
-            </div>
+            <AnimatedInput
+              label="Password"
+              type="password"
+              placeholder="••••••••"
+              startIcon={<Lock className="h-4 w-4" />}
+              error={errors.password?.message}
+              {...register('password')}
+            />
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4">

@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { useForm, UseFormReturn, FieldValues, DefaultValues } from 'react-hook-form';
+import { useForm, UseFormReturn, FieldValues, DefaultValues, Resolver } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/common/utils';
 
@@ -18,6 +18,8 @@ export interface FormWrapperProps<T extends FieldValues> {
   showReset?: boolean;
   isLoading?: boolean;
   resetOnSubmit?: boolean;
+  resolver?: Resolver<T>;
+  mode?: 'onBlur' | 'onChange' | 'onSubmit' | 'onTouched' | 'all';
 }
 
 export function FormWrapper<T extends FieldValues>({
@@ -30,9 +32,13 @@ export function FormWrapper<T extends FieldValues>({
   showReset = false,
   isLoading = false,
   resetOnSubmit = false,
+  resolver,
+  mode = 'onSubmit',
 }: FormWrapperProps<T>) {
   const methods = useForm<T>({
     defaultValues,
+    resolver,
+    mode,
   });
 
   const handleSubmit = async (data: T) => {

@@ -1,0 +1,121 @@
+/**
+ * Zod Validation Schemas
+ * Type-safe validation schemas for form validation
+ */
+
+import { z } from 'zod';
+
+// Login Schema
+export const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, 'Email is required')
+    .email('Invalid email address'),
+  password: z
+    .string()
+    .min(1, 'Password is required')
+    .min(6, 'Password must be at least 6 characters'),
+});
+
+export type LoginFormData = z.infer<typeof loginSchema>;
+
+// Register Schema
+export const registerSchema = z
+  .object({
+    name: z
+      .string()
+      .min(1, 'Name is required')
+      .min(2, 'Name must be at least 2 characters')
+      .max(100, 'Name must be at most 100 characters'),
+    email: z
+      .string()
+      .min(1, 'Email is required')
+      .email('Invalid email address'),
+    password: z
+      .string()
+      .min(1, 'Password is required')
+      .min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z
+      .string()
+      .min(1, 'Please confirm your password'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
+
+export type RegisterFormData = z.infer<typeof registerSchema>;
+
+// Record Schema
+export const recordSchema = z.object({
+  title: z
+    .string()
+    .min(1, 'Title is required')
+    .min(3, 'Title must be at least 3 characters')
+    .max(200, 'Title must be at most 200 characters'),
+  description: z
+    .string()
+    .max(1000, 'Description must be at most 1000 characters')
+    .optional(),
+  amount: z
+    .union([
+      z.number().min(0, 'Amount must be a positive number'),
+      z.nan(),
+      z.undefined(),
+    ])
+    .optional()
+    .transform((val) => {
+      if (val === undefined || (typeof val === 'number' && isNaN(val))) {
+        return undefined;
+      }
+      return val;
+    }),
+  date: z
+    .string()
+    .min(1, 'Date is required')
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: 'Invalid date',
+    }),
+  category: z.string().optional(),
+  customerId: z.string().optional(),
+});
+
+export type RecordFormData = z.infer<typeof recordSchema>;
+
+// Fee Schema
+export const feeSchema = z.object({
+  name: z
+    .string()
+    .min(1, 'Fee name is required')
+    .min(2, 'Fee name must be at least 2 characters')
+    .max(100, 'Fee name must be at most 100 characters'),
+  amount: z
+    .number()
+    .min(0.01, 'Amount must be greater than 0'),
+  description: z
+    .string()
+    .max(1000, 'Description must be at most 1000 characters')
+    .optional(),
+  type: z
+    .enum(['service', 'late', 'processing', 'other'])
+    .refine((val) => val !== undefined, {
+      message: 'Fee type is required',
+    }),
+  dueDate: z
+    .string()
+    .optional()
+    .refine((val) => !val || !isNaN(Date.parse(val)), {
+      message: 'Invalid date',
+    }),
+  recordId: z.string().optional(),
+});
+
+export type FeeFormData = z.infer<typeof feeSchema>;
+
+// Export all schemas
+export const schemas = {
+  login: loginSchema,
+  register: registerSchema,
+  record: recordSchema,
+  fee: feeSchema,
+};

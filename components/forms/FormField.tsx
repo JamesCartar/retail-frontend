@@ -5,8 +5,7 @@
 
 import React from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { AnimatedInput } from '@/components/ui/animated-input';
 import { cn } from '@/common/utils';
 
 export interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -14,6 +13,8 @@ export interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputEleme
   error?: string;
   registration?: UseFormRegisterReturn;
   helpText?: string;
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
 }
 
 export function FormField({
@@ -23,31 +24,25 @@ export function FormField({
   helpText,
   className,
   required,
+  startIcon,
+  endIcon,
   ...props
 }: FormFieldProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={props.id || props.name}>
-        {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
-      </Label>
-      
-      <Input
+      <AnimatedInput
         {...props}
         {...registration}
-        className={cn(
-          error && 'border-red-500 focus-visible:ring-red-500',
-          className
-        )}
+        label={label}
+        error={error}
+        startIcon={startIcon}
+        endIcon={endIcon}
+        className={className}
         aria-invalid={!!error}
       />
       
       {helpText && !error && (
         <p className="text-sm text-muted-foreground">{helpText}</p>
-      )}
-      
-      {error && (
-        <p className="text-sm text-red-500">{error}</p>
       )}
     </div>
   );

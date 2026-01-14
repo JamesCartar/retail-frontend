@@ -5,6 +5,9 @@
 
 import { VALIDATION_MESSAGES } from '../constants';
 
+// Export Zod schemas
+export * from './schemas';
+
 // Email validation
 export const emailValidation = {
   required: VALIDATION_MESSAGES.REQUIRED,

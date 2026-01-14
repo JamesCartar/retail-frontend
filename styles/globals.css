@@ -56,3 +56,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* React Day Picker Styles */
+.rdp {
+  --rdp-cell-size: 2.25rem;
+  --rdp-accent-color: var(--primary);
+  --rdp-background-color: var(--primary-light);
+}
