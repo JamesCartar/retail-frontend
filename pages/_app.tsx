@@ -1,0 +1,30 @@
+import '@/styles/globals.css'
+import type { AppProps } from 'next/app'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { useAuthStore } from '@/lib/store/authStore'
+
+// Public routes that don't require authentication
+const publicRoutes = ['/login', '/register']
+
+export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter()
+  const checkAuth = useAuthStore((state) => state.checkAuth)
+
+  useEffect(() => {
+    // Check if user has token
+    const hasToken = checkAuth()
+
+    // If no token and trying to access protected route
+    if (!hasToken && !publicRoutes.includes(router.pathname)) {
+      router.replace('/login')
+    }
+
+    // If has token and trying to access login/register
+    if (hasToken && publicRoutes.includes(router.pathname)) {
+      router.replace('/')
+    }
+  }, [router.pathname, checkAuth, router])
+
+  return <Component {...pageProps} />
+}
