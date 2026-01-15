@@ -1,21 +1,28 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { deleteCookie, getCookie, setCookie } from 'cookies-next';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from "axios";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 // API Configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
-if (!API_BASE_URL && typeof window !== 'undefined') {
-  console.warn('NEXT_PUBLIC_API_BASE_URL is not set. Please configure it in your .env.local file.');
+if (!API_BASE_URL && typeof window !== "undefined") {
+  console.warn(
+    "NEXT_PUBLIC_API_BASE_URL is not set. Please configure it in your .env.local file."
+  );
 }
 
-const TOKEN_KEY = 'authToken';
+const TOKEN_KEY = "authToken";
 
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30000,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -23,11 +30,13 @@ const apiClient: AxiosInstance = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const token = getCookie(TOKEN_KEY);
-    
+
+    console.log(token);
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
+
     return config;
   },
   (error) => {
@@ -45,13 +54,13 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401) {
       // Clear token
       deleteCookie(TOKEN_KEY);
-      
+
       // Redirect to login page
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login';
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
       }
     }
-    
+
     return Promise.reject(error);
   }
 );
@@ -74,13 +83,14 @@ export interface ApiError {
 const handleApiError = (error: any): ApiError => {
   if (axios.isAxiosError(error)) {
     return {
-      message: error.response?.data?.message || error.message || 'An error occurred',
+      message:
+        error.response?.data?.message || error.message || "An error occurred",
       status: error.response?.status,
       errors: error.response?.data?.errors,
     };
   }
   return {
-    message: 'An unexpected error occurred',
+    message: "An unexpected error occurred",
   };
 };
 
@@ -119,7 +129,11 @@ class ApiService {
     config?: AxiosRequestConfig
   ): Promise<ApiResponse<T>> {
     try {
-      const response: AxiosResponse<T> = await this.client.post(url, data, config);
+      const response: AxiosResponse<T> = await this.client.post(
+        url,
+        data,
+        config
+      );
       return {
         data: response.data,
         status: response.status,
@@ -138,7 +152,11 @@ class ApiService {
     config?: AxiosRequestConfig
   ): Promise<ApiResponse<T>> {
     try {
-      const response: AxiosResponse<T> = await this.client.put(url, data, config);
+      const response: AxiosResponse<T> = await this.client.put(
+        url,
+        data,
+        config
+      );
       return {
         data: response.data,
         status: response.status,
@@ -157,7 +175,11 @@ class ApiService {
     config?: AxiosRequestConfig
   ): Promise<ApiResponse<T>> {
     try {
-      const response: AxiosResponse<T> = await this.client.patch(url, data, config);
+      const response: AxiosResponse<T> = await this.client.patch(
+        url,
+        data,
+        config
+      );
       return {
         data: response.data,
         status: response.status,
@@ -194,18 +216,18 @@ export const tokenUtils = {
   setToken: (token: string) => {
     setCookie(TOKEN_KEY, token, {
       maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/',
+      path: "/",
     });
   },
-  
+
   getToken: () => {
     return getCookie(TOKEN_KEY);
   },
-  
+
   removeToken: () => {
     deleteCookie(TOKEN_KEY);
   },
-  
+
   hasToken: () => {
     return !!getCookie(TOKEN_KEY);
   },

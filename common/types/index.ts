@@ -3,7 +3,7 @@
  * Shared types across the application
  */
 
-import React from 'react';
+import React from "react";
 
 // Base Entity
 export interface BaseEntity {
@@ -20,21 +20,22 @@ export interface User extends BaseEntity {
 }
 
 // Record Types
-export interface RecordItem extends BaseEntity {
-  title: string;
-  description?: string;
-  amount?: number;
-  date: string;
-  category?: string;
-  status?: RecordStatus;
-  customerId?: string;
-  customerName?: string;
+export interface RecordItem {
+  id: string;
+  phoneNo: string;
+  amount: number;
+  fee: number;
+  pay: "kbz" | "wave" | "aya" | "uab" | "other";
+  type: "pay" | "bank";
+  description?: string | null;
+  entryPerson: string;
+  date: Date;
 }
 
 export enum RecordStatus {
-  PENDING = 'pending',
-  COMPLETED = 'completed',
-  CANCELLED = 'cancelled',
+  PENDING = "pending",
+  COMPLETED = "completed",
+  CANCELLED = "cancelled",
 }
 
 export interface CreateRecordInput {
@@ -62,10 +63,10 @@ export interface Fee extends BaseEntity {
 }
 
 export enum FeeType {
-  SERVICE = 'service',
-  LATE = 'late',
-  PROCESSING = 'processing',
-  OTHER = 'other',
+  SERVICE = "service",
+  LATE = "late",
+  PROCESSING = "processing",
+  OTHER = "other",
 }
 
 export interface CreateFeeInput {
@@ -139,7 +140,7 @@ export interface TableConfig<T = any> {
   onRowClick?: (row: T) => void;
   onSort?: (key: string) => void;
   sortKey?: string;
-  sortDirection?: 'asc' | 'desc';
+  sortDirection?: "asc" | "desc";
 }
 
 // Pagination Types

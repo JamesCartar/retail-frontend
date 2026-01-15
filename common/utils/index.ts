@@ -16,44 +16,60 @@ export function cn(...inputs: ClassValue[]) {
 /**
  * Format currency value
  */
-export function formatCurrency(amount: number, currency: string = 'USD'): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency,
-  }).format(amount);
+export function formatCurrency(
+  amount: number,
+  currency: string = "USD"
+): string {
+  return new Intl.NumberFormat("en-US").format(amount);
 }
 
 /**
  * Format date to readable string
  */
-export function formatDate(date: string | Date, format: string = 'MMM DD, YYYY'): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
-  
+export function formatDate(
+  date: string | Date,
+  format: string = "MMM DD, YYYY"
+): string {
+  const d = typeof date === "string" ? new Date(date) : date;
+
   if (isNaN(d.getTime())) {
-    return 'Invalid Date';
+    return "Invalid Date";
   }
 
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   const month = months[d.getMonth()];
-  const day = String(d.getDate()).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, "0");
   const year = d.getFullYear();
-  const hours = String(d.getHours()).padStart(2, '0');
-  const minutes = String(d.getMinutes()).padStart(2, '0');
+  const hours = String(d.getHours()).padStart(2, "0");
+  const minutes = String(d.getMinutes()).padStart(2, "0");
 
   return format
-    .replace('MMM', month)
-    .replace('DD', day)
-    .replace('YYYY', String(year))
-    .replace('HH', hours)
-    .replace('mm', minutes);
+    .replace("MMM", month)
+    .replace("DD", day)
+    .replace("YYYY", String(year))
+    .replace("HH", hours)
+    .replace("mm", minutes);
 }
 
 /**
  * Format date to ISO string for API
  */
 export function formatDateForApi(date: Date | string): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
-  return d.toISOString().split('T')[0];
+  const d = typeof date === "string" ? new Date(date) : date;
+  return d.toISOString().split("T")[0];
 }
 
 /**
@@ -66,7 +82,11 @@ export function capitalize(str: string): string {
 /**
  * Truncate string to specified length
  */
-export function truncate(str: string, length: number = 50, suffix: string = '...'): string {
+export function truncate(
+  str: string,
+  length: number = 50,
+  suffix: string = "..."
+): string {
   if (str.length <= length) return str;
   return str.substring(0, length - suffix.length) + suffix;
 }
@@ -96,9 +116,9 @@ export function debounce<T extends (...args: any[]) => any>(
  */
 export function getInitials(name: string): string {
   return name
-    .split(' ')
-    .map(part => part[0])
-    .join('')
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
     .toUpperCase()
     .slice(0, 2);
 }
@@ -108,9 +128,9 @@ export function getInitials(name: string): string {
  */
 export function isEmpty(value: any): boolean {
   if (value == null) return true;
-  if (typeof value === 'string') return value.trim().length === 0;
+  if (typeof value === "string") return value.trim().length === 0;
   if (Array.isArray(value)) return value.length === 0;
-  if (typeof value === 'object') return Object.keys(value).length === 0;
+  if (typeof value === "object") return Object.keys(value).length === 0;
   return false;
 }
 
@@ -132,7 +152,7 @@ export function deepClone<T>(obj: T): T {
  * Get nested object property safely
  */
 export function getNestedProperty(obj: any, path: string): any {
-  return path.split('.').reduce((current, prop) => current?.[prop], obj);
+  return path.split(".").reduce((current, prop) => current?.[prop], obj);
 }
 
 /**
@@ -140,13 +160,13 @@ export function getNestedProperty(obj: any, path: string): any {
  */
 export function objectToQueryString(obj: Record<string, any>): string {
   const params = new URLSearchParams();
-  
+
   Object.entries(obj).forEach(([key, value]) => {
-    if (value !== null && value !== undefined && value !== '') {
+    if (value !== null && value !== undefined && value !== "") {
       params.append(key, String(value));
     }
   });
-  
+
   return params.toString();
 }
 
@@ -154,7 +174,7 @@ export function objectToQueryString(obj: Record<string, any>): string {
  * Sleep/delay utility
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -169,7 +189,7 @@ export function isValidEmail(email: string): boolean {
  * Format phone number
  */
 export function formatPhoneNumber(phone: string): string {
-  const cleaned = phone.replace(/\D/g, '');
+  const cleaned = phone.replace(/\D/g, "");
   const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
   if (match) {
     return `(${match[1]}) ${match[2]}-${match[3]}`;
@@ -189,5 +209,5 @@ export function calculatePercentage(value: number, total: number): number {
  * Format number with commas
  */
 export function formatNumber(num: number): string {
-  return num.toLocaleString('en-US');
+  return num.toLocaleString("en-US");
 }

@@ -3,12 +3,11 @@
  * Shared layout with navigation
  */
 
-import React from 'react';
-import { useRouter } from 'next/router';
-import { Button } from '@/components/ui/button';
-import { useAuthStore } from '@/lib/store/authStore';
-import { authService } from '@/lib/api/auth';
-import { APP_CONFIG, ROUTES } from '@/common/constants';
+import { APP_CONFIG, ROUTES } from "@/common/constants";
+import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/lib/store/authStore";
+import { useRouter } from "next/router";
+import React from "react";
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -19,18 +18,6 @@ export interface LayoutProps {
 export function Layout({ children, title, showHeader = true }: LayoutProps) {
   const router = useRouter();
   const { user, logout } = useAuthStore();
-
-  const handleLogout = async () => {
-    try {
-      await authService.logout();
-      logout();
-      router.push(ROUTES.LOGIN);
-    } catch (err) {
-      console.error('Logout failed:', err);
-      logout();
-      router.push(ROUTES.LOGIN);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -47,19 +34,27 @@ export function Layout({ children, title, showHeader = true }: LayoutProps) {
                 </h1>
                 <nav className="hidden md:flex gap-4">
                   <Button
-                    variant={router.pathname === ROUTES.HOME ? 'default' : 'ghost'}
+                    variant={
+                      router.pathname === ROUTES.HOME ? "default" : "ghost"
+                    }
                     onClick={() => router.push(ROUTES.HOME)}
                   >
                     Home
                   </Button>
                   <Button
-                    variant={router.pathname.startsWith('/records') ? 'default' : 'ghost'}
+                    variant={
+                      router.pathname.startsWith("/records")
+                        ? "default"
+                        : "ghost"
+                    }
                     onClick={() => router.push(ROUTES.VIEW_RECORDS)}
                   >
                     Records
                   </Button>
                   <Button
-                    variant={router.pathname.startsWith('/fees') ? 'default' : 'ghost'}
+                    variant={
+                      router.pathname.startsWith("/fees") ? "default" : "ghost"
+                    }
                     onClick={() => router.push(ROUTES.ADD_FEE)}
                   >
                     Fees
@@ -72,9 +67,6 @@ export function Layout({ children, title, showHeader = true }: LayoutProps) {
                     {user.name}
                   </span>
                 )}
-                <Button onClick={handleLogout} variant="outline" size="sm">
-                  Logout
-                </Button>
               </div>
             </div>
           </div>

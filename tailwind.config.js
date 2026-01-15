@@ -10,11 +10,28 @@ module.exports = {
   plugins: [require("tailwindcss-animate")],
   theme: {
     extend: {
+      fontFamily: {
+        primary: ["var(--font-noto)", "system-ui", "sans-serif"],
+        secondary: ["var(--font-pyidaungsu)", "system-ui", "sans-serif"],
+        inter: ["var(--font-inter)", "system-ui", "sans-serif"],
+      },
+      fontSize: {
+        "11px": ["var(--text-11px)", { lineHeight: "var(--lh-11px)" }],
+        "12px": ["var(--text-12px)", { lineHeight: "var(--lh-12px)" }],
+        "13px": ["var(--text-13px)", { lineHeight: "var(--lh-13px)" }],
+        "14px": ["var(--text-14px)", { lineHeight: "var(--lh-14px)" }],
+        "15px": ["var(--text-15px)", { lineHeight: "var(--lh-15px)" }],
+        "16px": ["var(--text-16px)", { lineHeight: "var(--lh-16px)" }],
+        "17px": ["var(--text-17px)", { lineHeight: "var(--lh-17px)" }],
+        "21px": ["var(--text-21px)", { lineHeight: "var(--lh-21px)" }],
+      },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 4px)",
-        sm: "calc(var(--radius) - 6px)",
-        xs: "calc(var(--radius) - 8px)",
+        5: "var(--radius-5)",
+        8: "var(--radius-8)",
+        10: "var(--radius-10)",
+        12: "var(--radius-12)",
+        20: "var(--radius-20)",
+        24: "var(--radius-24)",
       },
       colors: {
         background: "var(--background)",
