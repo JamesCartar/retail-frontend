@@ -3,11 +3,17 @@
  * Helper tool for calculating fees
  */
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { formatCurrency } from '@/common/utils';
+import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { formatNumber } from "@/common/utils";
 
 export function FeeCalculator() {
   const [baseAmount, setBaseAmount] = useState<number>(0);
@@ -33,7 +39,7 @@ export function FeeCalculator() {
             type="number"
             step="0.01"
             placeholder="0.00"
-            value={baseAmount || ''}
+            value={baseAmount || ""}
             onChange={(e) => setBaseAmount(Number(e.target.value))}
           />
         </div>
@@ -46,7 +52,7 @@ export function FeeCalculator() {
               type="number"
               step="0.01"
               placeholder="0"
-              value={percentage || ''}
+              value={percentage || ""}
               onChange={(e) => setPercentage(Number(e.target.value))}
             />
           </div>
@@ -58,7 +64,7 @@ export function FeeCalculator() {
               type="number"
               step="0.01"
               placeholder="0.00"
-              value={fixedFee || ''}
+              value={fixedFee || ""}
               onChange={(e) => setFixedFee(Number(e.target.value))}
             />
           </div>
@@ -67,15 +73,15 @@ export function FeeCalculator() {
         <div className="border-t pt-4 space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Base Amount:</span>
-            <span className="font-medium">{formatCurrency(baseAmount)}</span>
+            <span className="font-medium">{formatNumber(baseAmount)}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Calculated Fee:</span>
-            <span className="font-medium">{formatCurrency(calculatedFee)}</span>
+            <span className="font-medium">{formatNumber(calculatedFee)}</span>
           </div>
           <div className="flex justify-between text-lg font-bold">
             <span>Total Amount:</span>
-            <span>{formatCurrency(totalAmount)}</span>
+            <span>{formatNumber(totalAmount)}</span>
           </div>
         </div>
       </CardContent>

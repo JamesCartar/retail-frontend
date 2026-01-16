@@ -1,22 +1,23 @@
-/**
- * Record Form Component
- * Form for creating and editing records
- */
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import { AnimatedInput } from "@/components/ui/animated-input";
+import { DatePicker } from "@/components/ui/date-picker";
+import { FormTextarea, FormSelect } from "@/components/forms";
+import { recordSchema } from "@/common/validators/schemas";
+import { CreateRecordInput, UpdateRecordInput } from "@/common/types";
+import { DollarSign, User } from "lucide-react";
+import CalendarIcon from "@/components/icons/calendar.svg";
+import { format, formatDate } from "date-fns";
 
-import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
-import { AnimatedInput } from '@/components/ui/animated-input';
-import { DatePicker } from '@/components/ui/date-picker';
-import { FormTextarea, FormSelect } from '@/components/forms';
-import { recordSchema } from '@/common/validators/schemas';
-import { CreateRecordInput, UpdateRecordInput } from '@/common/types';
-import { Calendar, DollarSign, Tag, User } from 'lucide-react';
-import { format } from 'date-fns';
+import PhoneIcon from "@/components/icons/phone.svg";
+import { formatCalendarDate } from "@/common/utils";
 
 export interface RecordFormProps {
-  onSubmit: (data: CreateRecordInput | UpdateRecordInput) => void | Promise<void>;
+  onSubmit: (
+    data: CreateRecordInput | UpdateRecordInput
+  ) => void | Promise<void>;
   defaultValues?: Partial<CreateRecordInput>;
   isLoading?: boolean;
   isEdit?: boolean;
@@ -28,14 +29,6 @@ export function RecordForm({
   isLoading,
   isEdit = false,
 }: RecordFormProps) {
-  const categoryOptions = [
-    { value: 'sale', label: 'Sale' },
-    { value: 'purchase', label: 'Purchase' },
-    { value: 'service', label: 'Service' },
-    { value: 'return', label: 'Return' },
-    { value: 'other', label: 'Other' },
-  ];
-
   const {
     register,
     handleSubmit,
@@ -43,12 +36,12 @@ export function RecordForm({
     reset,
     formState: { errors },
   } = useForm<CreateRecordInput>({
-    resolver: zodResolver(recordSchema) as any,
+    resolver: zodResolver(recordSchema),
     defaultValues: {
       ...defaultValues,
-      date: defaultValues?.date || format(new Date(), 'yyyy-MM-dd'),
+      date: defaultValues?.date || format(new Date(), "yyyy-MM-dd"),
     },
-    mode: 'onSubmit', // Validate on submit by default
+    mode: "onSubmit",
   });
 
   const handleFormSubmit = async (data: CreateRecordInput) => {
@@ -58,49 +51,24 @@ export function RecordForm({
         reset();
       }
     } catch (error) {
-      console.error('Form submission error:', error);
+      console.error("Form submission error:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
-      {/* Title - validates onChange */}
-      <AnimatedInput
-        label="Title"
-        placeholder="Enter record title"
-        startIcon={<Tag className="h-4 w-4" />}
-        error={errors.title?.message}
-        {...register('title', {
-          onChange: (e) => {
-            // Trigger validation on change for title
-            register('title').onChange(e);
-          },
-        })}
-      />
-
-      {/* Description */}
-      <FormTextarea
-        label="Description"
-        placeholder="Enter description (optional)"
-        rows={4}
-        error={errors.description?.message}
-        registration={register('description')}
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Amount - validates onChange */}
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 mt-5">
+      <div className="w-full h-28 border-2">
+        {/* // @copilot  don't touch this div for now, just do whatever you have to in the div below this dev */}
+      </div>
+      <div className="flex flex-col gap-7">
         <AnimatedInput
-          label="Amount"
-          type="number"
-          step="0.01"
-          placeholder="0.00"
-          startIcon={<DollarSign className="h-4 w-4" />}
-          error={errors.amount?.message}
-          {...register('amount', {
-            valueAsNumber: true,
+          label="ဖုန်းနံပါတ်"
+          placeholder="ဖုန်းနံပါတ်ထည့်ပါ"
+          startIcon={<PhoneIcon className="w-[19px] h-[19px] text-muted" />}
+          error={errors.title?.message}
+          {...register("title", {
             onChange: (e) => {
-              // Trigger validation on change for amount
-              register('amount').onChange(e);
+              register("title").onChange(e);
             },
           })}
         />
@@ -109,58 +77,58 @@ export function RecordForm({
         <Controller
           control={control}
           name="date"
-          render={({ field }) => (
+          render={({ field: { value, ...restField } }) => (
             <AnimatedInput
-              label="Date"
+              label="ရက်စွဲ"
               type="date"
-              startIcon={<Calendar className="h-4 w-4" />}
+              startIcon={<CalendarIcon className="h-4 w-4 mb-1" />}
+              value={
+                value
+                  ? formatCalendarDate(value)
+                  : formatCalendarDate(new Date())
+              }
               error={errors.date?.message}
-              {...field}
+              {...restField}
             />
           )}
         />
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Category */}
-        <FormSelect
-          label="Category"
-          options={categoryOptions}
-          placeholder="Select a category"
-          error={errors.category?.message}
-          registration={register('category')}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Customer ID - validates onChange */}
+          <AnimatedInput
+            label="Customer ID"
+            placeholder="Enter customer ID (optional)"
+            startIcon={<User className="h-4 w-4" />}
+            error={errors.customerId?.message}
+            {...register("customerId", {
+              onChange: (e) => {
+                // Trigger validation on change for customerId
+                register("customerId").onChange(e);
+              },
+            })}
+          />
+        </div>
 
-        {/* Customer ID - validates onChange */}
-        <AnimatedInput
-          label="Customer ID"
-          placeholder="Enter customer ID (optional)"
-          startIcon={<User className="h-4 w-4" />}
-          error={errors.customerId?.message}
-          {...register('customerId', {
-            onChange: (e) => {
-              // Trigger validation on change for customerId
-              register('customerId').onChange(e);
-            },
-          })}
-        />
-      </div>
-
-      <div className="flex gap-3 pt-4">
-        <Button type="submit" disabled={isLoading} className="flex-1">
-          {isLoading ? 'Submitting...' : isEdit ? 'Update Record' : 'Create Record'}
-        </Button>
-
-        {!isEdit && (
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => reset()}
-            disabled={isLoading}
-          >
-            Reset
+        <div className="flex gap-3 pt-4">
+          <Button type="submit" disabled={isLoading} className="flex-1">
+            {isLoading
+              ? "Submitting..."
+              : isEdit
+              ? "Update Record"
+              : "Create Record"}
           </Button>
-        )}
+
+          {!isEdit && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => reset()}
+              disabled={isLoading}
+            >
+              Reset
+            </Button>
+          )}
+        </div>
       </div>
     </form>
   );

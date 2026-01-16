@@ -1,6 +1,6 @@
 import { PAYMENT_IMAGES } from "@/common/constants/paymentIcons";
 import type { RecordItem } from "@/common/types";
-import { cn, formatCurrency } from "@/common/utils";
+import { cn, formatNumber } from "@/common/utils";
 import Image from "next/image";
 
 export interface RecordsListProps {
@@ -33,12 +33,12 @@ export function Record({ record }: RecordsListProps) {
           </span>
         )}
         <span className="font-inter text-15px leading-none">
-          {formatCurrency(record.amount)} Ks
+          {formatNumber(record.amount)} Ks
         </span>
       </div>
       <div className="font-inter text-15px flex justify-between items-center leading-none">
         <span>{record.phoneNo}</span>
-        <span className="text-accent">{formatCurrency(record.fee)} Ks</span>
+        <span className="text-accent">{formatNumber(record.fee)} Ks</span>
       </div>
     </div>
   );

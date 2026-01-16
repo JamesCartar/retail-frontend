@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { formatCurrency } from "@/common/utils";
+import { formatNumber } from "@/common/utils";
 import EyeClosedIcon from "@/components/icons/eye-closed.svg";
 import EyeOpenedIcon from "@/components/icons/eye-opened.svg";
 import IfElse from "@/components/IfElse";
@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { totals } from "@/pages";
 import { useState } from "react";
 
-export default function EnvelopeCard() {
+export function Envelope() {
   const [showAmount, setShowAmount] = useState(true);
   const [showFee, setShowFee] = useState(true);
 
@@ -27,8 +27,8 @@ export default function EnvelopeCard() {
           </span>
         </div>
         <div className="mx-auto relative w-[380px] h-[235px] bg-[url('/images/envelope-front-bg.png')] bg-contain bg-no-repeat bg-[position:0px_75px]">
-          <div className="absolute bottom-12 left-7 w-10/12 gap-[5px]">
-            <div className="flex items-center justify-between">
+          <div className="absolute bottom-12 left-7 w-10/12 gap-8 flex justify-between">
+            <div className="flex flex-col basis-1/2 gap-[2px]">
               <div className="flex items-center gap-[5px]">
                 <Button
                   onClick={() => setShowAmount(!showAmount)}
@@ -45,6 +45,14 @@ export default function EnvelopeCard() {
                   ငွေသွင်း/ထုတ်
                 </span>
               </div>
+              <div className="flex items-center">
+                <span className="font-inter font-semibold text-21px">
+                  {showAmount ? formatNumber(totals.amount) : "* * * * * *"}
+                </span>
+                <span className="text-15px ml-1"> Ks</span>
+              </div>
+            </div>
+            <div className="flex flex-col basis-1/2 gap-[2px]">
               <div className="flex items-center gap-[5px]">
                 <Button
                   onClick={() => setShowFee(!showFee)}
@@ -61,17 +69,9 @@ export default function EnvelopeCard() {
                   လွှဲခ/အမြတ်
                 </span>
               </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <span className="font-inter font-semibold text-21px">
-                  {showAmount ? formatCurrency(totals.amount) : "* * * * * *"}
-                </span>
-                <span className="text-15px ml-1"> Ks</span>
-              </div>
               <div className="flex items-center font-inter">
                 <span className="font-semibold text-21px">
-                  {showFee ? formatCurrency(totals.fee) : "* * * * * *"}
+                  {showFee ? formatNumber(totals.fee) : "* * * * * *"}
                 </span>
                 <span className="text-15px ml-1">Ks</span>
               </div>

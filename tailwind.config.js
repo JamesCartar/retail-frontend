@@ -16,6 +16,7 @@ module.exports = {
         inter: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       fontSize: {
+        xs: ["var(--text-11px)", { lineHeight: "var(--lh-11px)" }],
         "11px": ["var(--text-11px)", { lineHeight: "var(--lh-11px)" }],
         "12px": ["var(--text-12px)", { lineHeight: "var(--lh-12px)" }],
         "13px": ["var(--text-13px)", { lineHeight: "var(--lh-13px)" }],

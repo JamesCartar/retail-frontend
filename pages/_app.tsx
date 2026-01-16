@@ -17,11 +17,10 @@ export default function App({ Component, pageProps }: AppProps) {
     // Check if user has token
     const hasToken = checkAuth();
 
-    console.log(hasToken);
-
     // If no token and trying to access protected route
     if (!hasToken && !publicRoutes.includes(router.pathname)) {
-      router.replace("/login");
+      //   router.replace("/login");
+      console.log("You are not logged in");
     }
 
     // If has token and trying to access login/register

@@ -3,57 +3,48 @@
  * Displays quick action buttons for common tasks
  */
 
-import React from 'react';
-import { useRouter } from 'next/router';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ROUTES } from '@/common/constants';
+import React from "react";
+import { useRouter } from "next/router";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/common/constants";
+import NoteBookIcon from "@/components/icons/note-book.svg";
+import NotePencilIcon from "@/components/icons/note-pencil.svg";
+import GearSixIcon from "@/components/icons/gear-six.svg";
+import Link from "next/link";
+
+const actions = [
+  {
+    label: "စာရင်းမှတ်မည်",
+    route: ROUTES.ADD_RECORD,
+    icon: NotePencilIcon,
+  },
+  {
+    label: "စာရင်းကြည့်မည်",
+    route: ROUTES.VIEW_RECORDS,
+    icon: NoteBookIcon,
+  },
+  {
+    label: "လွှဲခထည့်မည်",
+    route: ROUTES.ADD_FEE,
+    icon: GearSixIcon,
+  },
+];
 
 export function QuickActions() {
-  const router = useRouter();
-
-  const actions = [
-    {
-      label: 'Add New Record',
-      description: 'Create a new record',
-      route: ROUTES.ADD_RECORD,
-      variant: 'default' as const,
-    },
-    {
-      label: 'View All Records',
-      description: 'Browse and manage records',
-      route: ROUTES.VIEW_RECORDS,
-      variant: 'outline' as const,
-    },
-    {
-      label: 'Add Fee',
-      description: 'Add a new fee',
-      route: ROUTES.ADD_FEE,
-      variant: 'outline' as const,
-    },
-  ];
-
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Quick Actions</CardTitle>
-        <CardDescription>Common tasks and shortcuts</CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-3">
+    <Card className="w-[360px] mx-auto border-0 shadow-none rounded-10">
+      <CardContent className="flex justify-between font-primary px-[15px] py-[13px]">
         {actions.map((action) => (
-          <Button
-            key={action.route}
-            variant={action.variant}
-            className="w-full justify-start"
-            onClick={() => router.push(action.route)}
+          <Link
+            href={action.route}
+            className="flex flex-col items-center gap-2"
           >
-            <div className="text-left">
-              <div className="font-medium">{action.label}</div>
-              <div className="text-xs text-muted-foreground">
-                {action.description}
-              </div>
+            <div className="w-[52px] h-[52px] bg-primary-light flex items-center justify-center rounded-full">
+              <action.icon className="w-6 text-primary-muted" />
             </div>
-          </Button>
+            <span className="text-12px">{action.label}</span>
+          </Link>
         ))}
       </CardContent>
     </Card>

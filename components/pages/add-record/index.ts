@@ -1,6 +1,3 @@
-/**
- * Add Record Page Components Index
- */
-
-export { RecordForm } from './RecordForm';
-export type { RecordFormProps } from './RecordForm';
+export { RecordForm } from "./RecordForm";
+export { InfoCard } from "./InfoCard";
+export type { RecordFormProps } from "./RecordForm";
