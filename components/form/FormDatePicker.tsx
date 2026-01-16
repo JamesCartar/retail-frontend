@@ -111,9 +111,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
         };
 
         const handleOk = () => {
-          if (tempDate) {
-            handleDateChange(tempDate);
-          }
+          handleDateChange(tempDate);
         };
 
         const handleCancel = () => {
