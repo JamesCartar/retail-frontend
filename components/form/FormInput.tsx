@@ -92,6 +92,7 @@ export function FormInput<TFieldValues extends FieldValues>({
 
                 <input
                   {...field}
+                  value={field.value || ''}
                   type={type}
                   disabled={disabled}
                   placeholder={placeholder}
@@ -159,6 +160,7 @@ export function FormInput<TFieldValues extends FieldValues>({
 
               <Input
                 {...field}
+                value={field.value || ''}
                 id={name}
                 type={type}
                 disabled={disabled}
