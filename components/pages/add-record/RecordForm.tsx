@@ -37,7 +37,7 @@ export function RecordForm({
       ...defaultValues,
       date: defaultValues?.date || format(new Date(), "yyyy-MM-dd"),
     },
-    mode: "onSubmit",
+    mode: "onChange",
   });
 
   const handleFormSubmit = async (data: CreateRecordInput) => {

@@ -28,6 +28,10 @@ export interface FormDatePickerProps<TFieldValues extends FieldValues> {
   floatingLabel?: boolean;
   error?: string;
   dateFormat?: string;
+  showClearButton?: boolean;
+  showOkButton?: boolean;
+  showCancelButton?: boolean;
+  onClear?: () => void;
 }
 
 export function FormDatePicker<TFieldValues extends FieldValues>({
@@ -41,8 +45,13 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
   floatingLabel = true,
   error,
   dateFormat = "yyyy-MM-dd",
+  showClearButton = false,
+  showOkButton = false,
+  showCancelButton = false,
+  onClear,
 }: FormDatePickerProps<TFieldValues>) {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [tempDate, setTempDate] = React.useState<Date | undefined>(undefined);
 
   return (
     <Controller
@@ -54,8 +63,13 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
         const isFloating = floatingLabel && (isOpen || !!field.value);
 
         const handleOpenChange = (open: boolean) => {
+          if (open) {
+            setTempDate(dateValue);
+          }
           setIsOpen(open);
           if (!open) {
+            // Reset temp date if closing without confirmation
+            setTempDate(undefined);
             // Log validation state when closing the popover
             console.log(`[${name}] Validation State:`, {
               error: errorMessage,
@@ -63,6 +77,16 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
               isTouched: fieldState.isTouched,
               isValid: !fieldState.error,
             });
+          }
+        };
+
+        const handleDateSelect = (date: Date | undefined) => {
+          if (showOkButton || showCancelButton) {
+            // If action buttons are shown, just update temp date
+            setTempDate(date);
+          } else {
+            // If no action buttons, apply change immediately
+            handleDateChange(date);
           }
         };
 
@@ -84,6 +108,26 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
             isTouched: fieldState.isTouched,
             isValid: !fieldState.error,
           });
+        };
+
+        const handleOk = () => {
+          if (tempDate) {
+            handleDateChange(tempDate);
+          }
+        };
+
+        const handleCancel = () => {
+          setTempDate(undefined);
+          setIsOpen(false);
+        };
+
+        const handleClear = () => {
+          field.onChange("");
+          setTempDate(undefined);
+          setIsOpen(false);
+          onClear?.();
+          
+          console.log(`[${name}] Cleared`);
         };
 
         // Floating label implementation
@@ -118,10 +162,46 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
-                      selected={dateValue}
-                      onSelect={handleDateChange}
+                      selected={tempDate || dateValue}
+                      onSelect={handleDateSelect}
                       initialFocus
                     />
+                    {(showClearButton || showOkButton || showCancelButton) && (
+                      <div className="flex gap-2 p-3 border-t">
+                        {showClearButton && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={handleClear}
+                            className="flex-1"
+                          >
+                            Clear
+                          </Button>
+                        )}
+                        {showCancelButton && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={handleCancel}
+                            className="flex-1"
+                          >
+                            Cancel
+                          </Button>
+                        )}
+                        {showOkButton && (
+                          <Button
+                            type="button"
+                            size="sm"
+                            onClick={handleOk}
+                            className="flex-1"
+                          >
+                            Ok
+                          </Button>
+                        )}
+                      </div>
+                    )}
                   </PopoverContent>
                 </Popover>
 
@@ -186,10 +266,46 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
-                  selected={dateValue}
-                  onSelect={handleDateChange}
+                  selected={tempDate || dateValue}
+                  onSelect={handleDateSelect}
                   initialFocus
                 />
+                {(showClearButton || showOkButton || showCancelButton) && (
+                  <div className="flex gap-2 p-3 border-t">
+                    {showClearButton && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={handleClear}
+                        className="flex-1"
+                      >
+                        Clear
+                      </Button>
+                    )}
+                    {showCancelButton && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCancel}
+                        className="flex-1"
+                      >
+                        Cancel
+                      </Button>
+                    )}
+                    {showOkButton && (
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={handleOk}
+                        className="flex-1"
+                      >
+                        Ok
+                      </Button>
+                    )}
+                  </div>
+                )}
               </PopoverContent>
             </Popover>
 
