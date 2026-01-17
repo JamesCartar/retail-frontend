@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useState } from "react";
+import React, { MutableRefObject, useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -37,41 +37,45 @@ export function RecordForm({
 
   console.log({ selectedPay, selectedTab });
 
+  // Use ref to store latest values for the resolver
+  const selectedPayRef = useRef(selectedPay);
+  const selectedTabRef = useRef(selectedTab);
+
+  useEffect(() => {
+    selectedPayRef.current = selectedPay;
+    selectedTabRef.current = selectedTab;
+  }, [selectedPay, selectedTab]);
+
   const {
     handleSubmit,
     control,
     reset,
-    setError,
-    clearErrors,
+    trigger,
     formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(recordSchema),
+  } = useForm<CreateRecordInput>({
+    resolver: async (data, context, options) => {
+      // Use the current values from refs
+      const schema = createRecordSchema(selectedPayRef.current, selectedTabRef.current);
+      return zodResolver(schema)(data, context, options);
+    },
     defaultValues: {
       fee: "0",
       amount: "0",
-    },
+    } as any,
     mode: "onChange",
   });
+
+  // Revalidate description field when selectedPay or selectedTab changes
+  useEffect(() => {
+    // Trigger validation when the conditions change
+    trigger("description");
+  }, [selectedPay, selectedTab, trigger]);
 
   const handleFormSubmit = async (data: CreateRecordInput) => {
     console.log("[Form] Submission State:", {
       isSubmitting: true,
       data,
     });
-
-    // Manual validation for description field based on selectedPay and selectedTab
-    const isDescriptionRequired = selectedPay === "other" || selectedTab === "bank";
-    
-    if (isDescriptionRequired && (!data.description || data.description.trim().length === 0)) {
-      setError("description", {
-        type: "manual",
-        message: "အချက်အလက်ဖြည့်ရန် *",
-      });
-      return;
-    }
-
-    // Clear any previous description errors if validation passes
-    clearErrors("description");
 
     setPendingData(data);
     setShowConfirmDialog(true);
