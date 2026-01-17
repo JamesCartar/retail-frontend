@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { formatCalendarDate } from "@/common/utils";
 
 export interface FormDatePickerProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>;
@@ -68,15 +69,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
           }
           setIsOpen(open);
           if (!open) {
-            // Reset temp date if closing without confirmation
             setTempDate(undefined);
-            // Log validation state when closing the popover
-            console.log(`[${name}] Validation State:`, {
-              error: errorMessage,
-              isDirty: fieldState.isDirty,
-              isTouched: fieldState.isTouched,
-              isValid: !fieldState.error,
-            });
           }
         };
 
@@ -91,23 +84,9 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
         };
 
         const handleDateChange = (date: Date | undefined) => {
-          const formattedDate = date ? format(date, dateFormat) : "";
+          const formattedDate = date ? formatCalendarDate(date) : "";
           field.onChange(formattedDate);
           setIsOpen(false);
-
-          // Log change state
-          console.log(`[${name}] Change State:`, {
-            value: formattedDate,
-            date: date,
-          });
-          
-          // Log validation state after change
-          console.log(`[${name}] Validation State:`, {
-            error: errorMessage,
-            isDirty: fieldState.isDirty,
-            isTouched: fieldState.isTouched,
-            isValid: !fieldState.error,
-          });
         };
 
         const handleOk = () => {
@@ -124,11 +103,8 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
           setTempDate(undefined);
           setIsOpen(false);
           onClear?.();
-          
-          console.log(`[${name}] Cleared`);
         };
 
-        // Floating label implementation
         if (floatingLabel) {
           return (
             <div className={cn("w-full", className)}>
@@ -139,7 +115,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                       variant="outline"
                       disabled={disabled}
                       className={cn(
-                        "w-full justify-start text-left font-normal px-3 py-6 h-auto rounded-10 border-input",
+                        "w-full justify-start text-left font-normal px-3 py-[10px] h-auto rounded-10 border-input bg-white hover:bg-white hover:text-black",
                         !dateValue && "text-muted-foreground",
                         errorMessage && "border-destructive",
                         startIcon && "pl-10"
@@ -151,7 +127,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                         </div>
                       )}
                       {dateValue ? (
-                        format(dateValue, "PPP")
+                        formatCalendarDate(dateValue)
                       ) : (
                         <span className="text-transparent">{placeholder}</span>
                       )}
@@ -160,9 +136,11 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
+                      captionLayout="dropdown"
+                      navLayout="after"
                       selected={tempDate || dateValue}
                       onSelect={handleDateSelect}
-                      initialFocus
+                      autoFocus
                     />
                     {(showClearButton || showOkButton || showCancelButton) && (
                       <div className="flex gap-2 p-3 border-t">
@@ -224,7 +202,9 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
 
               {/* Error Message */}
               {errorMessage && (
-                <p className="text-sm text-destructive mt-1.5">{errorMessage}</p>
+                <p className=" text-11px text-destructive mt-1">
+                  {errorMessage}
+                </p>
               )}
             </div>
           );
@@ -234,7 +214,10 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
         return (
           <div className={cn("w-full space-y-2", className)}>
             {label && (
-              <Label htmlFor={name} className={cn(errorMessage && "text-destructive")}>
+              <Label
+                htmlFor={name}
+                className={cn(errorMessage && "text-destructive")}
+              >
                 {label}
               </Label>
             )}
@@ -248,7 +231,8 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                   className={cn(
                     "w-full justify-start text-left font-normal",
                     !dateValue && "text-muted-foreground",
-                    errorMessage && "border-destructive focus-visible:ring-destructive",
+                    errorMessage &&
+                      "border-destructive focus-visible:ring-destructive",
                     startIcon && "pl-10"
                   )}
                 >
@@ -258,7 +242,11 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                     </div>
                   )}
                   {!startIcon && <CalendarIcon className="mr-2 h-4 w-4" />}
-                  {dateValue ? format(dateValue, "PPP") : <span>{placeholder}</span>}
+                  {dateValue ? (
+                    formatCalendarDate(dateValue)
+                  ) : (
+                    <span>{placeholder}</span>
+                  )}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
@@ -266,7 +254,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                   mode="single"
                   selected={tempDate || dateValue}
                   onSelect={handleDateSelect}
-                  initialFocus
+                  autoFocus
                 />
                 {(showClearButton || showOkButton || showCancelButton) && (
                   <div className="flex gap-2 p-3 border-t">
@@ -309,7 +297,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
 
             {/* Error Message */}
             {errorMessage && (
-              <p className="text-sm text-destructive mt-1.5">{errorMessage}</p>
+              <p className="text-11px text-destructive mt-1">{errorMessage}</p>
             )}
           </div>
         );

@@ -8,6 +8,7 @@ import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { formatNumber, removeNumberComma } from "@/common/utils";
 
 export interface FormInputProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>;
@@ -20,6 +21,7 @@ export interface FormInputProps<TFieldValues extends FieldValues> {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   floatingLabel?: boolean;
+  isCurrency?: boolean;
   error?: string;
 }
 
@@ -34,6 +36,7 @@ export function FormInput<TFieldValues extends FieldValues>({
   startIcon,
   endIcon,
   floatingLabel = true,
+  isCurrency = false,
   error,
 }: FormInputProps<TFieldValues>) {
   const [isFocused, setIsFocused] = React.useState(false);
@@ -45,7 +48,8 @@ export function FormInput<TFieldValues extends FieldValues>({
       control={control}
       render={({ field, fieldState }) => {
         const errorMessage = error || fieldState.error?.message;
-        const isFloating = floatingLabel && (isFocused || hasValue || field.value);
+        const isFloating =
+          floatingLabel && (isFocused || hasValue || field.value);
 
         const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
           setIsFocused(true);
@@ -55,25 +59,19 @@ export function FormInput<TFieldValues extends FieldValues>({
           setIsFocused(false);
           setHasValue(!!e.target.value);
           field.onBlur();
-          
-          // Log validation state on blur
-          console.log(`[${name}] Validation State:`, {
-            error: errorMessage,
-            isDirty: fieldState.isDirty,
-            isTouched: fieldState.isTouched,
-            isValid: !fieldState.error,
-          });
         };
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          setHasValue(!!e.target.value);
-          field.onChange(e);
-          
-          // Log change state
-          console.log(`[${name}] Change State:`, {
-            value: e.target.value,
-            hasValue: !!e.target.value,
-          });
+          let rawValue = e.target.value;
+
+          if (isCurrency && !isNaN(Number(removeNumberComma(rawValue)))) {
+            const formatted = formatNumber(Number(removeNumberComma(rawValue)));
+            setHasValue(!!formatted);
+            field.onChange(formatted);
+          } else {
+            setHasValue(!!rawValue);
+            field.onChange(e);
+          }
         };
 
         // Floating label implementation
@@ -82,24 +80,25 @@ export function FormInput<TFieldValues extends FieldValues>({
             <div className={cn("w-full", className)}>
               <div className="relative">
                 {startIcon && (
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none z-10">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none z-10">
                     {startIcon}
                   </div>
                 )}
 
                 <input
                   {...field}
-                  value={field.value ?? ''}
+                  value={field.value ?? ""}
                   type={type}
                   disabled={disabled}
                   placeholder={placeholder}
                   className={cn(
-                    "peer w-full rounded-10 border border-input bg-transparent px-3 py-3 text-base shadow-sm transition-all",
+                    "hide-number-stepper peer w-full rounded-10 border border-input bg-transparent px-4 py-[10px] text-base shadow-sm transition-all",
                     "placeholder:text-transparent",
                     "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
                     "disabled:cursor-not-allowed disabled:opacity-50",
-                    errorMessage && "border-destructive focus-visible:ring-destructive",
-                    startIcon && "pl-10",
+                    errorMessage &&
+                      "border-destructive focus-visible:ring-destructive",
+                    startIcon && "pl-11",
                     endIcon && "pr-10"
                   )}
                   onFocus={handleFocus}
@@ -133,7 +132,9 @@ export function FormInput<TFieldValues extends FieldValues>({
 
               {/* Error Message */}
               {errorMessage && (
-                <p className="text-sm text-destructive mt-1.5">{errorMessage}</p>
+                <p className="text-11px text-destructive mt-1">
+                  {errorMessage}
+                </p>
               )}
             </div>
           );
@@ -141,14 +142,20 @@ export function FormInput<TFieldValues extends FieldValues>({
 
         // Normal label above input
         return (
-          <div className={cn("w-full space-y-2", className)}>
+          <div className={cn("w-full", className)}>
             {label && (
-              <Label htmlFor={name} className={cn(errorMessage && "text-destructive")}>
+              <Label
+                htmlFor={name}
+                className={cn(
+                  errorMessage && "text-destructive",
+                  "font-primary text-13px text-[#4C4C4C] font-medium"
+                )}
+              >
                 {label}
               </Label>
             )}
 
-            <div className="relative">
+            <div className="relative mt-2">
               {startIcon && (
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none z-10">
                   {startIcon}
@@ -157,14 +164,19 @@ export function FormInput<TFieldValues extends FieldValues>({
 
               <Input
                 {...field}
-                value={field.value ?? ''}
+                value={field.value ?? ""}
                 id={name}
                 type={type}
                 disabled={disabled}
                 placeholder={placeholder}
                 className={cn(
-                  errorMessage && "border-destructive focus-visible:ring-destructive",
-                  startIcon && "pl-10",
+                  "hide-number-stepper peer w-full rounded-10 border border-input bg-transparent px-4 py-[12px] text-base shadow-sm transition-all h-[46px] focus:ring-0",
+                  "placeholder:text-transparent",
+                  "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+                  "disabled:cursor-not-allowed disabled:opacity-50",
+                  errorMessage &&
+                    "border-destructive focus-visible:ring-destructive",
+                  startIcon && "pl-11",
                   endIcon && "pr-10"
                 )}
                 onFocus={handleFocus}
@@ -181,7 +193,7 @@ export function FormInput<TFieldValues extends FieldValues>({
 
             {/* Error Message */}
             {errorMessage && (
-              <p className="text-sm text-destructive mt-1.5">{errorMessage}</p>
+              <p className="text-11px text-destructive mt-1">{errorMessage}</p>
             )}
           </div>
         );

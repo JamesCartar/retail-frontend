@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button";
 import { FormInput, FormDatePicker } from "@/components/form";
 import { recordSchema } from "@/common/validators/schemas";
 import { CreateRecordInput, UpdateRecordInput } from "@/common/types";
-import { User } from "lucide-react";
 import CalendarIcon from "@/components/icons/calendar.svg";
-import { format } from "date-fns";
+import FloppyDisk from "@/components/icons/floppy-disk.svg";
 
 import PhoneIcon from "@/components/icons/phone.svg";
 
@@ -15,7 +14,7 @@ export interface RecordFormProps {
   onSubmit: (
     data: CreateRecordInput | UpdateRecordInput
   ) => void | Promise<void>;
-  defaultValues?: Partial<CreateRecordInput>;
+  defaultValues?: CreateRecordInput;
   isLoading?: boolean;
   isEdit?: boolean;
 }
@@ -31,11 +30,11 @@ export function RecordForm({
     control,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<CreateRecordInput>({
+  } = useForm({
     resolver: zodResolver(recordSchema),
     defaultValues: {
-      ...defaultValues,
-      date: defaultValues?.date || format(new Date(), "yyyy-MM-dd"),
+      fee: "0",
+      amount: "0",
     },
     mode: "onChange",
   });
@@ -65,65 +64,73 @@ export function RecordForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 mt-5">
-      <div className="w-full h-28 border-2">
+    <form
+      onSubmit={handleSubmit(handleFormSubmit)}
+      className="flex flex-col gap-6 mt-5 h-full flex-1 relative overflow-y-auto"
+    >
+      <div className="w-full px-5 h-28 border-2">
         {/* // @copilot  don't touch this div for now, just do whatever you have to in the div below this dev */}
       </div>
-      <div className="flex flex-col gap-7">
-        {/* Phone number field with floating label */}
+      <div className="px-5 flex flex-col gap-7">
         <FormInput
-          name="title"
+          name="phoneNo"
           control={control}
           label="ဖုန်းနံပါတ်"
           placeholder="ဖုန်းနံပါတ်ထည့်ပါ"
           startIcon={<PhoneIcon className="w-[19px] h-[19px] text-muted" />}
           floatingLabel={true}
-          error={errors.title?.message}
+          error={errors.phoneNo?.message}
         />
 
-        {/* Date field with floating label */}
         <FormDatePicker
           name="date"
           control={control}
           label="ရက်စွဲ"
+          placeholder="ရက်စွဲထည့်ပါ"
           startIcon={<CalendarIcon className="h-4 w-4 mb-1" />}
           floatingLabel={true}
           error={errors.date?.message}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Customer ID */}
+        <div className="grid grid-cols-2 gap-4">
           <FormInput
-            name="customerId"
+            name="amount"
             control={control}
-            label="Customer ID"
-            placeholder="Enter customer ID (optional)"
-            startIcon={<User className="h-4 w-4" />}
-            floatingLabel={true}
-            error={errors.customerId?.message}
+            label="ငွေသွင်း/ထုတ်ပမာဏ"
+            placeholder="ငွေသွင်း/ထုတ်ပမာဏထည့်ပါ"
+            endIcon={
+              <span className="font-inter text-14px text-muted">Ks</span>
+            }
+            floatingLabel={false}
+            isCurrency
+            error={errors.amount?.message}
+          />
+          <FormInput
+            name="fee"
+            control={control}
+            label="လွှဲခ/အမြတ်"
+            placeholder="လွှဲခ/အမြတ်ထည့်ပါ"
+            endIcon={
+              <span className="font-inter text-14px text-muted">Ks</span>
+            }
+            floatingLabel={false}
+            isCurrency
+            error={errors.fee?.message}
           />
         </div>
+      </div>
 
-        <div className="flex gap-3 pt-4">
-          <Button type="submit" disabled={isLoading || isSubmitting} className="flex-1">
-            {isLoading || isSubmitting
-              ? "Submitting..."
-              : isEdit
-              ? "Update Record"
-              : "Create Record"}
-          </Button>
-
-          {!isEdit && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => reset()}
-              disabled={isLoading || isSubmitting}
-            >
-              Reset
-            </Button>
-          )}
-        </div>
+      <div className="flex items-center justify-center gap-3 w-full h-[94px] shadow-[0px_-2px_15px_0px_rgba(0,0,0,0.1)] mt-auto">
+        <Button
+          type="submit"
+          disabled={isLoading || isSubmitting}
+          className="text-white w-11/12 "
+        >
+          <span className="font-primary text-15px  mr-[7px]">
+            စာရင်းမှတ်တမ်း မှတ်မည်
+          </span>
+          <FloppyDisk />
+        </Button>
       </div>
     </form>
   );
