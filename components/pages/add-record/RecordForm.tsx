@@ -56,7 +56,7 @@ export function RecordForm({
     resolver: async (data, context, options) => {
       // Use the current values from refs
       const schema = createRecordSchema(selectedPayRef.current, selectedTabRef.current);
-      return zodResolver(schema)(data, context, options);
+      return zodResolver(schema as any)(data, context, options);
     },
     defaultValues: {
       fee: "0",

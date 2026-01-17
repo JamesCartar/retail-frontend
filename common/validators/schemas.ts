@@ -41,9 +41,9 @@ export const registerSchema = z
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
 
-// Record Schema - Base schema without conditional validation
-const baseRecordSchema = z.object({
-  description: z.string().optional(),
+// Default record schema (for backward compatibility)
+export const recordSchema = z.object({
+  description: z.string().or(z.undefined()).optional(),
   phoneNo: z
     .string("အချက်အလက်ဖြည့်ရန် *")
     .min(7, "ဖုန်းနံပါတ် သည် ၇ လုံးမှ ၁၁ လုံးကြားရှိရမည်")
@@ -69,27 +69,42 @@ const baseRecordSchema = z.object({
     .refine((val) => Number(val.replace(/,/g, "")) > 0, "အချက်အလက်ဖြည့်ရန် *"),
 });
 
-// Default record schema (for backward compatibility)
-export const recordSchema = baseRecordSchema;
-
 // Factory function to create record schema with conditional description validation
 export const createRecordSchema = (selectedPay?: string, selectedTab?: string) => {
-  return baseRecordSchema.refine(
-    (data) => {
-      // Description is required if selectedPay is "other" OR selectedTab is "bank"
-      const isDescriptionRequired = selectedPay === "other" || selectedTab === "bank";
-      
-      if (isDescriptionRequired) {
-        // Check if description exists and has content after trimming
-        return data.description !== undefined && data.description !== null && data.description.trim().length > 0;
-      }
-      return true;
-    },
-    {
-      message: "အချက်အလက်ဖြည့်ရန် *",
-      path: ["description"],
-    }
-  );
+  // Description is required if selectedPay is "other" OR selectedTab is "bank"
+  const isDescriptionRequired = selectedPay === "other" || selectedTab === "bank";
+  
+  return z.object({
+    description: isDescriptionRequired 
+      ? z.union([z.string(), z.undefined(), z.literal('')]).refine(
+          val => val !== undefined && val !== '' && val.trim().length > 0,
+          { message: "အချက်အလက်ဖြည့်ရန် *" }
+        )
+      : z.string().or(z.undefined()).optional(),
+    phoneNo: z
+      .string("အချက်အလက်ဖြည့်ရန် *")
+      .min(7, "ဖုန်းနံပါတ် သည် ၇ လုံးမှ ၁၁ လုံးကြားရှိရမည်")
+      .max(11, "ဖုန်းနံပါတ် သည် ၇ လုံးမှ ၁၁ လုံးကြားရှိရမည်"),
+    date: z
+      .string("အချက်အလက်ဖြည့်ရန် *")
+      .refine((val) => !isNaN(Date.parse(val)), {
+        message: "Invalid date",
+      }),
+    amount: z
+      .string("အချက်အလက်ဖြည့်ရန် *")
+      .refine(
+        (val) => !isNaN(Number(val.replace(/,/g, ""))),
+        "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
+      )
+      .refine((val) => Number(val.replace(/,/g, "")) > 0, "အချက်အလက်ဖြည့်ရန် *"),
+    fee: z
+      .string("အချက်အလက်ဖြည့်ရန် *")
+      .refine(
+        (val) => !isNaN(Number(val.replace(/,/g, ""))),
+        "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
+      )
+      .refine((val) => Number(val.replace(/,/g, "")) > 0, "အချက်အလက်ဖြည့်ရန် *"),
+  });
 };
 
 export type RecordFormData = z.infer<typeof recordSchema>;
