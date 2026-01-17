@@ -43,6 +43,7 @@ export interface CreateRecordInput {
   date: string;
   amount: string;
   fee: string;
+  description?: string;
 }
 
 export interface UpdateRecordInput extends Partial<CreateRecordInput> {

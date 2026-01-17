@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { FormInput, FormDatePicker } from "@/components/form";
-import { recordSchema } from "@/common/validators/schemas";
+import { recordSchema, createRecordSchema } from "@/common/validators/schemas";
 import { CreateRecordInput, UpdateRecordInput } from "@/common/types";
 import CalendarIcon from "@/components/icons/calendar.svg";
 import FloppyDisk from "@/components/icons/floppy-disk.svg";
@@ -66,6 +66,8 @@ export function RecordForm({
     handleSubmit,
     control,
     reset,
+    setError,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(recordSchema),
@@ -81,6 +83,20 @@ export function RecordForm({
       isSubmitting: true,
       data,
     });
+
+    // Manual validation for description field based on selectedPay and selectedTab
+    const isDescriptionRequired = selectedPay === "other" || selectedTab === "bank";
+    
+    if (isDescriptionRequired && (!data.description || data.description.trim().length === 0)) {
+      setError("description", {
+        type: "manual",
+        message: "အချက်အလက်ဖြည့်ရန် *",
+      });
+      return;
+    }
+
+    // Clear any previous description errors if validation passes
+    clearErrors("description");
 
     setPendingData(data);
     setShowConfirmDialog(true);
