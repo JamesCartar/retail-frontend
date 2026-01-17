@@ -41,8 +41,8 @@ export const registerSchema = z
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
 
-// Record Schema
-export const recordSchema = z.object({
+// Record Schema - Base schema without conditional validation
+const baseRecordSchema = z.object({
   description: z.string().optional(),
   phoneNo: z
     .string("အချက်အလက်ဖြည့်ရန် *")
@@ -68,6 +68,28 @@ export const recordSchema = z.object({
     )
     .refine((val) => Number(val.replace(/,/g, "")) > 0, "အချက်အလက်ဖြည့်ရန် *"),
 });
+
+const requiredRecordSchema = baseRecordSchema.extend({
+  description: z
+    .string("အချက်အလက်ဖြည့်ရန် *")
+    .min(1, "အချက်အလက်ဖြည့်ရန် *")
+    .refine((val) => val.trim().length > 0, "အချက်အလက်ဖြည့်ရန် *"),
+});
+
+// Default record schema (for backward compatibility)
+export const recordSchema = baseRecordSchema;
+
+// Factory function to create record schema with conditional description validation
+export const createRecordSchema = (
+  selectedPay?: string,
+  selectedTab?: string,
+) => {
+  if (selectedPay === "other" || selectedTab === "bank") {
+    return requiredRecordSchema;
+  } else {
+    return baseRecordSchema;
+  }
+};
 
 export type RecordFormData = z.infer<typeof recordSchema>;
 

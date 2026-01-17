@@ -71,7 +71,7 @@ export function RecordsTable({
                 >
                   <td className="p-3">
                     <div>
-                      <p className="font-medium">{record.title}</p>
+                      <p className="font-medium">{record.phoneNo}</p>
                       {record.description && (
                         <p className="text-sm text-muted-foreground truncate max-w-xs">
                           {record.description}
@@ -85,20 +85,14 @@ export function RecordsTable({
                   </td>
                   <td className="p-3">
                     <span className="text-sm capitalize">
-                      {record.category || '-'}
+                      {record.type || '-'}
                     </span>
                   </td>
                   <td className="p-3">
                     <span
-                      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                        record.status === 'completed'
-                          ? 'bg-green-100 text-green-800'
-                          : record.status === 'cancelled'
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}
+                      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800`}
                     >
-                      {record.status || 'pending'}
+                      {record.pay || '-'}
                     </span>
                   </td>
                   <td className="p-3">

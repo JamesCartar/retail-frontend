@@ -69,11 +69,11 @@ export default function ViewRecords() {
   const handleEdit = (record: RecordItem) => {
     // In a real app, navigate to edit page
     console.log('Edit record:', record);
-    alert(`Edit functionality coming soon for: ${record.title}`);
+    alert(`Edit functionality coming soon for: ${record.phoneNo}`);
   };
 
   const handleDelete = async (record: RecordItem) => {
-    if (!confirm(`Are you sure you want to delete "${record.title}"?`)) {
+    if (!confirm(`Are you sure you want to delete "${record.phoneNo}"?`)) {
       return;
     }
 
@@ -89,7 +89,7 @@ export default function ViewRecords() {
   const handleView = (record: RecordItem) => {
     // In a real app, navigate to detail page
     console.log('View record:', record);
-    alert(`View functionality coming soon for: ${record.title}`);
+    alert(`View functionality coming soon for: ${record.phoneNo}`);
   };
 
   const totalPages = Math.ceil(total / perPage);
