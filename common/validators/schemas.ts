@@ -69,27 +69,26 @@ const baseRecordSchema = z.object({
     .refine((val) => Number(val.replace(/,/g, "")) > 0, "အချက်အလက်ဖြည့်ရန် *"),
 });
 
+const requiredRecordSchema = baseRecordSchema.extend({
+  description: z
+    .string("အချက်အလက်ဖြည့်ရန် *")
+    .min(1, "အချက်အလက်ဖြည့်ရန် *")
+    .refine((val) => val.trim().length > 0, "အချက်အလက်ဖြည့်ရန် *"),
+});
+
 // Default record schema (for backward compatibility)
 export const recordSchema = baseRecordSchema;
 
 // Factory function to create record schema with conditional description validation
-export const createRecordSchema = (selectedPay?: string, selectedTab?: string) => {
-  return baseRecordSchema.refine(
-    (data) => {
-      // Description is required if selectedPay is "other" OR selectedTab is "bank"
-      const isDescriptionRequired = selectedPay === "other" || selectedTab === "bank";
-      
-      if (isDescriptionRequired) {
-        // Check if description exists and has content after trimming
-        return data.description !== undefined && data.description !== null && data.description.trim().length > 0;
-      }
-      return true;
-    },
-    {
-      message: "အချက်အလက်ဖြည့်ရန် *",
-      path: ["description"],
-    }
-  );
+export const createRecordSchema = (
+  selectedPay?: string,
+  selectedTab?: string,
+) => {
+  if (selectedPay === "other" || selectedTab === "bank") {
+    return requiredRecordSchema;
+  } else {
+    return baseRecordSchema;
+  }
 };
 
 export type RecordFormData = z.infer<typeof recordSchema>;

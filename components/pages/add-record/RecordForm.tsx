@@ -1,3 +1,5 @@
+"use client";
+
 import React, { MutableRefObject, useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,27 +37,14 @@ export function RecordForm({
   const [selectedPay, setSelectedPay] = useState("kbzpay");
   const [selectedTab, setSelectedTab] = useState("pay");
 
-  console.log({ selectedPay, selectedTab });
-
-  // Use ref to store latest values for the resolver
-  const selectedPayRef = useRef(selectedPay);
-  const selectedTabRef = useRef(selectedTab);
-
-  useEffect(() => {
-    selectedPayRef.current = selectedPay;
-    selectedTabRef.current = selectedTab;
-  }, [selectedPay, selectedTab]);
-
   const {
     handleSubmit,
     control,
     reset,
-    trigger,
     formState: { errors, isSubmitting },
   } = useForm<CreateRecordInput>({
     resolver: async (data, context, options) => {
-      // Use the current values from refs
-      const schema = createRecordSchema(selectedPayRef.current, selectedTabRef.current);
+      const schema = createRecordSchema(selectedPay, selectedTab);
       return zodResolver(schema)(data, context, options);
     },
     defaultValues: {
@@ -64,12 +53,6 @@ export function RecordForm({
     } as Partial<CreateRecordInput>,
     mode: "onChange",
   });
-
-  // Revalidate description field when selectedPay or selectedTab changes
-  useEffect(() => {
-    // Trigger validation when the conditions change
-    trigger("description");
-  }, [selectedPay, selectedTab, trigger]);
 
   const handleFormSubmit = async (data: CreateRecordInput) => {
     console.log("[Form] Submission State:", {
@@ -122,7 +105,7 @@ export function RecordForm({
         onTabChange={setSelectedTab}
         onPayChange={setSelectedPay}
       />
-      
+
       <FormInputs control={control} errors={errors} />
 
       <div className="flex items-center justify-center gap-3 w-full h-[94px] shadow-[0px_-2px_15px_0px_rgba(0,0,0,0.1)] mt-auto">
