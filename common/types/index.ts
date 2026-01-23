@@ -49,6 +49,7 @@ export interface CreateRecordInput {
   amount: string;
   fee: string;
   description?: string;
+  branchId?: string;
 }
 
 export interface CreateRecordApiInput extends Omit<

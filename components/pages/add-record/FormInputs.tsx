@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Control, FieldErrors } from "react-hook-form";
-import { FormInput, FormDatePicker } from "@/components/form";
+import { FormInput, FormDatePicker, FormSelect } from "@/components/form";
 import CalendarIcon from "@/components/icons/calendar.svg";
 import PhoneIcon from "@/components/icons/phone.svg";
+import ChevronDownIcon from "@/components/icons/chevron-down.svg";
 import { CreateRecordInput } from "@/common/types";
 import { feeService } from "@/lib/api/fees";
 import { removeNumberComma } from "@/common/utils";
 import { branchService } from "@/lib/api/branch";
+import { Branch } from "@/common/types";
 
 export interface FormInputsProps {
   control: Control<CreateRecordInput>;
@@ -16,6 +18,7 @@ export interface FormInputsProps {
 
 export function FormInputs({ control, setValue, errors }: FormInputsProps) {
   const [currentAmount, setCurrentAmount] = useState<number>(0);
+  const [branches, setBranches] = useState<Branch[]>([]);
 
   useEffect(() => {
     feeService.getByAmount(currentAmount).then(({ transferFee }) => {
@@ -26,6 +29,7 @@ export function FormInputs({ control, setValue, errors }: FormInputsProps) {
   useEffect(() => {
     branchService.getAll().then(({ branches }) => {
       console.log("Branches:", JSON.stringify(branches, null, 2));
+      setBranches(branches);
       /* @copilot, this is the response structure I got from the API call
 		[
 			{
@@ -55,6 +59,22 @@ export function FormInputs({ control, setValue, errors }: FormInputsProps) {
         startIcon={<PhoneIcon className="w-[19px] h-[19px] text-muted" />}
         floatingLabel={true}
         error={errors.phoneNo?.message}
+      />
+
+      <FormSelect
+        name="branchId"
+        control={control}
+        label="ဆိုင်ခန်း"
+        placeholder="ဆိုင်ခန်းရွေးရန်"
+        floatingLabel={true}
+        endIcon={<ChevronDownIcon className="w-4 h-4 text-muted" />}
+        helperText="(မရှိပါက ရွေးရန်မလို့)"
+        options={branches.map((branch) => ({
+          value: branch.Id,
+          label: branch.Name,
+        }))}
+        required={branches.length > 0}
+        error={errors.branchId?.message}
       />
 
       <FormDatePicker
