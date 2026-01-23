@@ -56,6 +56,13 @@ export function FormSelect<TFieldValues extends FieldValues>({
         const isFloating =
           floatingLabel && (isFocused || hasValue || field.value);
 
+        // Calculate right padding based on icons and helper text
+        const getRightPadding = () => {
+          if (endIcon && helperText) return "pr-32";
+          if (endIcon || helperText) return "pr-10";
+          return "";
+        };
+
         const handleFocus = () => {
           setIsFocused(true);
         };
@@ -97,8 +104,7 @@ export function FormSelect<TFieldValues extends FieldValues>({
                     errorMessage &&
                       "border-destructive focus-visible:ring-destructive",
                     startIcon && "pl-11",
-                    (endIcon || helperText) && "pr-10",
-                    endIcon && helperText && "pr-32",
+                    getRightPadding(),
                   )}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
@@ -188,8 +194,7 @@ export function FormSelect<TFieldValues extends FieldValues>({
                   errorMessage &&
                     "border-destructive focus-visible:ring-destructive",
                   startIcon && "pl-11",
-                  (endIcon || helperText) && "pr-10",
-                  endIcon && helperText && "pr-32",
+                  getRightPadding(),
                 )}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
