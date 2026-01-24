@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { ConfirmDialog } from "./ui/confirm-dialog";
 import QuestionMarkIcon from "@/components/icons/question-mark.svg";
+import DownloadIcon from "@/components/icons/download.svg";
 import { useRouter } from "next/router";
 
 interface Props {
@@ -77,9 +78,9 @@ const Header = ({
             <Button
               variant="plain"
               size="plain"
-              className="flex items-center gap-[5px] [&_svg]:w-4 [&_svg]:h-4"
+              className="flex items-center gap-[5px] "
             >
-              <Info />
+              <DownloadIcon />
               <span className="font-bold text-12px mt-[6px]">
                 ဒေါင်းလုပ်ဆွဲမည်
               </span>
