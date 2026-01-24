@@ -1,155 +1,227 @@
-/**
- * Fee Form Component
- * Form for creating and editing fees
- */
+"use client";
 
-import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
-import { AnimatedInput } from '@/components/ui/animated-input';
-import { FormTextarea, FormSelect } from '@/components/forms';
-import { feeSchema } from '@/common/validators/schemas';
-import { CreateFeeInput, UpdateFeeInput, FeeType } from '@/common/types';
-import { DollarSign, Calendar, FileText, Tag } from 'lucide-react';
+import { CreateFeeApiInput, Fee } from "@/common/types";
+import { toast } from "sonner";
+import { FormInput } from "@/components/form";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import {
+  Control,
+  FieldErrors,
+  UseFieldArrayRemove,
+  useForm,
+} from "react-hook-form";
+import ArrowCircleRightIcon from "@/components/icons/arrow-circle-right.svg";
+import CircleXIcon from "@/components/icons/circle-x.svg";
+import WarningIcon from "@/components/icons/warning.svg";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import QuestionMarkIcon from "@/components/icons/question-mark.svg";
+import CheckCircleIcon from "@/components/icons/check-circle.svg";
+import { useRouter } from "next/router";
+import { cn, removeNumberComma } from "@/common/utils";
+import { feeService } from "@/lib/api/fees";
 
-export interface FeeFormProps {
-  onSubmit: (data: CreateFeeInput | UpdateFeeInput) => void | Promise<void>;
-  defaultValues?: Partial<CreateFeeInput>;
-  isLoading?: boolean;
-  isEdit?: boolean;
+export interface FeeInputsProps {
+  fields: Fee[];
+  remove: UseFieldArrayRemove;
+  control: Control<{ fees: Fee[] }>;
+  handleSubmit: ReturnType<typeof useForm<{ fees: Fee[] }>>["handleSubmit"];
+  isDirty: boolean;
+  errors: FieldErrors<{ fees: Fee[] }>;
 }
 
 export function FeeForm({
-  onSubmit,
-  defaultValues,
-  isLoading,
-  isEdit = false,
-}: FeeFormProps) {
-  const feeTypeOptions = [
-    { value: FeeType.SERVICE, label: 'Service Fee' },
-    { value: FeeType.LATE, label: 'Late Fee' },
-    { value: FeeType.PROCESSING, label: 'Processing Fee' },
-    { value: FeeType.OTHER, label: 'Other' },
-  ];
+  fields,
+  remove,
+  control,
+  handleSubmit,
+  errors,
+  isDirty,
+}: FeeInputsProps) {
+  const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors },
-  } = useForm<CreateFeeInput>({
-    resolver: zodResolver(feeSchema) as any,
-    defaultValues,
-    mode: 'onSubmit', // Validate on submit by default
-  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [pendingData, setPendingData] = useState<CreateFeeApiInput[]>([]);
+  const [showDeleteConfirmDialog, setShowDeleteConfirmDialog] = useState(false);
+  const [showSaveConfirmDialog, setShowSaveConfirmDialog] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [currentSelectedFeeIndex, setCurrentSelectedFeeIndex] = useState<
+    number | null
+  >(null);
 
-  const handleFormSubmit = async (data: CreateFeeInput) => {
-    try {
-      await onSubmit(data);
-      if (!isEdit) {
-        reset();
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
+  const handleDeleteConfirm = () => {
+    if (currentSelectedFeeIndex !== null) {
+      remove(currentSelectedFeeIndex);
+
+      toast.success("လွှဲခကို ဖျက်ပြီးပါပြီ။");
+      setShowDeleteConfirmDialog(false);
+      setCurrentSelectedFeeIndex(null);
     }
   };
 
+  const handleCancel = () => {
+    setShowSaveConfirmDialog(false);
+    setShowDeleteConfirmDialog(false);
+    setCurrentSelectedFeeIndex(null);
+  };
+
+  const handleConfirmSubmit = async () => {
+    if (pendingData.length === 0) return;
+    setIsLoading(true);
+    try {
+      await feeService.create({ data: pendingData });
+
+      setIsLoading(false);
+      setShowSaveConfirmDialog(false);
+      setShowSuccessDialog(true);
+    } catch (error) {
+      setIsLoading(false);
+      setShowSaveConfirmDialog(false);
+      toast.error(
+        "လွှဲခအသစ် ထည့်ရာတွင် အမှားတစ်ခုခု ဖြစ်ပွားခဲ့သည်။ ကျေးဇူးပြု၍ နောက်မှ ထပ်မံကြိုးစားပါ။",
+      );
+    }
+  };
+
+  const handleFormSubmit = async (data: { fees: Fee[] }) => {
+    setPendingData(
+      data.fees.map((fee) => ({
+        from: Number(removeNumberComma(fee.from)),
+        to: Number(removeNumberComma(fee.to)),
+        fee: Number(removeNumberComma(fee.fee)),
+      })),
+    );
+    setShowSaveConfirmDialog(true);
+  };
+
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
-      {/* Fee Name - validates onChange */}
-      <AnimatedInput
-        label="Fee Name"
-        placeholder="Enter fee name"
-        startIcon={<Tag className="h-4 w-4" />}
-        error={errors.name?.message}
-        {...register('name', {
-          onChange: (e) => {
-            // Trigger validation on change for name
-            register('name').onChange(e);
-          },
-        })}
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Amount - validates onChange */}
-        <AnimatedInput
-          label="Amount"
-          type="number"
-          step="0.01"
-          placeholder="0.00"
-          startIcon={<DollarSign className="h-4 w-4" />}
-          error={errors.amount?.message}
-          {...register('amount', {
-            valueAsNumber: true,
-            onChange: (e) => {
-              // Trigger validation on change for amount
-              register('amount').onChange(e);
-            },
-          })}
-        />
-
-        {/* Fee Type */}
-        <FormSelect
-          label="Fee Type"
-          options={feeTypeOptions}
-          error={errors.type?.message}
-          registration={register('type')}
-        />
-      </div>
-
-      {/* Description */}
-      <FormTextarea
-        label="Description"
-        placeholder="Enter fee description (optional)"
-        rows={4}
-        error={errors.description?.message}
-        registration={register('description')}
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Due Date */}
-        <Controller
-          control={control}
-          name="dueDate"
-          render={({ field }) => (
-            <AnimatedInput
-              label="Due Date"
-              type="date"
-              startIcon={<Calendar className="h-4 w-4" />}
-              error={errors.dueDate?.message}
-              {...field}
-            />
-          )}
-        />
-
-        {/* Related Record ID */}
-        <AnimatedInput
-          label="Related Record ID"
-          placeholder="Enter record ID (optional)"
-          startIcon={<FileText className="h-4 w-4" />}
-          error={errors.recordId?.message}
-          {...register('recordId')}
-        />
-      </div>
-
-      <div className="flex gap-3 pt-4">
-        <Button type="submit" disabled={isLoading} className="flex-1">
-          {isLoading ? 'Submitting...' : isEdit ? 'Update Fee' : 'Add Fee'}
-        </Button>
-
-        {!isEdit && (
+    <div className="mt-[15px] relative flex-1 flex flex-col">
+      <form
+        className="flex-1 flex flex-col"
+        onSubmit={handleSubmit(handleFormSubmit)}
+      >
+        <div className="pl-5 pr-3 last:border-0">
+          {fields.map((fee, index) => (
+            <div className="border-b last:border-0 py-[15px]" key={fee.id}>
+              <div className="grid grid-cols-[188fr_132fr_30fr] gap-[10px] w-full">
+                <FormInput
+                  name={`fees.${index}.from`}
+                  control={control}
+                  label="ငွေသွင်း/ထုတ်ပမာဏ"
+                  placeholder="ငွေသွင်း/ထုတ်ပမာဏထည့်ပါ"
+                  startIcon={
+                    <span className="font-primary text-14px text-muted">
+                      မှ
+                    </span>
+                  }
+                  endIcon={
+                    <span className="font-inter text-14px text-muted">Ks</span>
+                  }
+                  floatingLabel={false}
+                  error={errors?.fees?.[index]?.from?.message}
+                  isCurrency
+                />
+                <FormInput
+                  name={`fees.${index}.fee`}
+                  control={control}
+                  label="လွှဲခ/အမြတ်"
+                  placeholder="လွှဲခ/အမြတ်ထည့်ပါ"
+                  endIcon={
+                    <span className="font-inter text-14px text-muted">Ks</span>
+                  }
+                  floatingLabel={false}
+                  isCurrency
+                  error={errors?.fees?.[index]?.fee?.message}
+                />
+                {index > 0 && (
+                  <Button
+                    variant="plain"
+                    size="plain"
+                    type="button"
+                    className={cn(
+                      "self-center rounded-full",
+                      errors.fees?.[index]?.from
+                        ? "self-center"
+                        : "self-end mb-[10px]",
+                    )}
+                    onClick={() => {
+                      setCurrentSelectedFeeIndex(index);
+                      setShowDeleteConfirmDialog(true);
+                    }}
+                  >
+                    <CircleXIcon className="rounded-full" />
+                  </Button>
+                )}
+              </div>
+              <div className="grid grid-cols-[188fr_132fr_30fr] gap-[10px] w-full mt-4">
+                <FormInput
+                  name={`fees.${index}.to`}
+                  control={control}
+                  startIcon={
+                    <span className="font-primary text-14px text-muted">
+                      သို့
+                    </span>
+                  }
+                  endIcon={
+                    <span className="font-inter text-14px text-muted">Ks</span>
+                  }
+                  floatingLabel={false}
+                  error={errors?.fees?.[index]?.to?.message}
+                  isCurrency
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center justify-center gap-3 w-full h-[94px] shadow-[0px_-2px_15px_0px_rgba(0,0,0,0.1)] sticky bottom-0 left-0 bg-white mt-auto z-50">
           <Button
-            type="button"
-            variant="outline"
-            onClick={() => reset()}
-            disabled={isLoading}
+            type="submit"
+            className="text-white w-11/12"
+            disabled={!isDirty}
           >
-            Reset
+            <span className="font-primary text-15px mr-[7px] font-medium">
+              လွှဲခ အသစ် ထပ်ထည့်မည်
+            </span>
+            <ArrowCircleRightIcon />
           </Button>
-        )}
-      </div>
-    </form>
+        </div>
+      </form>
+
+      <ConfirmDialog
+        open={showDeleteConfirmDialog}
+        onOpenChange={setShowDeleteConfirmDialog}
+        icon={<WarningIcon />}
+        title="လွှဲခဖျက်ရန် သေချာပါသလား။"
+        subtitle="ယခုလွှဲခကို ဖျက်ရန် သေချာပါသလား။"
+        primaryButtonText="သေချာပါသည်"
+        secondaryButtonText="ပြန်စစ်ဆေးမည်"
+        onPrimaryClick={handleDeleteConfirm}
+        onSecondaryClick={handleCancel}
+        showCloseButton
+      />
+
+      <ConfirmDialog
+        open={showSaveConfirmDialog}
+        onOpenChange={setShowSaveConfirmDialog}
+        icon={<QuestionMarkIcon />}
+        title="လွှဲခအသစ် ထည့်ရန် သေချာပါသလား။"
+        subtitle="ယခုလွှဲခကို ထည့်ရန် သေချာပါသလား။"
+        primaryButtonText="သေချာပါသည်"
+        secondaryButtonText="ပြန်စစ်ဆေးမည်"
+        primaryButtonDisabled={isLoading}
+        onPrimaryClick={handleConfirmSubmit}
+        onSecondaryClick={handleCancel}
+        showCloseButton
+      />
+
+      <ConfirmDialog
+        open={showSuccessDialog}
+        onOpenChange={setShowSuccessDialog}
+        icon={<CheckCircleIcon />}
+        title="လွှဲခအသစ် ထည့်ပြီးပါပြီ။"
+        primaryButtonText="ပင်မစာမျက်မှာသို့သွားမည်"
+        onPrimaryClick={() => router.push("/")}
+      />
+    </div>
   );
 }

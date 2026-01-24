@@ -14,10 +14,8 @@ export const API_ENDPOINTS = {
   },
   FEES: {
     LIST: "/transfer-fees",
-    CREATE: "/transfer-fees",
+    CREATE: "/transfer-fees/many",
     GET: (amount: number) => `/transfer-fees/amount/${amount}`,
-    UPDATE: (id: string) => `/transfer-fees/${id}`,
-    DELETE: (id: string) => `/transfer-fees/${id}`,
   },
   BRANCHES: {
     LIST: () => `/branches`,

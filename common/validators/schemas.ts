@@ -4,6 +4,7 @@
  */
 
 import { z } from "zod";
+import { removeNumberComma } from "../utils";
 
 // Login Schema
 export const loginSchema = z.object({
@@ -56,18 +57,18 @@ const baseRecordSchema = z.object({
   amount: z
     .string("အချက်အလက်ဖြည့်ရန် *")
     .refine(
-      (val) => !isNaN(Number(val.replace(/,/g, ""))),
+      (val) => !isNaN(Number(removeNumberComma(val))),
       "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
     )
-    .refine((val) => Number(val.replace(/,/g, "")) > 0, "အချက်အလက်ဖြည့်ရန် *"),
+    .refine((val) => Number(removeNumberComma(val)) > 0, "အချက်အလက်ဖြည့်ရန် *"),
   fee: z
     .string("အချက်အလက်ဖြည့်ရန် *")
     .refine(
-      (val) => !isNaN(Number(val.replace(/,/g, ""))),
+      (val) => !isNaN(Number(removeNumberComma(val))),
       "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
     )
-    .refine((val) => Number(val.replace(/,/g, "")) > 0, "အချက်အလက်ဖြည့်ရန် *"),
-  branchId: z.string().optional(),
+    .refine((val) => Number(removeNumberComma(val)) > 0, "အချက်အလက်ဖြည့်ရန် *"),
+  branchId: z.string("အချက်အလက်ဖြည့်ရန် *").optional(),
 });
 
 const requiredRecordSchema = baseRecordSchema.extend({
@@ -82,43 +83,79 @@ const requiredRecordSchema = baseRecordSchema.extend({
 export const recordSchema = baseRecordSchema;
 
 // Factory function to create record schema with conditional description validation
-export const createRecordSchema = (
-  selectedPay?: string,
-  selectedTab?: string,
-) => {
-  if (selectedPay === "other" || selectedTab === "bank") {
-    return requiredRecordSchema;
-  } else {
-    return baseRecordSchema;
+export const createRecordSchema = ({
+  selectedPay,
+  selectedTab,
+  hasBranches = false,
+}: {
+  selectedPay?: string;
+  selectedTab?: string;
+  hasBranches?: boolean;
+}) => {
+  let schema =
+    selectedPay === "other" || selectedTab === "bank"
+      ? requiredRecordSchema
+      : baseRecordSchema;
+
+  if (hasBranches) {
+    return schema.extend({
+      branchId: z.string("အချက်အလက်ဖြည့်ရန် *").min(1, "အချက်အလက်ဖြည့်ရန် *"),
+    });
   }
+
+  return schema;
 };
 
 export type RecordFormData = z.infer<typeof recordSchema>;
 
 // Fee Schema
 export const feeSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Fee name is required")
-    .min(2, "Fee name must be at least 2 characters")
-    .max(100, "Fee name must be at most 100 characters"),
-  amount: z.number().min(0.01, "Amount must be greater than 0"),
-  description: z
-    .string()
-    .max(1000, "Description must be at most 1000 characters")
-    .optional(),
-  type: z
-    .enum(["service", "late", "processing", "other"])
-    .refine((val) => val !== undefined, {
-      message: "Fee type is required",
-    }),
-  dueDate: z
-    .string()
-    .optional()
-    .refine((val) => !val || !isNaN(Date.parse(val)), {
-      message: "Invalid date",
-    }),
-  recordId: z.string().optional(),
+  fees: z.array(
+    z
+      .object({
+        from: z
+          .string("အချက်အလက်ဖြည့်ရန် *")
+          .refine(
+            (val) => !isNaN(Number(removeNumberComma(val))),
+            "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
+          )
+          .refine(
+            (val) => Number(removeNumberComma(val)) > 0,
+            "အချက်အလက်ဖြည့်ရန် *",
+          ),
+        to: z
+          .string("အချက်အလက်ဖြည့်ရန် *")
+          .refine(
+            (val) => !isNaN(Number(removeNumberComma(val))),
+            "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
+          )
+          .refine(
+            (val) => Number(removeNumberComma(val)) > 0,
+            "အချက်အလက်ဖြည့်ရန် *",
+          ),
+        fee: z
+          .string("အချက်အလက်ဖြည့်ရန် *")
+          .refine(
+            (val) => !isNaN(Number(removeNumberComma(val))),
+            "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
+          )
+          .refine(
+            (val) => Number(removeNumberComma(val)) > 0,
+            "အချက်အလက်ဖြည့်ရန် *",
+          ),
+      })
+      .refine(
+        (data) => {
+          const fromVal = Number(removeNumberComma(data.from));
+          const toVal = Number(removeNumberComma(data.to));
+          return fromVal < toVal;
+        },
+        {
+          message: "ပမာဏများနေပါသည် *",
+          path: ["from"],
+        },
+      ),
+  ),
 });
 
 export type FeeFormData = z.infer<typeof feeSchema>;

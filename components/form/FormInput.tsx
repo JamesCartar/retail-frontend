@@ -95,7 +95,7 @@ export function FormInput<TFieldValues extends FieldValues>({
                   placeholder={placeholder}
                   className={cn(
                     "hide-number-stepper peer w-full rounded-10 border border-input bg-transparent px-4 py-[10px] text-base shadow-sm transition-all no-autofill-bg",
-                    "placeholder:text-transparent",
+                    "placeholder:text-transparent overflow-hidden whitespace-nowrap leading-none h-[46px]",
                     "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
                     "disabled:cursor-not-allowed disabled:opacity-50",
                     errorMessage &&
@@ -178,7 +178,7 @@ export function FormInput<TFieldValues extends FieldValues>({
                   "disabled:cursor-not-allowed disabled:opacity-50",
                   errorMessage &&
                     "border-destructive focus-visible:ring-destructive",
-                  startIcon && "pl-11",
+                  startIcon && "pl-10",
                   endIcon && "pr-10",
                 )}
                 onFocus={handleFocus}

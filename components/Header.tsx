@@ -5,35 +5,69 @@ import If from "./If";
 import { Button } from "./ui/button";
 import { cn } from "@/common/utils";
 import { Info, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { ConfirmDialog } from "./ui/confirm-dialog";
+import QuestionMarkIcon from "@/components/icons/question-mark.svg";
+import { useRouter } from "next/router";
 
 interface Props {
   navLabel: string;
+  boldLabel?: boolean;
   navLink: string;
   enableDownload?: boolean;
   enableInstructionModal?: boolean;
   longHeader?: boolean;
+  confirmNavigate?: boolean;
 }
 
 const Header = ({
   navLabel,
+  boldLabel = false,
   navLink,
   enableDownload = false,
   enableInstructionModal = false,
   longHeader = false,
+  confirmNavigate = false,
 }: Props) => {
+  const router = useRouter();
   const [showInstructionModal, setShowInstructionModal] = useState(false);
+  const [showConfirmNavigateDialog, setShowConfirmNavigateDialog] =
+    useState(false);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (confirmNavigate) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [confirmNavigate]);
 
   return (
     <header
       className={cn(
-        "bg-primary text-white border-b font-bold font-secondary px-[19px] pt-4 pb-4 relative",
+        "bg-primary text-white border-b px-[19px] pt-4 pb-4 relative",
+        boldLabel ? "font-bold font-secondary" : "font-medium font-primary",
         longHeader ? "h-[185px]" : "h-[65px]",
       )}
     >
       <div className="flex justify-between items-center">
-        <Link href={navLink} className="flex items-center">
+        <Link
+          href={navLink}
+          className="flex items-center"
+          onClick={(e) => {
+            if (confirmNavigate) {
+              e.preventDefault();
+              setShowConfirmNavigateDialog(true);
+            } else {
+              router.push(navLink);
+            }
+          }}
+        >
           <LeftArrowIcon className="w-9 h-9" />
           <p className="text-17px">{navLabel}</p>
         </Link>
@@ -62,9 +96,7 @@ const Header = ({
               onClick={() => setShowInstructionModal((state) => !state)}
             >
               <Info />
-              <span className="font-bold text-12px mt-[6px]">
-                လွှဲခထည့်နည်း
-              </span>
+              <span className="font-bold text-12px mt-1">လွှဲခထည့်နည်း</span>
             </Button>
           }
         />
@@ -98,6 +130,21 @@ const Header = ({
             </CardContent>
           </Card>
         }
+      />
+
+      <ConfirmDialog
+        open={showConfirmNavigateDialog}
+        onOpenChange={setShowConfirmNavigateDialog}
+        icon={<QuestionMarkIcon />}
+        title="ပင်မစာမျက်နှာသို့ ပြန်သွားမည်။"
+        subtitle="လက်ရှိပြင်ဆင်ထားသော အချက်အလက်များ ပျောက်ဆုံးနိုင်ပါသည်။"
+        primaryButtonText="သေချာပါသည်"
+        secondaryButtonText="ပြန်စစ်ဆေးမည်"
+        onPrimaryClick={() => {
+          router.push(navLink);
+        }}
+        onSecondaryClick={() => setShowConfirmNavigateDialog(false)}
+        showCloseButton
       />
     </header>
   );
