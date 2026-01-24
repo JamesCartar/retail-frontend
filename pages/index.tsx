@@ -108,7 +108,12 @@ export const records: RecordItem[] = [
 export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Header navLabel="Kpay စာရင်းမှတ်တမ်း" navLink={ROUTES.HOME} longHeader />
+      <Header
+        navLabel="Kpay စာရင်းမှတ်တမ်း"
+        boldLabel
+        navLink={ROUTES.HOME}
+        longHeader
+      />
       <Envelope />
       <main className="w-full flex flex-col flex-1 pt-4 gap-[25px]">
         <QuickActions />

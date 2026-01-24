@@ -13,7 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { cn } from "@/common/utils";
-import { MutableRefObject } from "react";
+import IfElse from "../IfElse";
+import If from "../If";
 
 export interface ConfirmDialogProps {
   open: boolean;
@@ -22,7 +23,7 @@ export interface ConfirmDialogProps {
   title: string;
   subtitle?: string;
   primaryButtonText: string;
-  secondaryButtonText: string;
+  secondaryButtonText?: string;
   onPrimaryClick: () => void;
   onSecondaryClick?: () => void;
   secondaryButtonHref?: string;
@@ -106,24 +107,35 @@ export function ConfirmDialog({
               </span>
             </Button>
 
-            {secondaryButtonHref ? (
-              <Button
-                asChild
-                variant="plain"
-                size="plain"
-                className="w-full py-[11px] px-[77px] text-15px hover:text-gray-700"
-              >
-                <Link href={secondaryButtonHref}>{secondaryButtonText}</Link>
-              </Button>
-            ) : (
-              <Button
-                onClick={handleSecondaryClick}
-                variant="plain"
-                className="w-full m-0 font-normal hover:text-gray-700"
-              >
-                {secondaryButtonText}
-              </Button>
-            )}
+            <If
+              isTrue={!!secondaryButtonText}
+              ifBlock={
+                <IfElse
+                  isTrue={!!secondaryButtonHref}
+                  ifBlock={
+                    <Button
+                      asChild
+                      variant="plain"
+                      size="plain"
+                      className="w-full py-[11px] px-[77px] text-15px hover:text-gray-700"
+                    >
+                      <Link href={secondaryButtonHref!}>
+                        {secondaryButtonText}
+                      </Link>
+                    </Button>
+                  }
+                  elseBlock={
+                    <Button
+                      onClick={handleSecondaryClick}
+                      variant="plain"
+                      className="w-full m-0 font-normal hover:text-gray-700"
+                    >
+                      {secondaryButtonText}
+                    </Button>
+                  }
+                />
+              }
+            />
           </DialogFooter>
         </DialogPrimitive.Content>
       </DialogPortal>

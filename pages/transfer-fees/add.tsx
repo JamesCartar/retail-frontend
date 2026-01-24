@@ -1,51 +1,58 @@
-/**
- * Add Fee Page
- * Page for creating new fees
- */
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { FeeForm, FeeCalculator } from "@/components/pages/add-fee";
+import { FeeForm } from "@/components/pages/add-fee";
 import { feeService } from "@/lib/api/fees";
-import { CreateFeeInput, UpdateFeeInput } from "@/common/types";
-import { ROUTES, TOAST_MESSAGES } from "@/common/constants";
+import { CreateFeeInput, Fee, UpdateFeeInput } from "@/common/types";
+import { ROUTES } from "@/common/constants";
 import Header from "@/components/Header";
+import { InfoCard } from "@/components/pages/add-fee/InfoCard";
+import { useFieldArray, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { feeSchema } from "@/common/validators/schemas";
+import { formatNumber } from "@/common/utils";
 
 export default function AddFee() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState(false);
+  const [fees, setFees] = useState<Fee[]>([]);
 
-  const handleSubmit = async (data: CreateFeeInput | UpdateFeeInput) => {
-    try {
-      setIsLoading(true);
-      setError("");
-      setSuccess(false);
+  useEffect(() => {
+    feeService.getAll().then(({ transferFees }) => {
+      setFees(transferFees);
+    });
+  }, []);
 
-      await feeService.create(data as CreateFeeInput);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isDirty },
+    reset,
+  } = useForm<{ fees: Fee[] }>({
+    resolver: zodResolver(feeSchema),
+    defaultValues: {
+      fees: fees?.map((fee) => ({
+        from: formatNumber(Number(fee.from)),
+        to: formatNumber(Number(fee.to)),
+        fee: formatNumber(Number(fee.fee)),
+      })) || [{ from: "0", to: "0", fee: "0" }],
+    },
+    mode: "onChange",
+  });
 
-      setSuccess(true);
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "fees",
+  });
 
-      // Show success message for a moment
-      setTimeout(() => {
-        setSuccess(false);
-      }, 3000);
-    } catch (err: any) {
-      setError(err.message || "Failed to create fee");
-      console.error("Error creating fee:", err);
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    if (fees && fees.length > 0) {
+      reset({
+        fees: fees.map((fee) => ({
+          from: formatNumber(Number(fee.from)),
+          to: formatNumber(Number(fee.to)),
+          fee: formatNumber(Number(fee.fee)),
+        })),
+      });
     }
-  };
+  }, [fees, reset]);
 
   return (
     <div className="h-screen font-primary flex flex-col">
@@ -53,7 +60,19 @@ export default function AddFee() {
         navLink={ROUTES.HOME}
         navLabel="လွှဲခထည့်မည်"
         enableInstructionModal
+        confirmNavigate={isDirty}
       />
+      <main className="w-full flex-1 flex flex-col pt-[17px]">
+        <InfoCard append={append} />
+        <FeeForm
+          fields={fields}
+          remove={remove}
+          control={control}
+          errors={errors}
+          handleSubmit={handleSubmit}
+          isDirty={isDirty}
+        />
+      </main>
     </div>
   );
 }

@@ -49,14 +49,16 @@ export interface CreateRecordInput {
   amount: string;
   fee: string;
   description?: string;
+  branchId?: string;
 }
 
 export interface CreateRecordApiInput extends Omit<
   CreateRecordInput,
-  "amount" | "fee"
+  "amount" | "fee" | "branchId"
 > {
   amount: number;
   fee: number;
+  branchId?: number;
   pay: PayType;
   type: RecordType;
 }
@@ -65,11 +67,17 @@ export interface UpdateRecordInput extends Partial<CreateRecordInput> {
 }
 
 // Fee Types
-export interface Fee extends BaseEntity {
+export type Fee = {
+  from: string;
+  to: string;
+  fee: string;
+} & Partial<BaseEntity>;
+
+export type CreateFeeApiInput = {
   from: number;
   to: number;
   fee: number;
-}
+};
 
 export enum FeeType {
   SERVICE = "service",
