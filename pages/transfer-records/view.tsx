@@ -172,6 +172,8 @@ export default function ViewRecords() {
     
     // Fetch initial data
     fetchRecords(false);
+    // Note: fetchRecords is intentionally excluded from dependencies to prevent infinite loop
+    // since it changes on every filter change. The effect should only run when filters change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromDate, toDate, selectedPay]);
 
