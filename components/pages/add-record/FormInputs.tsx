@@ -71,7 +71,6 @@ export function FormInputs({
           isCurrency
           error={errors.amount?.message}
           onChange={(value) => {
-            console.log(value);
             !isNaN(Number(removeNumberComma(value))) &&
               setCurrentAmount(Number(removeNumberComma(value)));
           }}

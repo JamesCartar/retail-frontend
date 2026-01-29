@@ -12,12 +12,11 @@ export default function App({ Component, pageProps }: AppProps) {
   const checkAuth = useAuthStore((state) => state.checkAuth);
 
   useEffect(() => {
-    // Check if user has token
     const hasToken = checkAuth();
 
     // If no token and trying to access protected route
     if (!hasToken) {
-      //   router.replace("/login");
+      // TODO: Redirect to login page
       console.log("You are not logged in");
     }
   }, [router.pathname, checkAuth, router]);

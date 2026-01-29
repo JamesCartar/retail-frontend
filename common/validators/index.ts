@@ -1,196 +1,182 @@
 /**
- * Form Validation Schemas
- * Centralized validation rules for React Hook Form
+ * Zod Validation Schemas
+ * Type-safe validation schemas for form validation
  */
 
-import { VALIDATION_MESSAGES } from '../constants';
+import { z } from "zod";
+import { removeNumberComma } from "../utils";
 
-// Export Zod schemas
-export * from './schemas';
+// Login Schema
+export const loginSchema = z.object({
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .min(6, "Password must be at least 6 characters"),
+});
 
-// Email validation
-export const emailValidation = {
-  required: VALIDATION_MESSAGES.REQUIRED,
-  pattern: {
-    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    message: VALIDATION_MESSAGES.EMAIL,
-  },
+export type LoginFormData = z.infer<typeof loginSchema>;
+
+// Register Schema
+export const registerSchema = z
+  .object({
+    name: z
+      .string()
+      .min(1, "Name is required")
+      .min(2, "Name must be at least 2 characters")
+      .max(100, "Name must be at most 100 characters"),
+    email: z
+      .string()
+      .min(1, "Email is required")
+      .email("Invalid email address"),
+    password: z
+      .string()
+      .min(1, "Password is required")
+      .min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type RegisterFormData = z.infer<typeof registerSchema>;
+
+// Record Schema - Base schema without conditional validation
+const baseRecordSchema = z.object({
+  description: z.string().optional(),
+  phoneNo: z
+    .string("အချက်အလက်ဖြည့်ရန် *")
+    .min(7, "ဖုန်းနံပါတ် သည် ၇ လုံးမှ ၁၁ လုံးကြားရှိရမည်")
+    .max(11, "ဖုန်းနံပါတ် သည် ၇ လုံးမှ ၁၁ လုံးကြားရှိရမည်"),
+  date: z
+    .string("အချက်အလက်ဖြည့်ရန် *")
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "Invalid date",
+    }),
+  amount: z
+    .string("အချက်အလက်ဖြည့်ရန် *")
+    .refine(
+      (val) => !isNaN(Number(removeNumberComma(val))),
+      "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
+    )
+    .refine((val) => Number(removeNumberComma(val)) > 0, "အချက်အလက်ဖြည့်ရန် *"),
+  fee: z
+    .string("အချက်အလက်ဖြည့်ရန် *")
+    .refine(
+      (val) => !isNaN(Number(removeNumberComma(val))),
+      "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
+    )
+    .refine((val) => Number(removeNumberComma(val)) > 0, "အချက်အလက်ဖြည့်ရန် *"),
+  branchId: z.string("အချက်အလက်ဖြည့်ရန် *").optional(),
+});
+
+const requiredRecordSchema = baseRecordSchema.extend({
+  description: z
+    .string("အချက်အလက်ဖြည့်ရန် *")
+    .min(1, "အချက်အလက်ဖြည့်ရန် *")
+    .max(1000, "အချက်အလက်သည် အများဆုံး ၁၀၀၀ အက္ခရာရှိနိုင်သည်")
+    .refine((val) => val.trim().length > 0, "အချက်အလက်ဖြည့်ရန် *"),
+});
+
+// Default record schema (for backward compatibility)
+export const recordSchema = baseRecordSchema;
+
+// Factory function to create record schema with conditional description validation
+export const createRecordSchema = ({
+  selectedPay,
+  selectedTab,
+  hasBranches = false,
+}: {
+  selectedPay?: string;
+  selectedTab?: string;
+  hasBranches?: boolean;
+}) => {
+  let schema =
+    selectedPay === "other" || selectedTab === "bank"
+      ? requiredRecordSchema
+      : baseRecordSchema;
+
+  if (hasBranches) {
+    return schema.extend({
+      branchId: z.string("အချက်အလက်ဖြည့်ရန် *").min(1, "အချက်အလက်ဖြည့်ရန် *"),
+    });
+  }
+
+  return schema;
 };
 
-// Password validation
-export const passwordValidation = {
-  required: VALIDATION_MESSAGES.REQUIRED,
-  minLength: {
-    value: 8,
-    message: VALIDATION_MESSAGES.MIN_LENGTH(8),
-  },
-};
+export type RecordFormData = z.infer<typeof recordSchema>;
 
-// Required field validation
-export const requiredValidation = {
-  required: VALIDATION_MESSAGES.REQUIRED,
-};
+export const DownloadDialogSchema = z.object({
+  startDate: z
+    .string("အချက်အလက်ဖြည့်ရန် *")
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "အချက်အလက်ဖြည့်ရန် *",
+    }),
+  endDate: z
+    .string("အချက်အလက်ဖြည့်ရန် *")
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "အချက်အလက်ဖြည့်ရန် *",
+    }),
+});
 
-// Name validation
-export const nameValidation = {
-  required: VALIDATION_MESSAGES.REQUIRED,
-  minLength: {
-    value: 2,
-    message: VALIDATION_MESSAGES.MIN_LENGTH(2),
-  },
-  maxLength: {
-    value: 100,
-    message: VALIDATION_MESSAGES.MAX_LENGTH(100),
-  },
-};
+// Fee Schema
+export const feeSchema = z.object({
+  fees: z.array(
+    z
+      .object({
+        from: z
+          .string("အချက်အလက်ဖြည့်ရန် *")
+          .refine(
+            (val) => !isNaN(Number(removeNumberComma(val))),
+            "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
+          )
+          .refine(
+            (val) => Number(removeNumberComma(val)) > 0,
+            "အချက်အလက်ဖြည့်ရန် *",
+          ),
+        to: z
+          .string("အချက်အလက်ဖြည့်ရန် *")
+          .refine(
+            (val) => !isNaN(Number(removeNumberComma(val))),
+            "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
+          )
+          .refine(
+            (val) => Number(removeNumberComma(val)) > 0,
+            "အချက်အလက်ဖြည့်ရန် *",
+          ),
+        fee: z
+          .string("အချက်အလက်ဖြည့်ရန် *")
+          .refine(
+            (val) => !isNaN(Number(removeNumberComma(val))),
+            "ဂဏန်းသီးသန့်ဖြစ်ရမည်",
+          )
+          .refine(
+            (val) => Number(removeNumberComma(val)) > 0,
+            "အချက်အလက်ဖြည့်ရန် *",
+          ),
+      })
+      .refine(
+        (data) => {
+          const fromVal = Number(removeNumberComma(data.from));
+          const toVal = Number(removeNumberComma(data.to));
+          return fromVal < toVal;
+        },
+        {
+          message: "ပမာဏများနေပါသည် *",
+          path: ["from"],
+        },
+      ),
+  ),
+});
 
-// Title validation
-export const titleValidation = {
-  required: VALIDATION_MESSAGES.REQUIRED,
-  minLength: {
-    value: 3,
-    message: VALIDATION_MESSAGES.MIN_LENGTH(3),
-  },
-  maxLength: {
-    value: 200,
-    message: VALIDATION_MESSAGES.MAX_LENGTH(200),
-  },
-};
+export type FeeFormData = z.infer<typeof feeSchema>;
 
-// Description validation
-export const descriptionValidation = {
-  maxLength: {
-    value: 1000,
-    message: VALIDATION_MESSAGES.MAX_LENGTH(1000),
-  },
-};
-
-// Amount/Price validation
-export const amountValidation = {
-  required: VALIDATION_MESSAGES.REQUIRED,
-  min: {
-    value: 0.01,
-    message: VALIDATION_MESSAGES.POSITIVE_NUMBER,
-  },
-  valueAsNumber: true,
-};
-
-// Optional amount validation
-export const optionalAmountValidation = {
-  min: {
-    value: 0,
-    message: VALIDATION_MESSAGES.POSITIVE_NUMBER,
-  },
-  valueAsNumber: true,
-};
-
-// Date validation
-export const dateValidation = {
-  required: VALIDATION_MESSAGES.REQUIRED,
-  validate: (value?: string) => {
-    if (!value) return VALIDATION_MESSAGES.REQUIRED;
-    const date = new Date(value);
-    return !isNaN(date.getTime()) || VALIDATION_MESSAGES.INVALID_DATE;
-  },
-};
-
-// Optional date validation
-export const optionalDateValidation = {
-  validate: (value?: string) => {
-    if (!value) return true;
-    const date = new Date(value);
-    return !isNaN(date.getTime()) || VALIDATION_MESSAGES.INVALID_DATE;
-  },
-};
-
-// Record Form Validation Schema
-export const recordFormValidation = {
-  title: titleValidation,
-  description: descriptionValidation,
-  amount: optionalAmountValidation,
-  date: dateValidation,
-  category: {},
-  customerId: {},
-};
-
-// Fee Form Validation Schema
-export const feeFormValidation = {
-  name: nameValidation,
-  amount: amountValidation,
-  description: descriptionValidation,
-  type: requiredValidation,
-  dueDate: optionalDateValidation,
-  recordId: {},
-};
-
-// Login Form Validation Schema
-export const loginFormValidation = {
-  email: emailValidation,
-  password: passwordValidation,
-};
-
-// Register Form Validation Schema
-export const registerFormValidation = {
-  name: nameValidation,
-  email: emailValidation,
-  password: passwordValidation,
-};
-
-// Custom validation helpers
-export const validationHelpers = {
-  /**
-   * Validate if date is in the future
-   */
-  isFutureDate: (value: string) => {
-    const date = new Date(value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return date >= today || 'Date must be in the future';
-  },
-
-  /**
-   * Validate if date is in the past
-   */
-  isPastDate: (value: string) => {
-    const date = new Date(value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return date <= today || 'Date must be in the past';
-  },
-
-  /**
-   * Validate if value matches another field
-   */
-  matchesField: (fieldName: string, fieldLabel: string) => {
-    return (value: string, formValues: any) => {
-      return value === formValues[fieldName] || `Must match ${fieldLabel}`;
-    };
-  },
-
-  /**
-   * Validate minimum value
-   */
-  minValue: (min: number) => {
-    return (value: number) => {
-      return value >= min || `Must be at least ${min}`;
-    };
-  },
-
-  /**
-   * Validate maximum value
-   */
-  maxValue: (max: number) => {
-    return (value: number) => {
-      return value <= max || `Must be at most ${max}`;
-    };
-  },
-
-  /**
-   * Validate string pattern
-   */
-  pattern: (regex: RegExp, message: string) => {
-    return (value: string) => {
-      return regex.test(value) || message;
-    };
-  },
+// Export all schemas
+export const schemas = {
+  login: loginSchema,
+  register: registerSchema,
+  record: recordSchema,
+  fee: feeSchema,
 };

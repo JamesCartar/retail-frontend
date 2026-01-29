@@ -8,7 +8,8 @@ import CheckCircleSmIcon from "@/components/icons/check-circle-sm.svg";
 import Image from "next/image";
 import { FormDatePicker } from "@/components/form";
 import { CalendarIcon } from "lucide-react";
-import { Control, FieldErrors } from "react-hook-form";
+import { Control, FieldErrors, useWatch } from "react-hook-form";
+import { addMonths, subMonths } from "date-fns";
 
 export interface RecordsFilterProps {
   control: Control<RecordReportQuery>;
@@ -23,6 +24,19 @@ export function RecordsFilter({
   selectedPay,
   setSelectedPay,
 }: RecordsFilterProps) {
+  const startDate = useWatch({ control, name: "startDate" });
+  const endDate = useWatch({ control, name: "endDate" });
+
+  const start = startDate ? new Date(startDate) : null;
+  const end = endDate ? new Date(endDate) : null;
+
+  // Dynamic windows
+  const startMin = end ? subMonths(end, 3) : undefined;
+  const startMax = end || undefined;
+
+  const endMin = start || undefined;
+  const endMax = start ? addMonths(start, 3) : undefined;
+
   return (
     <div className="py-[15px] px-5 bg-white flex flex-col gap-5">
       <div className="grid grid-cols-[1fr_auto_1fr] items-center">
@@ -33,11 +47,17 @@ export function RecordsFilter({
           endIcon={<CalendarIcon className="h-4 w-4 mb-1" />}
           floatingLabel={false}
           error={errors.startDate?.message}
+          showError={false}
           showOkButton
           showCancelButton
           showClearButton
           className="text-primary hover:text-primary"
           btnClassName="hover:text-primary"
+          disabledDays={{
+            ...(startMin && { before: startMin }),
+            ...(startMax && { after: startMax }),
+          }}
+          defaultMonth={start || end || undefined}
         />
         <span className="px-6 text-muted font-primary">မှ</span>
         <FormDatePicker
@@ -47,11 +67,17 @@ export function RecordsFilter({
           endIcon={<CalendarIcon className="h-4 w-4 mb-1" />}
           floatingLabel={false}
           error={errors.endDate?.message}
+          showError={false}
           showOkButton
           showCancelButton
           showClearButton
           className="text-primary hover:text-primary"
           btnClassName="hover:text-primary"
+          disabledDays={{
+            ...(endMin && { before: endMin }),
+            ...(endMax && { after: endMax }),
+          }}
+          defaultMonth={end || start || undefined}
         />
       </div>
       <div>

@@ -1,5 +1,5 @@
 import type { RecordItem } from "@/common/types";
-import { Record } from "../view-records/Record";
+import { Record } from "../view-records";
 
 export interface RecordsListProps {
   records?: RecordItem[];

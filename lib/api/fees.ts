@@ -1,13 +1,6 @@
 import { api } from "./client";
 import { API_ENDPOINTS } from "@/common/constants";
-import {
-  Fee,
-  CreateFeeInput,
-  UpdateFeeInput,
-  FilterConfig,
-  ApiResponse,
-  CreateFeeApiInput,
-} from "@/common/types";
+import { Fee, CreateFeeApiInput } from "@/common/types";
 
 export const feeService = {
   async getAll() {

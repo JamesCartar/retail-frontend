@@ -17,6 +17,7 @@ interface Props {
   boldLabel?: boolean;
   navLink: string;
   enableDownload?: boolean;
+  onDownload?: () => void;
   enableInstructionModal?: boolean;
   longHeader?: boolean;
   confirmNavigate?: boolean;
@@ -27,6 +28,7 @@ const Header = ({
   boldLabel = false,
   navLink,
   enableDownload = false,
+  onDownload,
   enableInstructionModal = false,
   longHeader = false,
   confirmNavigate = false,
@@ -79,6 +81,7 @@ const Header = ({
               variant="plain"
               size="plain"
               className="flex items-center gap-[5px] "
+              onClick={onDownload}
             >
               <DownloadIcon />
               <span className="font-bold text-12px mt-[6px]">

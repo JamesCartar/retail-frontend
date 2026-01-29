@@ -1,8 +1,3 @@
-/**
- * Total API Service
- * Handles all total-related API calls
- */
-
 import { Total } from "@/common/types";
 import { api } from "./client";
 import { API_ENDPOINTS } from "@/common/constants";

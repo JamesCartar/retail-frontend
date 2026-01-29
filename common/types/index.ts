@@ -1,11 +1,3 @@
-/**
- * Common Type Definitions
- * Shared types across the application
- */
-
-import { string } from "zod";
-
-// Base Entity
 export interface BaseEntity {
   id: string;
   createdAt?: string;
@@ -37,16 +29,26 @@ export interface RecordItem {
   date: Date;
 }
 
+export interface ReportRecordItem {
+  Id: number;
+  BranchId: string;
+  ShopId: string;
+  CreatedBy: string;
+  PhoneNo: string;
+  Amount: number;
+  Fee: number;
+  Pay: PayType;
+  Type: RecordType;
+  Description: string;
+  Date: string;
+  CreatedDate: string;
+  UpdatedDate: string;
+}
+
 export type RecordReportQuery = {
   startDate: string;
   endDate: string;
 };
-
-export enum RecordStatus {
-  PENDING = "pending",
-  COMPLETED = "completed",
-  CANCELLED = "cancelled",
-}
 
 export interface CreateRecordInput {
   phoneNo: string;
@@ -66,9 +68,6 @@ export interface CreateRecordApiInput extends Omit<
   branchId?: number;
   pay: PayType;
   type: RecordType;
-}
-export interface UpdateRecordInput extends Partial<CreateRecordInput> {
-  status?: RecordStatus;
 }
 
 // Fee Types
@@ -100,10 +99,6 @@ export interface CreateFeeInput {
   dueDate?: string;
 }
 
-export interface UpdateFeeInput extends Partial<CreateFeeInput> {
-  isPaid?: boolean;
-}
-
 // API Response Types
 export interface ApiResponse<T = any> {
   data: T;
@@ -126,14 +121,4 @@ export interface ApiError {
   details?: {
     [key: string]: string;
   }[];
-}
-
-// Filter Types
-export interface FilterConfig {
-  search?: string;
-  status?: string;
-  category?: string;
-  dateFrom?: string;
-  dateTo?: string;
-  [key: string]: any;
 }

@@ -4,7 +4,7 @@ import React, { MutableRefObject, useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { createRecordSchema } from "@/common/validators/schemas";
+import { createRecordSchema } from "@/common/validators";
 import { Branch, CreateRecordInput, PayType, RecordType } from "@/common/types";
 import FloppyDisk from "@/components/icons/floppy-disk.svg";
 import QuestionMarkIcon from "@/components/icons/question-mark.svg";

@@ -1,17 +1,18 @@
-/**
- * Records API Service
- * Handles all record-related API calls
- */
-
 import { api } from "./client";
 import { API_ENDPOINTS } from "@/common/constants";
-import { RecordItem, Pagination, CreateRecordApiInput } from "@/common/types";
+import {
+  RecordItem,
+  Pagination,
+  CreateRecordApiInput,
+  ReportRecordItem,
+} from "@/common/types";
+import { AxiosResponse } from "axios";
 
 export type transferRecordReport = {
   date: string;
   totalAmount: number;
   totalFee: number;
-  records: RecordItem[];
+  records: ReportRecordItem[];
 };
 
 export const recordService = {
@@ -29,21 +30,32 @@ export const recordService = {
   },
 
   async getReports(params: {
-    startDate: string;
-    endDate: string;
-    type?: string;
+    startDate?: string;
+    endDate?: string;
+    pay?: string;
+    page?: number;
   }) {
     const queryParams = new URLSearchParams({
-      startDate: params.startDate,
-      endDate: params.endDate,
-      type: params.type || "",
+      startDate: params.startDate || "",
+      endDate: params.endDate || "",
+      pay: params.pay || "",
+      page: params.page ? String(params.page) : "1",
     });
     const url = `${API_ENDPOINTS.RECORDS.REPORTS}?${queryParams.toString()}`;
 
     return api.get<{
       transferRecords: transferRecordReport[];
-      earliestRecordDate: string;
     }>(url);
+  },
+
+  async generateReport(body: {
+    startDate: string;
+    endDate: string;
+    fileType: "pdf" | "excel";
+  }) {
+    return api.post<AxiosResponse<Blob>>(API_ENDPOINTS.RECORDS.REPORTS, body, {
+      responseType: "blob",
+    });
   },
 
   async create(data: CreateRecordApiInput) {

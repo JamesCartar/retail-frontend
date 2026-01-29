@@ -8,38 +8,48 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import NoRecordIcon from "@/components/icons/no-record.svg";
-import { Record } from "@/components/pages/view-records/Record";
+import { ReportRecord } from "@/components/pages/view-records";
 import { transferRecordReport } from "@/lib/api/records";
 import IfElse from "@/components/IfElse";
-import { RefObject } from "react";
+import { useEffect, useState } from "react";
 
 export interface RecordsListProps {
   records?: transferRecordReport[];
-  observerRef?: RefObject<HTMLDivElement>;
+  observerRef?: (node: HTMLDivElement) => void;
   loading?: boolean;
-  hasMore?: boolean;
 }
 
 export function RecordsList({
   records,
   observerRef,
   loading,
-  hasMore,
 }: RecordsListProps) {
+  const [openItems, setOpenItems] = useState<string[]>([]);
+
+  // When records load, open all by default
+  useEffect(() => {
+    if (records) {
+      setOpenItems(records.map((_, i) => i.toString()));
+    }
+  }, [records]);
+
   return (
     <div className="px-5 pt-[17px] flex-1">
       <IfElse
         isTrue={records?.length === 0 && !loading}
         ifBlock={
-          <div className="flex flex-col gap-3 items-center mt-36 h-full">
-            <NoRecordIcon className="text-[#EAEAEA]" />
-            <span className="text-[#D7D7D7]">စာရင်းမှတ်တမ်းမရှိသေးပါ</span>
+          <div className="h-full">
+            <div className="flex flex-col gap-3 items-center justify-center h-full">
+              <NoRecordIcon className="text-[#EAEAEA] mt-3!" />
+              <span className="text-[#D7D7D7]">စာရင်းမှတ်တမ်းမရှိသေးပါ</span>
+            </div>
           </div>
         }
         elseBlock={
           <Accordion
             type="multiple"
-            defaultValue={records?.map((_, index) => index.toString())}
+            value={openItems}
+            onValueChange={setOpenItems}
             className="space-y-[10px]"
           >
             {records?.map((record, index) => (
@@ -79,7 +89,7 @@ export function RecordsList({
                 </AccordionTrigger>
                 <AccordionContent>
                   {record.records.map((recordItem, index) => (
-                    <Record
+                    <ReportRecord
                       className="last:rounded-b-10"
                       key={index}
                       record={recordItem}
@@ -88,7 +98,7 @@ export function RecordsList({
                 </AccordionContent>
               </AccordionItem>
             ))}
-            {records?.length && <div ref={observerRef} className="h-1" />}
+            <div ref={observerRef} className="h-1" />
           </Accordion>
         }
       />

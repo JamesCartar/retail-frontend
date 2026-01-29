@@ -1,24 +1,40 @@
+"use client";
+
 import { ROUTES } from "@/common/constants";
 import { PayType } from "@/common/types";
 import Header from "@/components/Header";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { recordService, transferRecordReport } from "@/lib/api/records";
-import { convertCalendarToNumeric, getDefaultDateRange } from "@/common/utils";
+import { convertCalendarToNumeric, downloadBlob } from "@/common/utils";
 import { RecordsList, RecordsFilter } from "@/components/pages/view-records";
+import { DownloadDialog } from "@/components/ui/download-dialog";
+import { toast } from "sonner";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import CheckCircleIcon from "@/components/icons/check-circle.svg";
+import { DownloadDialogSchema } from "@/common/validators";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function ViewRecords() {
+  const [isDownloadDialogOpen, setIsDownloadDialogOpen] = useState(false);
   const [selectedPay, setSelectedPay] = useState<PayType | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
   const [records, setRecords] = useState<transferRecordReport[]>([]);
-  const observerRef = useRef<HTMLDivElement | null>(null);
-  const [cursorDate, setCursorDate] = useState<string | null>(null);
-  const [earliestDate, setEarliestDate] = useState<string | null>(null);
+
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  const observer = useRef<IntersectionObserver | null>(null);
+  const dialogContainerRef = useRef<HTMLDivElement>(null);
 
   const {
     control,
+    trigger,
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(DownloadDialogSchema),
     defaultValues: {
       startDate: "",
       endDate: "",
@@ -29,95 +45,114 @@ export default function ViewRecords() {
   const fromDate = useWatch({ control, name: "startDate" });
   const toDate = useWatch({ control, name: "endDate" });
 
-  const fetchRecords = useCallback(
-    async (isNextPage = false, isReset = false) => {
+  useEffect(() => {
+    if (fromDate || toDate) {
+      trigger(["startDate", "endDate"]);
+    }
+  }, [fromDate, toDate, trigger]);
+
+  const lastRecordRef = useCallback(
+    (node: HTMLDivElement) => {
       if (loading) return;
+      if (observer.current) observer.current.disconnect();
 
-      // Use current state for next page, but reset values if it's a new filter search
-      const currentCursor = isReset ? null : cursorDate;
-      const currentEarliest = isReset ? null : earliestDate;
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore && !fromDate && !toDate) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      });
 
-      const endThreshold =
-        isNextPage && currentCursor
-          ? currentCursor
-          : toDate || new Date().toISOString();
-
-      const nextCursor = new Date(
-        new Date(endThreshold!).getTime() - 10 * 24 * 60 * 60 * 1000,
-      ).toISOString();
-
-      // Guard against fetching past the beginning
-      if (
-        isNextPage &&
-        currentEarliest &&
-        new Date(endThreshold!) <= new Date(currentEarliest)
-      )
-        return;
-
-      const isPastUserStartDate =
-        fromDate && new Date(endThreshold!) <= new Date(fromDate);
-      if (isNextPage && isPastUserStartDate) return;
-
-      setLoading(true);
-      try {
-        const response = await recordService.getReports({
-          startDate: fromDate || nextCursor,
-          endDate: endThreshold!,
-          type: selectedPay || undefined,
-        });
-
-        setRecords((prev) => {
-          const newRecords = response.transferRecords;
-          if (isNextPage) {
-            // Filter out duplicates by date/ID just in case windows overlap
-            const existingDates = new Set(prev.map((r) => r.date.toString()));
-            const filteredNext = newRecords.filter(
-              (r) => !existingDates.has(r.date.toString()),
-            );
-            return [...prev, ...filteredNext];
-          }
-          return newRecords;
-        });
-
-        setCursorDate(nextCursor);
-        setEarliestDate(response.earliestRecordDate);
-      } catch (error) {
-        console.error("Fetch error:", error);
-      } finally {
-        setLoading(false);
-      }
+      if (node) observer.current.observe(node);
     },
-    [fromDate, toDate, selectedPay, cursorDate, earliestDate, loading],
+    [loading, hasMore, fromDate, toDate],
   );
 
-  // 2. Pass the reset flag to ensure state is clean before the API call starts
   useEffect(() => {
     setRecords([]);
-    setCursorDate(null);
-    setEarliestDate(null);
-    fetchRecords(false, true); // Added true for isReset
-  }, [fromDate, toDate, selectedPay]);
+    setPage(1);
+    setHasMore(true);
+  }, [selectedPay]);
+
+  const handleDownload = (params: {
+    fileType: "pdf" | "excel";
+    fromDate: string;
+    toDate: string;
+  }) => {
+    setIsDownloading(true);
+
+    recordService
+      .generateReport({
+        fileType: params.fileType,
+        startDate: convertCalendarToNumeric(params.fromDate),
+        endDate: convertCalendarToNumeric(params.toDate),
+      })
+      .then((response) => {
+        downloadBlob(response);
+        setIsDownloadDialogOpen(false);
+        setIsSuccessDialogOpen(true);
+        setIsDownloading(false);
+      })
+      .catch((error) => {
+        setIsDownloading(false);
+        toast.error(
+          "ဒေါင်းလုပ်ဆွဲမှု မအောင်မြင်ပါ။ ကျေးဇူးပြု၍ ထပ်မံကြိုးစားပါ။",
+        );
+      });
+  };
 
   useEffect(() => {
-    if (!observerRef.current || !records.length) return;
+    if (fromDate && toDate) {
+      recordService
+        .getReports({
+          pay: selectedPay || "",
+          startDate: convertCalendarToNumeric(fromDate),
+          endDate: convertCalendarToNumeric(toDate),
+        })
+        .then(({ transferRecords }) => {
+          setRecords(transferRecords);
+        })
+        .catch((_) => {
+          toast.error("စာရင်းများကို ယူဆောင်ရာတွင် အမှားတစ်ခုဖြစ်ပွားခဲ့သည်။");
+        });
+    } else {
+      const fetchRecords = async () => {
+        setLoading(true);
+        try {
+          const { transferRecords } = await recordService.getReports({
+            pay: selectedPay || "",
+            page: page,
+          });
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Only trigger if the current cursor hasn't passed the earliest date in the DB
-        const hasMoreData =
-          !earliestDate || new Date(cursorDate!) > new Date(earliestDate);
-        if (entry.isIntersecting && hasMoreData) fetchRecords(true);
-      },
-      { threshold: 0.1 },
-    );
+          setRecords((prev) => {
+            return page === 1 ? transferRecords : [...prev, ...transferRecords];
+          });
 
-    observer.observe(observerRef.current);
-    return () => observer.disconnect();
-  }, [records, fetchRecords, cursorDate, earliestDate]);
+          // End of data check
+          if (transferRecords.length < 10) {
+            setHasMore(false);
+          }
+        } catch (error) {
+          toast.error("ဒေတာရယူရာတွင် အမှားဖြစ်သွားပါသည်။");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchRecords();
+    }
+  }, [selectedPay, fromDate, toDate, page]);
 
   return (
-    <div className="h-screen font-primary flex flex-col">
-      <Header navLink={ROUTES.HOME} navLabel="စာရင်းကြည့်မည်" enableDownload />
+    <div
+      className="h-screen font-primary flex flex-col relative"
+      ref={dialogContainerRef}
+    >
+      <Header
+        navLink={ROUTES.HOME}
+        navLabel="စာရင်းကြည့်မည်"
+        enableDownload
+        onDownload={() => setIsDownloadDialogOpen(true)}
+      />
       <main className="w-full flex-1 flex flex-col bg-background">
         <RecordsFilter
           control={control}
@@ -125,8 +160,29 @@ export default function ViewRecords() {
           selectedPay={selectedPay}
           setSelectedPay={setSelectedPay}
         />
-        <RecordsList records={records} observerRef={observerRef} />
+        <RecordsList
+          records={records}
+          loading={loading}
+          observerRef={lastRecordRef}
+        />
       </main>
+      <DownloadDialog
+        open={isDownloadDialogOpen}
+        onOpenChange={setIsDownloadDialogOpen}
+        container={dialogContainerRef.current}
+        onDownload={handleDownload}
+        isDownloading={isDownloading}
+      />
+      <ConfirmDialog
+        open={isSuccessDialogOpen}
+        onOpenChange={setIsSuccessDialogOpen}
+        icon={<CheckCircleIcon />}
+        title="ဒေါင်းလုတ်ဆွဲပြီးပါပြီ"
+        primaryButtonText="စာရင်းဆက်မှတ်မည်"
+        onPrimaryClick={() => setIsSuccessDialogOpen(false)}
+        secondaryButtonText="ပင်မစာမျက်နှာသို့သွားမည်"
+        secondaryButtonHref={ROUTES.HOME}
+      />
     </div>
   );
 }

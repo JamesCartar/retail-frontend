@@ -1,9 +1,4 @@
-import axios, {
-  AxiosError,
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-} from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 // API Configuration
@@ -29,6 +24,7 @@ const apiClient: AxiosInstance = axios.create({
 // Request interceptor - Add token to requests
 apiClient.interceptors.request.use(
   (config) => {
+    // TODO: change token key as need
     const token = getCookie(TOKEN_KEY);
 
     console.log(token);
@@ -50,7 +46,7 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    // Handle 401 Unauthorized errors
+    // TODO: Handle 401 Unauthorized errors
     if (error.response?.status === 401) {
       deleteCookie(TOKEN_KEY);
 
@@ -123,67 +119,24 @@ class ApiService {
     config?: AxiosRequestConfig,
   ): Promise<T> {
     try {
-      const response = await this.client.post<ApiResponse<T>>(
-        url,
-        data,
-        config,
-      );
-      return response.data.data;
-    } catch (error) {
-      throw handleApiError(error);
-    }
-  }
+      const response = await this.client.post(url, data, config);
 
-  async patch<T = any, D = any>(
-    url: string,
-    data?: D,
-    config?: AxiosRequestConfig,
-  ): Promise<ApiResponse<T>> {
-    try {
-      const response: AxiosResponse<T> = await this.client.patch(
-        url,
-        data,
-        config,
-      );
-      return {
-        data: response.data,
-        status: response.status,
-        success: true,
-      };
-    } catch (error) {
-      throw handleApiError(error);
-    }
-  }
+      // If responseType is blob, return the raw response
+      if (config?.responseType === "blob") {
+        return response as unknown as T;
+      }
 
-  async delete<T = any>(
-    url: string,
-    config?: AxiosRequestConfig,
-  ): Promise<ApiResponse<T>> {
-    try {
-      const response: AxiosResponse<T> = await this.client.delete(url, config);
-      return {
-        data: response.data,
-        status: response.status,
-        success: true,
-      };
+      // Default JSON handling
+      return response.data.data as T;
     } catch (error) {
       throw handleApiError(error);
     }
   }
 }
 
-// Create and export the API service instance
 export const api = new ApiService(apiClient);
 
-// Export token management utilities
 export const tokenUtils = {
-  setToken: (token: string) => {
-    setCookie(TOKEN_KEY, token, {
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: "/",
-    });
-  },
-
   getToken: () => {
     return getCookie(TOKEN_KEY);
   },

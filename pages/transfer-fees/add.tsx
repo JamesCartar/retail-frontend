@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { feeService } from "@/lib/api/fees";
 import { Fee } from "@/common/types";
@@ -6,7 +8,7 @@ import Header from "@/components/Header";
 import { FeeForm, InfoCard } from "@/components/pages/add-fee";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { feeSchema } from "@/common/validators/schemas";
+import { feeSchema } from "@/common/validators";
 import { formatNumber } from "@/common/utils";
 
 export default function AddFee() {

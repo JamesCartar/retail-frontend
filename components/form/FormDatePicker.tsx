@@ -30,11 +30,14 @@ export interface FormDatePickerProps<TFieldValues extends FieldValues> {
   endIcon?: React.ReactNode;
   floatingLabel?: boolean;
   error?: string;
+  showError?: boolean;
   dateFormat?: string;
   showClearButton?: boolean;
   showOkButton?: boolean;
   showCancelButton?: boolean;
   onClear?: () => void;
+  disabledDays?: any;
+  defaultMonth?: Date;
 }
 
 export function FormDatePicker<TFieldValues extends FieldValues>({
@@ -49,14 +52,19 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
   endIcon,
   floatingLabel = true,
   error,
+  showError = true,
   dateFormat = "yyyy-MM-dd",
   showClearButton = false,
   showOkButton = false,
   showCancelButton = false,
   onClear,
+  disabledDays,
+  defaultMonth,
 }: FormDatePickerProps<TFieldValues>) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [tempDate, setTempDate] = React.useState<Date | undefined>(undefined);
+
+  const [month, setMonth] = React.useState<Date | undefined>(undefined);
 
   return (
     <Controller
@@ -70,6 +78,9 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
         const handleOpenChange = (open: boolean) => {
           if (open) {
             setTempDate(dateValue);
+            if (defaultMonth) {
+              setMonth(defaultMonth);
+            }
           }
           setIsOpen(open);
           if (!open) {
@@ -148,7 +159,10 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                       navLayout="after"
                       selected={tempDate || dateValue}
                       onSelect={handleDateSelect}
+                      onMonthChange={setMonth}
+                      month={month}
                       autoFocus
+                      disabled={disabledDays}
                     />
                     {(showClearButton || showOkButton || showCancelButton) && (
                       <div className="flex justify-end gap-2 p-3 mb-1">
@@ -210,7 +224,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
               </div>
 
               {/* Error Message */}
-              {errorMessage && (
+              {showError && errorMessage && (
                 <p className=" text-11px text-destructive mt-1">
                   {errorMessage}
                 </p>
@@ -270,7 +284,10 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                   navLayout="after"
                   selected={tempDate || dateValue}
                   onSelect={handleDateSelect}
+                  onMonthChange={setMonth}
+                  month={month}
                   autoFocus
+                  disabled={disabledDays}
                 />
                 {(showClearButton || showOkButton || showCancelButton) && (
                   <div className="flex justify-end gap-2 p-3 mb-1">
@@ -313,7 +330,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
             </Popover>
 
             {/* Error Message */}
-            {errorMessage && (
+            {showError && errorMessage && (
               <p className="text-11px text-destructive mt-1">{errorMessage}</p>
             )}
           </div>
