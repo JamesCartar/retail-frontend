@@ -10,6 +10,7 @@ import {
   FieldErrors,
   UseFieldArrayRemove,
   useForm,
+  UseFormReset,
 } from "react-hook-form";
 import ArrowCircleRightIcon from "@/components/icons/arrow-circle-right.svg";
 import CircleXIcon from "@/components/icons/circle-x.svg";
@@ -20,6 +21,7 @@ import CheckCircleIcon from "@/components/icons/check-circle.svg";
 import { useRouter } from "next/router";
 import { cn, removeNumberComma } from "@/common/utils";
 import { feeService } from "@/lib/api/fees";
+import { ROUTES } from "@/common/constants";
 
 export interface FeeInputsProps {
   fields: Fee[];
@@ -28,6 +30,9 @@ export interface FeeInputsProps {
   handleSubmit: ReturnType<typeof useForm<{ fees: Fee[] }>>["handleSubmit"];
   isDirty: boolean;
   errors: FieldErrors<{ fees: Fee[] }>;
+  reset: UseFormReset<{
+    fees: Fee[];
+  }>;
 }
 
 export function FeeForm({
@@ -37,6 +42,7 @@ export function FeeForm({
   handleSubmit,
   errors,
   isDirty,
+  reset,
 }: FeeInputsProps) {
   const router = useRouter();
 
@@ -221,6 +227,11 @@ export function FeeForm({
         title="လွှဲခအသစ် ထည့်ပြီးပါပြီ။"
         primaryButtonText="ပင်မစာမျက်မှာသို့သွားမည်"
         onPrimaryClick={() => router.push("/")}
+        secondaryButtonText="ပြန်စစ်ဆေးမည်"
+        onSecondaryClick={() => {
+          setShowSuccessDialog(false);
+          reset();
+        }}
       />
     </div>
   );

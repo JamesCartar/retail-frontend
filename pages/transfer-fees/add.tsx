@@ -71,6 +71,7 @@ export default function AddFee() {
           errors={errors}
           handleSubmit={handleSubmit}
           isDirty={isDirty}
+          reset={reset}
         />
       </main>
     </div>
