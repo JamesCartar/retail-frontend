@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header
-        navLabel="Kpay စာရင်းမှတ်တမ်း"
+        navLabel="ငွေလွှဲမှတ်တမ်း"
         boldLabel
         navLink={ROUTES.HOME}
         longHeader
