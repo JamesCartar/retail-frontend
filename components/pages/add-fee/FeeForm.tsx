@@ -186,7 +186,7 @@ export function FeeForm({
             disabled={!isDirty}
           >
             <span className="font-primary text-15px mr-[7px] font-medium">
-              လွှဲခ အသစ် ထပ်ထည့်မည်
+              လွှဲခမှတ်မည်
             </span>
             <ArrowCircleRightIcon />
           </Button>
@@ -210,8 +210,8 @@ export function FeeForm({
         open={showSaveConfirmDialog}
         onOpenChange={setShowSaveConfirmDialog}
         icon={<QuestionMarkIcon />}
-        title="လွှဲခအသစ် ထည့်ရန် သေချာပါသလား။"
-        subtitle="ယခုလွှဲခကို ထည့်ရန် သေချာပါသလား။"
+        title="လွှဲခ မှတ်ရန် သေချာပါသလား။"
+        subtitle="ယခုလွှဲခကို မှတ်ရန် သေချာပါသလား။"
         primaryButtonText="သေချာပါသည်"
         secondaryButtonText="ပြန်စစ်ဆေးမည်"
         primaryButtonDisabled={isLoading}
@@ -224,14 +224,9 @@ export function FeeForm({
         open={showSuccessDialog}
         onOpenChange={setShowSuccessDialog}
         icon={<CheckCircleIcon />}
-        title="လွှဲခအသစ် ထည့်ပြီးပါပြီ။"
+        title="လွှဲခအသစ် မှတ်ပြီးပါပြီ။"
         primaryButtonText="ပင်မစာမျက်မှာသို့သွားမည်"
         onPrimaryClick={() => router.push("/")}
-        secondaryButtonText="ပြန်စစ်ဆေးမည်"
-        onSecondaryClick={() => {
-          setShowSuccessDialog(false);
-          reset();
-        }}
       />
     </div>
   );
