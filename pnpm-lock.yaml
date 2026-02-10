@@ -59,6 +59,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      feather-route-matcher:
+        specifier: ^4.0.0
+        version: 4.0.0
       lucide-react:
         specifier: ^0.294.0
         version: 0.294.0(react@18.3.1)
@@ -2445,6 +2448,9 @@ packages:
     peerDependenciesMeta:
       picomatch:
         optional: true
+
+  feather-route-matcher@4.0.0:
+    resolution: {integrity: sha512-ZBQx/3pMDnpjJi3zUDEhZ5Mvu+lUsTyWQoKH3tWEb0LysDZmzui0tH0oyMvA8fEWWJtHbvOzOpIWwoOBst/Apw==}
 
   file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
@@ -6606,6 +6612,8 @@ snapshots:
   fdir@6.5.0(picomatch@4.0.3):
     optionalDependencies:
       picomatch: 4.0.3
+
+  feather-route-matcher@4.0.0: {}
 
   file-entry-cache@6.0.1:
     dependencies:
