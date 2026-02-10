@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-import NextFederationPlugin from "@module-federation/nextjs-mf";
+const NextFederationPlugin = require("@module-federation/nextjs-mf");
 
 const exposes = {
   "./Transfer": "./pages/index.tsx",
