@@ -2,6 +2,7 @@
   "name": "retail-frontend",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "cross-env NEXT_PRIVATE_LOCAL_WEBPACK=true next build",
