@@ -52,5 +52,11 @@
     "eslint": "^8.56.0",
     "eslint-config-next": "14.0.4",
     "typescript": "^5.3.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "@module-federation/runtime": "0.1.15",
+      "@module-federation/webpack-bundler-runtime": "0.1.15"
+    }
   }
 }
