@@ -12,8 +12,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        primary: ["var(--font-noto)", "system-ui", "sans-serif"],
-        secondary: ["var(--font-pyidaungsu)", "system-ui", "sans-serif"],
+        noto: ["var(--font-noto)", "system-ui", "sans-serif"],
+        pyi: ["var(--font-pyidaungsu)", "system-ui", "sans-serif"],
         inter: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       fontSize: {
@@ -71,60 +71,6 @@ module.exports = {
             lineHeight: "var(--lh-21px)",
           },
         ],
-      },
-      borderRadius: {
-        5: "var(--radius-5)",
-        8: "var(--radius-8)",
-        10: "var(--radius-10)",
-        12: "var(--radius-12)",
-        20: "var(--radius-20)",
-        24: "var(--radius-24)",
-      },
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        card: {
-          DEFAULT: "var(--card)",
-          foreground: "var(--card-foreground)",
-        },
-        popover: {
-          DEFAULT: "var(--popover)",
-          foreground: "var(--popover-foreground)",
-        },
-        primary: {
-          DEFAULT: "var(--primary)",
-          dark: "var(--primary-dark)",
-          darker: "var(--primary-darker)",
-          light: "var(--primary-light)",
-          lighter: "var(--primary-lighter)",
-          muted: "var(--primary-muted)",
-          stroke: "var(--primary-stroke)",
-          foreground: "var(--primary-foreground)",
-        },
-        secondary: {
-          DEFAULT: "var(--secondary)",
-          light: "var(--secondary-light)",
-          foreground: "var(--secondary-foreground)",
-        },
-        muted: {
-          DEFAULT: "var(--muted)",
-          light: "var(--muted-light)",
-          dark: "var(--muted-dark)",
-          foreground: "var(--muted-foreground)",
-        },
-        accent: {
-          DEFAULT: "var(--accent)",
-          foreground: "var(--accent-foreground)",
-        },
-        destructive: {
-          DEFAULT: "var(--destructive)",
-          light: "var(--destructive-light)",
-          dark: "var(--destructive-dark)",
-          foreground: "var(--destructive-foreground)",
-        },
-        border: "var(--border)",
-        input: "var(--input)",
-        ring: "var(--ring)",
       },
       keyframes: {
         "accordion-down": {

@@ -5,20 +5,19 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "rt-inline-flex rt-items-center rt-justify-center rt-gap-2 rt-whitespace-nowrap rt-rounded-md rt-text-sm rt-font-medium rt-transition-colors focus-visible:rt-outline-none focus-visible:rt-ring-1 focus-visible:rt-ring-ring disabled:rt-pointer-events-none disabled:rt-opacity-50 [&_svg]:rt-pointer-events-none [&_svg]:rt-size-4 [&_svg]:rt-shrink-0",
+  "rt-inline-flex rt-items-center rt-justify-center rt-gap-2 rt-whitespace-nowrap rt-rounded-md rt-text-sm rt-font-medium rt-transition-colors focus-visible:rt-outline-none focus-visible:rt-ring-1 focus-visible:rt-ring-[#7d7d7d] disabled:rt-pointer-events-none disabled:rt-opacity-50 [&_svg]:rt-pointer-events-none [&_svg]:rt-size-4 [&_svg]:rt-shrink-0",
   {
     variants: {
       variant: {
         default:
-          "rt-bg-primary rt-text-white rt-shadow [&_svg]:rt-size-auto [&_svg]:rt-shrink-0",
+          "rt-bg-[#1e77ed] rt-text-white rt-shadow [&_svg]:rt-size-auto [&_svg]:rt-shrink-0",
         destructive:
-          "rt-bg-destructive rt-text-destructive-foreground rt-shadow-sm hover:rt-bg-destructive/90",
+          "rt-bg-[#dd5144] rt-text-[hsl(0 0% 98%)] rt-shadow-sm hover:rt-bg-[#dd5144]",
         outline:
-          "rt-border rt-border-input rt-bg-background rt-shadow-sm hover:rt-bg-accent hover:rt-text-accent-foreground",
-        secondary:
-          "rt-bg-secondary rt-text-secondary-foreground rt-shadow-sm hover:rt-bg-secondary/80",
-        ghost: "hover:rt-bg-accent hover:rt-text-accent-foreground",
-        link: "rt-text-primary rt-underline-offset-4 hover:rt-underline",
+          "rt-border rt-border-[#eeeeee] rt-bg-[#f5f5f5] rt-shadow-sm hover:rt-bg-[#65b448] hover:rt-text-[#cfcfcf]",
+        secondary: "rt-bg-[#fcc100] rt-text-[#cfcfcf] rt-shadow-sm",
+        ghost: "hover:rt-bg-[#65b448] hover:rt-text-[#cfcfcf]",
+        link: "rt-text-[#1e77ed] rt-underline-offset-4 hover:rt-underline",
         plain:
           "rt-bg-transparent hover:rt-bg-transparent hover:rt-text-gray-100 [&_svg]:rt-pointer-events-none [&_svg]:rt-size-auto [&_svg]:rt-shrink-0",
       },

@@ -51,15 +51,15 @@ export function RecordsFilter({
           showOkButton
           showCancelButton
           showClearButton
-          className="rt-text-primary hover:rt-text-primary"
-          btnClassName="hover:rt-text-primary"
+          className="rt-text-[#1e77ed] hover:rt-text-[#1e77ed]"
+          btnClassName="hover:rt-text-[#1e77ed]"
           disabledDays={{
             ...(startMin && { before: startMin }),
             ...(startMax && { after: startMax }),
           }}
           defaultMonth={start || end || undefined}
         />
-        <span className="rt-px-6 rt-text-muted rt-font-primary">မှ</span>
+        <span className="rt-px-6 rt-text-[#929292] rt-font-noto">မှ</span>
         <FormDatePicker
           name="endDate"
           control={control}
@@ -71,8 +71,8 @@ export function RecordsFilter({
           showOkButton
           showCancelButton
           showClearButton
-          className="rt-text-primary hover:rt-text-primary"
-          btnClassName="hover:rt-text-primary"
+          className="rt-text-[#1e77ed] hover:rt-text-[#1e77ed]"
+          btnClassName="hover:rt-text-[#1e77ed]"
           disabledDays={{
             ...(endMin && { before: endMin }),
             ...(endMax && { after: endMax }),
@@ -89,7 +89,7 @@ export function RecordsFilter({
             onClick={() => setSelectedPay(null)}
             className="rt-relative"
           >
-            <span className="rt-px-[14px] rt-py-[9.5px] rt-text-center rt-bg-primary rt-text-white rt-rounded-5 rt-text-11px">
+            <span className="rt-px-[14px] rt-py-[9.5px] rt-text-center rt-bg-[#1e77ed] rt-text-white rt-rounded-[5px] rt-text-11px">
               All
             </span>
             <If
@@ -113,7 +113,7 @@ export function RecordsFilter({
                 width={43.02}
                 height={43.02}
                 alt={pay.value}
-                className="rt-rounded-5"
+                className="rt-rounded-[5px]"
               />
               <If
                 isTrue={selectedPay === (pay.value as PayType)}
@@ -130,7 +130,7 @@ export function RecordsFilter({
             onClick={() => setSelectedPay("other")}
             className="rt-relative"
           >
-            <span className="rt-px-[5.1px] rt-py-[10px] rt-text-center rt-bg-primary rt-text-white rt-rounded-5 rt-text-11px">
+            <span className="rt-px-[5.1px] rt-py-[10px] rt-text-center rt-bg-[#1e77ed] rt-text-white rt-rounded-[5px] rt-text-11px">
               အခြား
             </span>
             <If

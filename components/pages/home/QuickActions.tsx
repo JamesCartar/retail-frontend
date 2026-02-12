@@ -33,16 +33,16 @@ const actions = [
 
 export function QuickActions() {
   return (
-    <Card className="rt-w-[360px] rt-mx-auto rt-border-0 rt-shadow-none rt-rounded-10">
-      <CardContent className="rt-flex rt-justify-between rt-font-primary rt-px-[15px] rt-py-[13px]">
+    <Card className="rt-w-[360px] rt-mx-auto rt-border-0 rt-shadow-none rt-rounded-[10px]">
+      <CardContent className="rt-flex rt-justify-between rt-font-noto rt-px-[15px] rt-py-[13px]">
         {actions.map((action) => (
           <Link
             key={action.route}
             href={action.route}
             className="rt-flex rt-flex-col rt-items-center rt-gap-2"
           >
-            <div className="rt-w-[52px] rt-h-[52px] rt-bg-primary-light rt-flex rt-items-center rt-justify-center rt-rounded-full">
-              <action.icon className="rt-w-6 rt-text-primary-muted" />
+            <div className="rt-w-[52px] rt-h-[52px] rt-bg-[#cde0fb] rt-flex rt-items-center rt-justify-center rt-rounded-full">
+              <action.icon className="rt-w-6 rt-text-[#2e6eff]" />
             </div>
             <span className="rt-text-12px">{action.label}</span>
           </Link>

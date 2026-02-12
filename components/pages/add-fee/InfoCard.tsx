@@ -10,7 +10,7 @@ export interface InfoCardProps {
 
 export function InfoCard({ append }: InfoCardProps) {
   return (
-    <div className="rt-px-5 rt-border-0 rt-shadow-none rt-flex rt-flex-col rt-items-center rt-justify-center rt-gap-6 rt-font-primary">
+    <div className="rt-px-5 rt-border-0 rt-shadow-none rt-flex rt-flex-col rt-items-center rt-justify-center rt-gap-6 rt-font-noto">
       <div>
         <Image
           src="/images/add-fee-logo.png"
@@ -24,7 +24,7 @@ export function InfoCard({ append }: InfoCardProps) {
       </p>
       <Button
         variant="secondary"
-        className="rt-bg-secondary-light rt-py-3 rt-px-[25px] rt-rounded-full rt-text-13px rt-font-medium"
+        className="rt-bg-[#fff9e5] rt-py-3 rt-px-[25px] rt-rounded-full rt-text-13px rt-font-medium"
         onClick={() =>
           append({ id: `temp-id-${Date.now()}`, fee: "0", from: "0", to: "0" })
         }

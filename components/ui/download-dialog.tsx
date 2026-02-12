@@ -79,7 +79,7 @@ export function DownloadDialog({
                 toDate,
               }),
             )}
-            className="rt-w-full rt-rounded-b-none rt-rounded-t-20 rt-border rt-bg-white rt-p-5 rt-shadow-lg rt-flex rt-flex-col rt-items-center rt-text-center"
+            className="rt-w-full rt-rounded-b-none rt-rounded-t-[20px] rt-border rt-bg-white rt-p-5 rt-shadow-lg rt-flex rt-flex-col rt-items-center rt-text-center"
           >
             {/* Close button */}
             <DialogPrimitive.Close className="rt-absolute rt-right-4 rt-top-4">
@@ -94,7 +94,7 @@ export function DownloadDialog({
 
             <div className="rt-w-full rt-text-left rt-mt-4">
               <div>
-                <p className="rt-mt-3 rt-text-15px rt-font-secondary rt-mb-2">
+                <p className="rt-mt-3 rt-text-15px rt-font-pyi rt-mb-2">
                   အချိန်ကာလရွေးချယ်ပါ
                 </p>
                 <div className="rt-grid rt-grid-cols-[1fr_auto_1fr] rt-items-center">
@@ -105,11 +105,11 @@ export function DownloadDialog({
                     endIcon={<CalendarIcon className="rt-h-4 rt-w-4 rt-mb-1" />}
                     floatingLabel={false}
                     error={errors.startDate?.message}
-                    className="rt-text-primary hover:rt-text-primary"
-                    btnClassName="hover:rt-text-primary"
+                    className="rt-text-[#1e77ed] hover:rt-text-[#1e77ed]"
+                    btnClassName="hover:rt-text-[#1e77ed]"
                     showError={false}
                   />
-                  <span className="rt-px-6 rt-text-muted rt-font-primary">
+                  <span className="rt-px-6 rt-text-[#929292] rt-font-noto">
                     မှ
                   </span>
                   <FormDatePicker
@@ -119,14 +119,14 @@ export function DownloadDialog({
                     endIcon={<CalendarIcon className="rt-h-4 rt-w-4 rt-mb-1" />}
                     floatingLabel={false}
                     error={errors.endDate?.message}
-                    className="rt-text-primary hover:rt-text-primary"
-                    btnClassName="hover:rt-text-primary"
+                    className="rt-text-[#1e77ed] hover:rt-text-[#1e77ed]"
+                    btnClassName="hover:rt-text-[#1e77ed]"
                     showError={false}
                   />
                 </div>
               </div>
               <div className="rt-mt-6">
-                <p className="rt-mt-3 rt-text-15px rt-font-secondary rt-mb-2">
+                <p className="rt-mt-3 rt-text-15px rt-font-pyi rt-mb-2">
                   ဖိုင်အမျိုးအစားရွေးချယ်ပါ
                 </p>
                 <div className="rt-flex rt-items-center rt-gap-3">
@@ -134,13 +134,13 @@ export function DownloadDialog({
                     variant="outline"
                     className={cn(
                       "rt-px-4 rt-bg-[#F7F7F7] [&_svg]:rt-w-5 [&_svg]:rt-h-5 rt-py-0 hover:rt-bg-transparent",
-                      selectedFileType === "pdf" && "rt-border-primary",
+                      selectedFileType === "pdf" && "rt-border-[#1e77ed]",
                     )}
                     onClick={() => setSelectedFileType("pdf")}
                     type="button"
                   >
                     <PdfIcon />
-                    <span className="rt-font-secondary rt-text-15px rt-font-normal rt-mt-[5px] rt-text-gray-900">
+                    <span className="rt-font-pyi rt-text-15px rt-font-normal rt-mt-[5px] rt-text-gray-900">
                       PDF
                     </span>
                   </Button>
@@ -148,13 +148,13 @@ export function DownloadDialog({
                     variant="outline"
                     className={cn(
                       "rt-px-3 rt-bg-[#F7F7F7] [&_svg]:rt-w-5 [&_svg]:rt-h-5 rt-py-0 hover:rt-bg-transparent",
-                      selectedFileType === "excel" && "rt-border-primary",
+                      selectedFileType === "excel" && "rt-border-[#1e77ed]",
                     )}
                     onClick={() => setSelectedFileType("excel")}
                     type="button"
                   >
                     <ExcelIcon className="bg-white" />
-                    <span className="rt-font-secondary rt-text-15px rt-font-normal rt-mt-[5px] rt-text-gray-900">
+                    <span className="rt-font-pyi rt-text-15px rt-font-normal rt-mt-[5px] rt-text-gray-900">
                       Excel
                     </span>
                   </Button>

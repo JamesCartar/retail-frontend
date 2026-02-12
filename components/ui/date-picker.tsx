@@ -42,8 +42,8 @@ export function DatePicker({
               disabled={disabled}
               className={cn(
                 "rt-w-full rt-justify-start rt-text-left rt-font-normal rt-px-3 rt-py-6 rt-h-auto",
-                !value && "rt-text-muted-foreground",
-                error && "rt-border-destructive",
+                !value && "rt-text-[#ababab]",
+                error && "rt-border-[#dd5144]",
               )}
             >
               <CalendarIcon className="rt-mr-2 rt-h-4 rt-w-4" />
@@ -68,11 +68,11 @@ export function DatePicker({
           <label
             className={cn(
               "rt-absolute rt-left-3 rt-top-1/2 -rt-translate-y-1/2",
-              "rt-text-muted-foreground rt-pointer-events-none",
+              "rt-text-[#ababab] rt-pointer-events-none",
               "rt-transition-all rt-duration-200 rt-ease-linear",
-              "rt-bg-background rt-px-1",
+              "rt-bg-[#f5f5f5] rt-px-1",
               isFloating && "rt-top-0 rt-text-xs",
-              error && isFloating && "rt-text-destructive",
+              error && isFloating && "rt-text-[#dd5144]",
             )}
           >
             {label}
@@ -82,7 +82,7 @@ export function DatePicker({
 
       {/* Error Message */}
       {error && (
-        <p className="rt-text-sm rt-text-destructive rt-mt-1.5">{error}</p>
+        <p className="rt-text-sm rt-text-[#dd5144] rt-mt-1.5">{error}</p>
       )}
     </div>
   );

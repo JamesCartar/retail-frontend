@@ -12,7 +12,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "rt-inline-flex rt-h-9 rt-items-center rt-justify-center rt-rounded-lg rt-p-1 rt-text-muted-foreground",
+      "rt-inline-flex rt-h-9 rt-items-center rt-justify-center rt-rounded-lg rt-p-1 rt-text-[#ababab]",
       className,
     )}
     {...props}
@@ -27,7 +27,7 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "rt-inline-flex rt-items-center rt-justify-center rt-text-muted rt-whitespace-nowrap rt-rounded-md rt-px-3 rt-py-2 rt-text-13px rt-font-medium rt-ring-offset-background rt-transition-all focus-visible:rt-outline-none focus-visible:rt-ring-2 focus-visible:rt-ring-ring focus-visible:rt-ring-offset-2 disabled:rt-pointer-events-none disabled:rt-opacity-50 data-[state=active]:rt-bg-white data-[state=active]:rt-text-[#4C4C4C]",
+      "rt-inline-flex rt-items-center rt-justify-center rt-text-[#929292] rt-whitespace-nowrap rt-rounded-md rt-px-3 rt-py-2 rt-text-13px rt-font-medium rt-ring-offset-[#f5f5f5] rt-transition-all focus-visible:rt-outline-none focus-visible:rt-ring-2 focus-visible:rt-ring-[#7d7d7d] focus-visible:rt-ring-offset-2 disabled:rt-pointer-events-none disabled:rt-opacity-50 data-[state=active]:rt-bg-white data-[state=active]:rt-text-[#4C4C4C]",
       className,
     )}
     {...props}
@@ -42,7 +42,7 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      "rt-mt-2 rt-ring-offset-background focus-visible:rt-outline-none focus-visible:rt-ring-2 focus-visible:rt-ring-ring focus-visible:rt-ring-offset-2",
+      "rt-mt-2 rt-ring-offset-[#f5f5f5] focus-visible:rt-outline-none focus-visible:rt-ring-2 focus-visible:rt-ring-[#7d7d7d] focus-visible:rt-ring-offset-2",
       className,
     )}
     {...props}

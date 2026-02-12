@@ -132,16 +132,16 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                       variant="outline"
                       disabled={disabled}
                       className={cn(
-                        "rt-w-full rt-justify-start rt-text-left rt-font-normal rt-px-3 rt-py-[10px] rt-h-auto rt-rounded-10 rt-border-input rt-bg-white hover:rt-bg-white hover:rt-text-black",
-                        !dateValue && "rt-text-muted-foreground",
-                        errorMessage && "rt-border-destructive",
+                        "rt-w-full rt-justify-start rt-text-left rt-font-normal rt-px-3 rt-py-[10px] rt-h-auto rt-rounded-[10px] rt-border-[#eeeeee] rt-bg-white hover:rt-bg-white hover:rt-text-black",
+                        !dateValue && "rt-text-[#ababab]",
+                        errorMessage && "rt-border-[#dd5144]",
                         startIcon ? "rt-pl-10" : "rt-pl-3",
                         endIcon ? "rt-pr-10" : "rt-pr-3",
                         btnClassName,
                       )}
                     >
                       {startIcon && (
-                        <div className="rt-absolute rt-left-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-muted">
+                        <div className="rt-absolute rt-left-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-[#929292]">
                           {startIcon}
                         </div>
                       )}
@@ -174,7 +174,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                             variant="plain"
                             size="plain"
                             onClick={handleClear}
-                            className="rt-text-primary rt-text-[15px] hover:rt-text-primary rt-font-inter rt-px-2"
+                            className="rt-text-[#1e77ed] rt-text-[15px] hover:rt-text-[#1e77ed] rt-font-inter rt-px-2"
                           >
                             Clear
                           </Button>
@@ -185,7 +185,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                             variant="plain"
                             size="plain"
                             onClick={handleOk}
-                            className="rt-text-primary rt-text-[15px] hover:rt-text-primary rt-font-inter rt-px-2"
+                            className="rt-text-[#1e77ed] rt-text-[15px] hover:rt-text-[#1e77ed] rt-font-inter rt-px-2"
                           >
                             OK
                           </Button>
@@ -196,7 +196,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                             variant="plain"
                             size="plain"
                             onClick={handleCancel}
-                            className="rt-text-primary rt-text-[15px] hover:rt-text-primary rt-font-inter rt-px-2"
+                            className="rt-text-[#1e77ed] rt-text-[15px] hover:rt-text-[#1e77ed] rt-font-inter rt-px-2"
                           >
                             Cancel
                           </Button>
@@ -211,11 +211,11 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                   <label
                     className={cn(
                       "rt-absolute rt-left-3 rt-top-1/2 -rt-translate-y-1/2",
-                      "rt-pointer-events-none rt-font-secondary rt-text-14px rt-text-muted",
+                      "rt-pointer-events-none rt-font-pyi rt-text-14px rt-text-[#929292]",
                       "rt-transition-all rt-duration-200 rt-ease-linear",
                       "rt-bg-white rt-px-1",
                       isFloating && "rt-top-0 rt-text-xs",
-                      errorMessage && isFloating && "rt-text-destructive",
+                      errorMessage && isFloating && "rt-text-[#dd5144]",
                       startIcon && !isFloating && "rt-left-10",
                       startIcon && isFloating && "rt-left-5",
                     )}
@@ -227,7 +227,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
 
               {/* Error Message */}
               {showError && errorMessage && (
-                <p className="rt-text-11px rt-text-destructive rt-mt-1">
+                <p className="rt-text-11px rt-text-[#dd5144] rt-mt-1">
                   {errorMessage}
                 </p>
               )}
@@ -241,7 +241,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
             {label && (
               <Label
                 htmlFor={name}
-                className={cn(errorMessage && "rt-text-destructive")}
+                className={cn(errorMessage && "rt-text-[#dd5144]")}
               >
                 {label}
               </Label>
@@ -254,21 +254,21 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                   variant="outline"
                   disabled={disabled}
                   className={cn(
-                    "rt-w-full rt-justify-start rt-text-left rt-font-primary rt-font-normal rt-bg-white hover:rt-bg-white focus:rt-bg-white rt-relative",
-                    !dateValue && "rt-text-muted-foreground",
-                    errorMessage && "rt-border-destructive",
+                    "rt-w-full rt-justify-start rt-text-left rt-font-noto rt-font-normal rt-bg-white hover:rt-bg-white focus:rt-bg-white rt-relative",
+                    !dateValue && "rt-text-[#ababab]",
+                    errorMessage && "rt-border-[#dd5144]",
                     startIcon ? "rt-pl-10" : "rt-pl-3",
                     endIcon ? "rt-pr-10" : "rt-pr-3",
                     btnClassName,
                   )}
                 >
                   {startIcon && (
-                    <div className="rt-absolute rt-left-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-muted">
+                    <div className="rt-absolute rt-left-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-[#929292]">
                       {startIcon}
                     </div>
                   )}
                   {endIcon && (
-                    <div className="rt-absolute rt-right-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-muted">
+                    <div className="rt-absolute rt-right-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-[#929292]">
                       {endIcon}
                     </div>
                   )}
@@ -299,7 +299,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                         variant="plain"
                         size="plain"
                         onClick={handleClear}
-                        className="rt-text-primary rt-text-[15px] hover:rt-text-primary rt-font-inter rt-px-2"
+                        className="rt-text-[#1e77ed] rt-text-[15px] hover:rt-text-[#1e77ed] rt-font-inter rt-px-2"
                       >
                         Clear
                       </Button>
@@ -310,7 +310,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                         variant="plain"
                         size="plain"
                         onClick={handleOk}
-                        className="rt-text-primary rt-text-[15px] hover:rt-text-primary rt-font-inter rt-px-2"
+                        className="rt-text-[#1e77ed] rt-text-[15px] hover:rt-text-[#1e77ed] rt-font-inter rt-px-2"
                       >
                         OK
                       </Button>
@@ -321,7 +321,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                         variant="plain"
                         size="plain"
                         onClick={handleCancel}
-                        className="rt-text-primary rt-text-[15px] hover:rt-text-primary rt-font-inter rt-px-2"
+                        className="rt-text-[#1e77ed] rt-text-[15px] hover:rt-text-[#1e77ed] rt-font-inter rt-px-2"
                       >
                         Cancel
                       </Button>
@@ -333,7 +333,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
 
             {/* Error Message */}
             {showError && errorMessage && (
-              <p className="rt-text-11px rt-text-destructive rt-mt-1">
+              <p className="rt-text-11px rt-text-[#dd5144] rt-mt-1">
                 {errorMessage}
               </p>
             )}

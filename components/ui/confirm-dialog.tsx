@@ -58,12 +58,12 @@ export function ConfirmDialog({
       <DialogPortal>
         <DialogOverlay />
         <DialogPrimitive.Content
-          className="rt-fixed rt-left-[50%] rt-top-[50%] rt-z-50 rt-w-full rt-max-w-[335px] rt-translate-x-[-50%] rt-translate-y-[-50%] rt-gap-3 rt-border rt-bg-background rt-p-6 rt-shadow-lg rt-duration-200 data-[state=open]:rt-animate-in data-[state=closed]:rt-animate-out data-[state=closed]:rt-fade-out-0 data-[state=open]:rt-fade-in-0 data-[state=closed]:rt-zoom-out-95 data-[state=open]:rt-zoom-in-95 data-[state=closed]:rt-slide-out-to-left-1/2 data-[state=closed]:rt-slide-out-to-top-[48%] data-[state=open]:rt-slide-in-from-left-1/2 data-[state=open]:rt-slide-in-from-top-[48%] rt-rounded-20 rt-flex rt-flex-col rt-items-center rt-justify-center rt-text-center rt-font-primary"
+          className="rt-fixed rt-left-[50%] rt-top-[50%] rt-z-50 rt-w-full rt-max-w-[335px] rt-translate-x-[-50%] rt-translate-y-[-50%] rt-gap-3 rt-border rt-bg-[#f5f5f5] rt-p-6 rt-shadow-lg rt-duration-200 data-[state=open]:rt-animate-in data-[state=closed]:rt-animate-out data-[state=closed]:rt-fade-out-0 data-[state=open]:rt-fade-in-0 data-[state=closed]:rt-zoom-out-95 data-[state=open]:rt-zoom-in-95 data-[state=closed]:rt-slide-out-to-left-1/2 data-[state=closed]:rt-slide-out-to-top-[48%] data-[state=open]:rt-slide-in-from-left-1/2 data-[state=open]:rt-slide-in-from-top-[48%] rt-rounded-[20px] rt-flex rt-flex-col rt-items-center rt-justify-center rt-text-center rt-font-noto"
           onInteractOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}
         >
           {showCloseButton && (
-            <DialogPrimitive.Close className="rt-absolute rt-right-4 rt-top-4 rt-rounded-sm rt-opacity-70 rt-ring-offset-background rt-transition-opacity hover:rt-opacity-100 focus:rt-outline-none focus:rt-ring-2 focus:rt-ring-ring focus:rt-ring-offset-2 disabled:rt-pointer-events-none rt-z-10">
+            <DialogPrimitive.Close className="rt-absolute rt-right-4 rt-top-4 rt-rounded-sm rt-opacity-70 rt-ring-offset-[#f5f5f5] rt-transition-opacity hover:rt-opacity-100 focus:rt-outline-none focus:rt-ring-2 focus:rt-ring-[#7d7d7d] focus:rt-ring-offset-2 disabled:rt-pointer-events-none rt-z-10">
               <X className="rt-h-4 rt-w-4" />
               <span className="rt-sr-only">Close</span>
             </DialogPrimitive.Close>
@@ -90,13 +90,13 @@ export function ConfirmDialog({
               {title}
             </DialogTitle>
             {subtitle && (
-              <DialogDescription className="rt-text-12px rt-text-center rt-text-muted">
+              <DialogDescription className="rt-text-12px rt-text-center rt-text-[#929292]">
                 {subtitle}
               </DialogDescription>
             )}
           </DialogHeader>
 
-          <DialogFooter className="rt-flex rt-flex-col sm:rt-flex-col rt-gap-2 rt-w-full rt-items-center rt-justify-center rt-mt-1 rt-font-primary">
+          <DialogFooter className="rt-flex rt-flex-col sm:rt-flex-col rt-gap-2 rt-w-full rt-items-center rt-justify-center rt-mt-1 rt-font-noto">
             <Button
               onClick={onPrimaryClick}
               disabled={primaryButtonDisabled}

@@ -38,6 +38,7 @@ export function RecordForm() {
     setValue,
     reset,
     formState: { errors, isSubmitting },
+    trigger,
   } = useForm<CreateRecordInput>({
     resolver: async (data, context, options) => {
       const schema = createRecordSchema({
@@ -134,6 +135,7 @@ export function RecordForm() {
         branches={branches}
         currentAmount={currentAmount}
         setCurrentAmount={setCurrentAmount}
+        trigger={trigger}
       />
 
       <div className="rt-flex rt-items-center rt-justify-center rt-gap-3 rt-w-full rt-h-[94px] rt-shadow-[0px_-2px_15px_0px_rgba(0,0,0,0.1)] rt-sticky rt-bottom-0 rt-left-0 rt-bg-white rt-mt-auto rt-z-50">
@@ -142,7 +144,7 @@ export function RecordForm() {
           disabled={isLoading || isSubmitting}
           className="rt-text-white rt-w-11/12 "
         >
-          <span className="rt-font-primary rt-text-15px rt-mr-[7px]">
+          <span className="rt-font-noto rt-text-15px rt-mr-[7px]">
             စာရင်းမှတ်တမ်း မှတ်မည်
           </span>
           <FloppyDisk />

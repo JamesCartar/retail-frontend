@@ -27,6 +27,7 @@ export interface FeeInputsProps {
   fields: Fee[];
   remove: UseFieldArrayRemove;
   control: Control<{ fees: Fee[] }>;
+  trigger: ReturnType<typeof useForm<{ fees: Fee[] }>>["trigger"];
   handleSubmit: ReturnType<typeof useForm<{ fees: Fee[] }>>["handleSubmit"];
   isDirty: boolean;
   errors: FieldErrors<{ fees: Fee[] }>;
@@ -40,6 +41,7 @@ export function FeeForm({
   remove,
   control,
   handleSubmit,
+  trigger,
   errors,
   isDirty,
   reset,
@@ -119,12 +121,12 @@ export function FeeForm({
                   label="ငွေသွင်း/ထုတ်ပမာဏ"
                   placeholder="ငွေသွင်း/ထုတ်ပမာဏထည့်ပါ"
                   startIcon={
-                    <span className="rt-font-primary rt-text-14px rt-text-muted">
+                    <span className="rt-font-noto rt-text-14px rt-text-[#929292]">
                       မှ
                     </span>
                   }
                   endIcon={
-                    <span className="rt-font-inter rt-text-14px rt-text-muted">
+                    <span className="rt-font-inter rt-text-14px rt-text-[#929292]">
                       Ks
                     </span>
                   }
@@ -138,7 +140,7 @@ export function FeeForm({
                   label="လွှဲခ/အမြတ်"
                   placeholder="လွှဲခ/အမြတ်ထည့်ပါ"
                   endIcon={
-                    <span className="rt-font-inter rt-text-14px rt-text-muted">
+                    <span className="rt-font-inter rt-text-14px rt-text-[#929292]">
                       Ks
                     </span>
                   }
@@ -171,15 +173,17 @@ export function FeeForm({
                   name={`fees.${index}.to`}
                   control={control}
                   startIcon={
-                    <span className="rt-font-primary rt-text-14px rt-text-muted">
+                    <span className="rt-font-noto rt-text-14px rt-text-[#929292]">
                       သို့
                     </span>
                   }
                   endIcon={
-                    <span className="rt-font-inter rt-text-14px rt-text-muted">
+                    <span className="rt-font-inter rt-text-14px rt-text-[#929292]">
                       Ks
                     </span>
                   }
+                  trigger={trigger}
+                  revalidateInputName={`fees.${index}.from`}
                   floatingLabel={false}
                   error={errors?.fees?.[index]?.to?.message}
                   isCurrency
@@ -194,7 +198,7 @@ export function FeeForm({
             className="rt-text-white rt-w-11/12"
             disabled={!isDirty}
           >
-            <span className="rt-font-primary rt-text-15px rt-mr-[7px] rt-font-medium">
+            <span className="rt-font-noto rt-text-15px rt-mr-[7px] rt-font-medium">
               လွှဲခမှတ်မည်
             </span>
             <ArrowCircleRightIcon />

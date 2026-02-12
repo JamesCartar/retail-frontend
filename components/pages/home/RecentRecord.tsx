@@ -56,9 +56,9 @@ export function RecentRecord() {
   }, [fetchRecords]);
 
   return (
-    <div className="rt-w-full rt-flex-1 rt-bg-white rt-py-[14px] rt-px-[19px] rt-rounded-t-20 rt-flex rt-flex-col">
-      <div className="rt-flex rt-items rt-justify-between rt-font-secondary">
-        <p className="rt-font-bold rt-text-primary rt-text-17px">
+    <div className="rt-w-full rt-flex-1 rt-bg-white rt-py-[14px] rt-px-[19px] rt-rounded-t-[20px] rt-flex rt-flex-col">
+      <div className="rt-flex rt-items rt-justify-between rt-font-pyi">
+        <p className="rt-font-bold rt-text-[#1e77ed] rt-text-17px">
           နောက်ဆုံးစာရင်းမှတ်တမ်း
         </p>
         <Link

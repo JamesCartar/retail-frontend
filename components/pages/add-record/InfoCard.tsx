@@ -4,7 +4,7 @@ import InfoIcon from "@/components/icons/info.svg";
 export function InfoCard() {
   return (
     <Card className="rt-px-5 rt-border-0 rt-shadow-none">
-      <CardContent className="rt-px-[15px] rt-py-[10px] rt-rounded-5 rt-bg-[#DCEBFF] rt-text-primary rt-flex rt-gap-[19px]">
+      <CardContent className="rt-px-[15px] rt-py-[10px] rt-rounded-[5px] rt-bg-[#DCEBFF] rt-text-[#1e77ed] rt-flex rt-gap-[19px]">
         <div className="rt-mt-[2px]">
           <InfoIcon className="rt-w-5 rt-h-5" />
         </div>

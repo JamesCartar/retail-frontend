@@ -39,7 +39,7 @@ export function Envelope() {
             width={84}
             height={42}
           />
-          <span className="rt-font-primary rt-font-bold rt-text-13 rt-text-white">
+          <span className="rt-font-noto rt-font-bold rt-text-13 rt-text-white">
             ငွေသွင်း/ထုတ်စာရင်း
           </span>
         </div>
@@ -58,7 +58,7 @@ export function Envelope() {
                     elseBlock={<EyeClosedIcon />}
                   />
                 </Button>
-                <span className="rt-font-primary rt-text-15px rt-text-[#313131]">
+                <span className="rt-font-noto rt-text-15px rt-text-[#313131]">
                   ငွေသွင်း/ထုတ်
                 </span>
               </div>
@@ -82,7 +82,7 @@ export function Envelope() {
                     elseBlock={<EyeClosedIcon />}
                   />
                 </Button>
-                <span className="rt-font-primary rt-text-15px rt-text-[#313131]">
+                <span className="rt-font-noto rt-text-15px rt-text-[#313131]">
                   လွှဲခ/အမြတ်
                 </span>
               </div>

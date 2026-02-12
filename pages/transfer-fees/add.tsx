@@ -25,6 +25,7 @@ export default function AddFee() {
     handleSubmit,
     formState: { errors, isDirty },
     reset,
+    trigger,
   } = useForm<{ fees: Fee[] }>({
     resolver: zodResolver(feeSchema),
     defaultValues: {
@@ -55,7 +56,7 @@ export default function AddFee() {
   }, [fees, reset]);
 
   return (
-    <div className="rt-h-screen rt-font-primary rt-flex rt-flex-col">
+    <div className="rt-h-screen rt-font-noto rt-flex rt-flex-col">
       <Header
         navLink={ROUTES.HOME}
         navLabel="လွှဲခထည့်မည်"
@@ -68,6 +69,7 @@ export default function AddFee() {
           fields={fields}
           remove={remove}
           control={control}
+          trigger={trigger}
           errors={errors}
           handleSubmit={handleSubmit}
           isDirty={isDirty}

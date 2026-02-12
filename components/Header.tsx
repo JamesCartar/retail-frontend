@@ -53,10 +53,8 @@ const Header = ({
   return (
     <header
       className={cn(
-        "rt-bg-primary rt-text-white rt-border-b rt-px-[19px] rt-pt-4 rt-pb-4 rt-relative",
-        boldLabel
-          ? "rt-font-bold rt-font-secondary"
-          : "rt-font-medium rt-font-primary",
+        "rt-bg-[#1e77ed] rt-text-white rt-border-b rt-px-[19px] rt-pt-4 rt-pb-4 rt-relative",
+        boldLabel ? "rt-font-bold rt-font-pyi" : "rt-font-medium rt-font-noto",
         longHeader ? "rt-h-[185px]" : "rt-h-[65px]",
       )}
     >
@@ -112,7 +110,7 @@ const Header = ({
       <If
         isTrue={showInstructionModal}
         ifBlock={
-          <Card className="rt-absolute rt-left-1/2 -rt-bottom-[218px] -rt-translate-x-1/2 -rt-translate-y-1/2 rt-w-11/12 rt-bg-primary rt-text-white rt-rounded-5 rt-shadow-none rt-border-0 rt-z-10 rt-p-0 rt-font-primary">
+          <Card className="rt-absolute rt-left-1/2 -rt-bottom-[218px] -rt-translate-x-1/2 -rt-translate-y-1/2 rt-w-11/12 rt-bg-[#1e77ed] rt-text-white rt-rounded-[5px] rt-shadow-none rt-border-0 rt-z-10 rt-p-0 rt-font-noto">
             <CardHeader className="rt-px-[15px] rt-py-[10px] rt-flex rt-flex-row rt-items-center rt-justify-between">
               <CardTitle className="rt-text-16px rt-font-bold rt-flex rt-items-center rt-gap-[10px]">
                 <Info className="rt-w-5 rt-h-5" />

@@ -1,5 +1,5 @@
 import React from "react";
-import { Control, FieldErrors } from "react-hook-form";
+import { Control, FieldErrors, useForm } from "react-hook-form";
 import { FormInput, FormDatePicker, FormSelect } from "@/components/form";
 import CalendarIcon from "@/components/icons/calendar.svg";
 import PhoneIcon from "@/components/icons/phone.svg";
@@ -9,6 +9,7 @@ import { Branch } from "@/common/types";
 
 export interface FormInputsProps {
   control: Control<CreateRecordInput>;
+  trigger: ReturnType<typeof useForm<CreateRecordInput>>["trigger"];
   setValue: (name: keyof CreateRecordInput, value: any) => void;
   errors: FieldErrors<CreateRecordInput>;
   branches: Branch[];
@@ -18,12 +19,15 @@ export interface FormInputsProps {
 
 export function FormInputs({
   control,
+  trigger,
   setValue,
   errors,
   branches,
   currentAmount,
   setCurrentAmount,
 }: FormInputsProps) {
+  console.log(currentAmount, "currentAmount in FormInputs");
+
   return (
     <div className="rt-px-5 rt-flex rt-flex-col rt-gap-7">
       <FormInput
@@ -32,7 +36,7 @@ export function FormInputs({
         label="ဖုန်းနံပါတ်"
         placeholder="ဖုန်းနံပါတ်ထည့်ပါ"
         startIcon={
-          <PhoneIcon className="rt-w-[19px] rt-h-[19px] rt-text-muted" />
+          <PhoneIcon className="rt-w-[19px] rt-h-[19px] rt-text-[#929292]" />
         }
         floatingLabel={true}
         error={errors.phoneNo?.message}
@@ -66,10 +70,13 @@ export function FormInputs({
         <FormInput
           name="amount"
           control={control}
+          trigger={trigger}
           label="ငွေသွင်း/ထုတ်ပမာဏ"
           placeholder="ငွေသွင်း/ထုတ်ပမာဏထည့်ပါ"
           endIcon={
-            <span className="rt-font-inter rt-text-14px rt-text-muted">Ks</span>
+            <span className="rt-font-inter rt-text-14px rt-text-[#929292]">
+              Ks
+            </span>
           }
           floatingLabel={false}
           isCurrency
@@ -85,7 +92,9 @@ export function FormInputs({
           label="လွှဲခ/အမြတ်"
           placeholder="လွှဲခ/အမြတ်ထည့်ပါ"
           endIcon={
-            <span className="rt-font-inter rt-text-14px rt-text-muted">Ks</span>
+            <span className="rt-font-inter rt-text-14px rt-text-[#929292]">
+              Ks
+            </span>
           }
           floatingLabel={false}
           isCurrency

@@ -36,13 +36,13 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "rt-fixed rt-left-[50%] rt-top-[50%] rt-z-50 rt-grid rt-w-full rt-max-w-lg rt-translate-x-[-50%] rt-translate-y-[-50%] rt-gap-4 rt-border rt-bg-background rt-p-6 rt-shadow-lg rt-duration-200 data-[state=open]:rt-animate-in data-[state=closed]:rt-animate-out data-[state=closed]:rt-fade-out-0 data-[state=open]:rt-fade-in-0 data-[state=closed]:rt-zoom-out-95 data-[state=open]:rt-zoom-in-95 data-[state=closed]:rt-slide-out-to-left-1/2 data-[state=closed]:rt-slide-out-to-top-[48%] data-[state=open]:rt-slide-in-from-left-1/2 data-[state=open]:rt-slide-in-from-top-[48%] sm:rt-rounded-lg",
+        "rt-fixed rt-left-[50%] rt-top-[50%] rt-z-50 rt-grid rt-w-full rt-max-w-lg rt-translate-x-[-50%] rt-translate-y-[-50%] rt-gap-4 rt-border rt-bg-[#f5f5f5] rt-p-6 rt-shadow-lg rt-duration-200 data-[state=open]:rt-animate-in data-[state=closed]:rt-animate-out data-[state=closed]:rt-fade-out-0 data-[state=open]:rt-fade-in-0 data-[state=closed]:rt-zoom-out-95 data-[state=open]:rt-zoom-in-95 data-[state=closed]:rt-slide-out-to-left-1/2 data-[state=closed]:rt-slide-out-to-top-[48%] data-[state=open]:rt-slide-in-from-left-1/2 data-[state=open]:rt-slide-in-from-top-[48%] sm:rt-rounded-lg",
         className,
       )}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="rt-absolute rt-right-4 rt-top-4 rt-rounded-sm rt-opacity-70 rt-ring-offset-background rt-transition-opacity hover:rt-opacity-100 focus:rt-outline-none focus:rt-ring-2 focus:rt-ring-ring focus:rt-ring-offset-2 disabled:rt-pointer-events-none data-[state=open]:rt-bg-accent data-[state=open]:rt-text-muted-foreground">
+      <DialogPrimitive.Close className="rt-absolute rt-right-4 rt-top-4 rt-rounded-sm rt-opacity-70 rt-ring-offset-[#f5f5f5] rt-transition-opacity hover:rt-opacity-100 focus:rt-outline-none focus:rt-ring-2 focus:rt-ring-[#7d7d7d] focus:rt-ring-offset-2 disabled:rt-pointer-events-none data-[state=open]:rt-bg-[#65b448] data-[state=open]:rt-text-[#ababab]">
         <X className="rt-h-4 rt-w-4" />
         <span className="rt-sr-only">Close</span>
       </DialogPrimitive.Close>
@@ -97,7 +97,7 @@ const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn("rt-text-sm rt-text-muted-foreground", className)}
+    className={cn("rt-text-sm rt-text-[#ababab]", className)}
     {...props}
   />
 ));

@@ -4,7 +4,7 @@ import { Envelope, QuickActions, RecentRecord } from "@/components/pages/home";
 
 export default function Home() {
   return (
-    <div className="rt-min-h-screen rt-bg-background rt-flex rt-flex-col">
+    <div className="rt-min-h-screen rt-bg-[#f5f5f5] rt-flex rt-flex-col">
       <Header
         navLabel="ငွေလွှဲမှတ်တမ်း"
         boldLabel

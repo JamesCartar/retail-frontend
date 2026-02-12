@@ -58,8 +58,8 @@ export function FormSelect<TFieldValues extends FieldValues>({
               <Label
                 htmlFor={name}
                 className={cn(
-                  errorMessage && "rt-text-destructive",
-                  "rt-font-primary rt-text-13px rt-text-[#4C4C4C] rt-font-medium",
+                  errorMessage && "rt-text-[#dd5144]",
+                  "rt-font-noto rt-text-13px rt-text-[#4C4C4C] rt-font-medium",
                 )}
               >
                 {label}
@@ -79,8 +79,8 @@ export function FormSelect<TFieldValues extends FieldValues>({
               >
                 <SelectTrigger
                   className={cn(
-                    "rt-w-full rt-rounded-10 rt-border rt-border-input rt-bg-white rt-px-4 rt-py-[12px] rt-text-[13px] rt-text-muted rt-shadow-sm rt-h-[46px]",
-                    errorMessage && "rt-border-destructive rt-focus:ring-1",
+                    "rt-w-full rt-rounded-[10px] rt-border rt-border-[#eeeeee] rt-bg-white rt-px-4 rt-py-[12px] rt-text-[13px] rt-text-[#929292] rt-shadow-sm rt-h-[46px]",
+                    errorMessage && "rt-border-[#dd5144] rt-focus:ring-1",
                     field.value && "rt-text-black",
                   )}
                   onBlur={field.onBlur}
@@ -89,7 +89,7 @@ export function FormSelect<TFieldValues extends FieldValues>({
                   <If
                     isTrue={!!helperText && !field.value && !errorMessage}
                     ifBlock={
-                      <span className="rt-ml-auto rt-mr-1 rt-text-11px rt-text-muted rt-whitespace-nowrap">
+                      <span className="rt-ml-auto rt-mr-1 rt-text-11px rt-text-[#929292] rt-whitespace-nowrap">
                         {helperText}
                       </span>
                     }
@@ -107,7 +107,7 @@ export function FormSelect<TFieldValues extends FieldValues>({
 
             {/* Error Message */}
             {errorMessage && (
-              <p className="rt-text-11px rt-text-destructive rt-mt-1">
+              <p className="rt-text-11px rt-text-[#dd5144] rt-mt-1">
                 {errorMessage}
               </p>
             )}

@@ -31,10 +31,10 @@ export function Record({ record, className }: RecordProps) {
             alt={record.pay!}
             width={27}
             height={27}
-            className="rt-rounded-5"
+            className="rt-rounded-[5px]"
           />
         ) : (
-          <span className="rt-font-primary rt-font-medium rt-text-[13px] rt-leading-none">
+          <span className="rt-font-noto rt-font-medium rt-text-[13px] rt-leading-none">
             {record.description}
           </span>
         )}
@@ -44,7 +44,9 @@ export function Record({ record, className }: RecordProps) {
       </div>
       <div className="rt-font-inter rt-text-15px rt-flex rt-justify-between rt-items-center rt-leading-none">
         <span>{record.phoneNo}</span>
-        <span className="rt-text-accent">{formatNumber(record.fee!)} Ks</span>
+        <span className="rt-text-[#65b448]">
+          {formatNumber(record.fee!)} Ks
+        </span>
       </div>
     </div>
   );
@@ -69,10 +71,10 @@ export function ReportRecord({ record, className }: ReportRecordProps) {
             alt={record.Pay!}
             width={27}
             height={27}
-            className="rt-rounded-5"
+            className="rt-rounded-[5px]"
           />
         ) : (
-          <span className="rt-font-primary rt-font-medium rt-text-[13px] rt-leading-none">
+          <span className="rt-font-noto rt-font-medium rt-text-[13px] rt-leading-none">
             {record.Description}
           </span>
         )}
@@ -82,7 +84,9 @@ export function ReportRecord({ record, className }: ReportRecordProps) {
       </div>
       <div className="rt-font-inter rt-text-15px rt-flex rt-justify-between rt-items-center rt-leading-none">
         <span>{record.PhoneNo}</span>
-        <span className="rt-text-accent">{formatNumber(record.Fee!)} Ks</span>
+        <span className="rt-text-[#65b448]">
+          {formatNumber(record.Fee!)} Ks
+        </span>
       </div>
     </div>
   );

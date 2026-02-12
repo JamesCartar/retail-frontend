@@ -32,7 +32,7 @@ function Calendar({
         selected: `${getDefaultClassNames().selected} rt-bg-[#DCEBFF]`,
         day: `${
           getDefaultClassNames().day
-        } hover:rt-bg-primary-light rt-rounded-full`,
+        } hover:rt-bg-[#cde0fb] rt-rounded-full`,
         day_button: `${
           getDefaultClassNames().day_button
         } rt-w-9 rt-h-9 rt-p-0 rt-font-medium`,

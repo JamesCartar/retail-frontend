@@ -1,7 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Control, Controller, FieldValues, Path } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldValues,
+  Path,
+  useForm,
+} from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +16,8 @@ import { formatNumber, removeNumberComma } from "@/common/utils";
 export interface FormInputProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>;
   control: Control<TFieldValues>;
+  trigger?: ReturnType<typeof useForm<TFieldValues>>["trigger"];
+  revalidateInputName?: Path<TFieldValues>;
   label?: string;
   placeholder?: string;
   type?: string;
@@ -26,6 +34,8 @@ export interface FormInputProps<TFieldValues extends FieldValues> {
 export function FormInput<TFieldValues extends FieldValues>({
   name,
   control,
+  trigger,
+  revalidateInputName,
   label,
   placeholder,
   type = "text",
@@ -60,7 +70,7 @@ export function FormInput<TFieldValues extends FieldValues>({
           field.onBlur();
         };
 
-        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
           let rawValue = e.target.value;
 
           if (isCurrency && !isNaN(Number(removeNumberComma(rawValue)))) {
@@ -74,6 +84,11 @@ export function FormInput<TFieldValues extends FieldValues>({
           if (onChange) {
             onChange(e.target.value);
           }
+
+          if (trigger && revalidateInputName) {
+            console.log("Triggering validation for:", revalidateInputName);
+            await trigger(revalidateInputName);
+          }
         };
 
         // Floating label implementation
@@ -82,7 +97,7 @@ export function FormInput<TFieldValues extends FieldValues>({
             <div className={cn("rt-w-full", className)}>
               <div className="rt-relative">
                 {startIcon && (
-                  <div className="rt-absolute rt-left-4 rt-top-1/2 -rt-translate-y-1/2 rt-text-muted rt-pointer-events-none rt-z-10">
+                  <div className="rt-absolute rt-left-4 rt-top-1/2 -rt-translate-y-1/2 rt-text-[#929292] rt-pointer-events-none rt-z-10">
                     {startIcon}
                   </div>
                 )}
@@ -94,12 +109,12 @@ export function FormInput<TFieldValues extends FieldValues>({
                   disabled={disabled}
                   placeholder={placeholder}
                   className={cn(
-                    "rt-hide-number-stepper rt-peer rt-w-full rt-rounded-10 rt-border rt-border-input rt-bg-transparent rt-px-4 rt-py-[10px] rt-text-base rt-shadow-sm rt-transition-all rt-no-autofill-bg",
+                    "rt-hide-number-stepper rt-peer rt-w-full rt-rounded-[10px] rt-border rt-border-[#eeeeee] rt-bg-transparent rt-px-4 rt-py-[10px] rt-text-base rt-shadow-sm rt-transition-all rt-no-autofill-bg",
                     "placeholder:rt-text-transparent rt-overflow-hidden rt-whitespace-nowrap rt-leading-none rt-h-[46px]",
-                    "focus-visible:rt-outline-none focus-visible:rt-ring-1 focus-visible:rt-ring-ring",
+                    "focus-visible:rt-outline-none focus-visible:rt-ring-1 focus-visible:rt-ring-[#7d7d7d]",
                     "disabled:rt-cursor-not-allowed disabled:rt-opacity-50",
                     errorMessage &&
-                      "rt-border-destructive focus-visible:rt-ring-destructive",
+                      "rt-border-[#dd5144] focus-visible:rt-ring-[#dd5144]",
                     startIcon && "rt-pl-11",
                     endIcon && "rt-pr-10",
                   )}
@@ -111,11 +126,11 @@ export function FormInput<TFieldValues extends FieldValues>({
                   <label
                     className={cn(
                       "rt-absolute rt-left-3 rt-top-1/2 -rt-translate-y-1/2",
-                      "rt-pointer-events-none rt-font-secondary rt-text-14px rt-text-muted",
+                      "rt-pointer-events-none rt-font-pyi rt-text-14px rt-text-[#929292]",
                       "rt-transition-all rt-duration-200 rt-ease-linear",
                       "rt-bg-white rt-px-1",
                       isFloating && "rt-top-0 rt-text-xs",
-                      errorMessage && isFloating && "rt-text-destructive",
+                      errorMessage && isFloating && "rt-text-[#dd5144]",
                       startIcon && !isFloating && "rt-left-10",
                       startIcon && isFloating && "rt-left-5",
                     )}
@@ -125,7 +140,7 @@ export function FormInput<TFieldValues extends FieldValues>({
                 )}
 
                 {endIcon && (
-                  <div className="rt-absolute rt-right-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-muted rt-pointer-events-none rt-z-10">
+                  <div className="rt-absolute rt-right-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-[#929292] rt-pointer-events-none rt-z-10">
                     {endIcon}
                   </div>
                 )}
@@ -133,7 +148,7 @@ export function FormInput<TFieldValues extends FieldValues>({
 
               {/* Error Message */}
               {errorMessage && (
-                <p className="rt-text-11px rt-text-destructive rt-mt-1">
+                <p className="rt-text-11px rt-text-[#dd5144] rt-mt-1">
                   {errorMessage}
                 </p>
               )}
@@ -148,8 +163,8 @@ export function FormInput<TFieldValues extends FieldValues>({
               <Label
                 htmlFor={name}
                 className={cn(
-                  errorMessage && "rt-text-destructive",
-                  "rt-font-primary rt-text-13px rt-text-[#4C4C4C] rt-font-medium",
+                  errorMessage && "rt-text-[#dd5144]",
+                  "rt-font-noto rt-text-13px rt-text-[#4C4C4C] rt-font-medium",
                 )}
               >
                 {label}
@@ -158,7 +173,7 @@ export function FormInput<TFieldValues extends FieldValues>({
 
             <div className="rt-relative rt-mt-2">
               {startIcon && (
-                <div className="rt-absolute rt-left-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-muted rt-pointer-events-none rt-z-10">
+                <div className="rt-absolute rt-left-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-[#929292] rt-pointer-events-none rt-z-10">
                   {startIcon}
                 </div>
               )}
@@ -172,12 +187,12 @@ export function FormInput<TFieldValues extends FieldValues>({
                 placeholder={placeholder}
                 autoComplete="one-time-code"
                 className={cn(
-                  "rt-hide-number-stepper rt-peer rt-w-full rt-rounded-10 rt-border rt-border-input rt-bg-white rt-px-4 rt-py-[12px] rt-text-base rt-shadow-sm rt-transition-all rt-h-[46px] focus:rt-ring-0",
-                  "placeholder:rt-text-muted",
-                  "focus-visible:rt-outline-none focus-visible:rt-ring-1 focus-visible:rt-ring-ring",
+                  "rt-hide-number-stepper rt-peer rt-w-full rt-rounded-[10px] rt-border rt-border-[#eeeeee] rt-bg-white rt-px-4 rt-py-[12px] rt-text-base rt-shadow-sm rt-transition-all rt-h-[46px] focus:rt-ring-0",
+                  "placeholder:rt-text-[#929292]",
+                  "focus-visible:rt-outline-none focus-visible:rt-ring-1 focus-visible:rt-ring-[#7d7d7d]",
                   "disabled:rt-cursor-not-allowed disabled:rt-opacity-50",
                   errorMessage &&
-                    "rt-border-destructive focus-visible:rt-ring-destructive",
+                    "rt-border-[#dd5144] focus-visible:rt-ring-[#dd5144]",
                   startIcon && "rt-pl-10",
                   endIcon && "rt-pr-10",
                 )}
@@ -187,7 +202,7 @@ export function FormInput<TFieldValues extends FieldValues>({
               />
 
               {endIcon && (
-                <div className="rt-absolute rt-right-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-muted rt-pointer-events-none rt-z-10">
+                <div className="rt-absolute rt-right-3 rt-top-1/2 -rt-translate-y-1/2 rt-text-[#929292] rt-pointer-events-none rt-z-10">
                   {endIcon}
                 </div>
               )}
@@ -195,7 +210,7 @@ export function FormInput<TFieldValues extends FieldValues>({
 
             {/* Error Message */}
             {errorMessage && (
-              <p className="rt-text-11px rt-text-destructive rt-mt-1">
+              <p className="rt-text-11px rt-text-[#dd5144] rt-mt-1">
                 {errorMessage}
               </p>
             )}

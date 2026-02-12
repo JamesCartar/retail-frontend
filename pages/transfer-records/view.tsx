@@ -33,6 +33,7 @@ export default function ViewRecords() {
     control,
     trigger,
     formState: { errors },
+    clearErrors,
   } = useForm({
     resolver: zodResolver(DownloadDialogSchema),
     defaultValues: {
@@ -48,6 +49,8 @@ export default function ViewRecords() {
   useEffect(() => {
     if (fromDate || toDate) {
       trigger(["startDate", "endDate"]);
+    } else {
+      clearErrors(["startDate", "endDate"]);
     }
   }, [fromDate, toDate, trigger]);
 
@@ -144,7 +147,7 @@ export default function ViewRecords() {
 
   return (
     <div
-      className="rt-h-screen rt-font-primary rt-flex rt-flex-col rt-relative"
+      className="rt-h-screen rt-font-noto rt-flex rt-flex-col rt-relative"
       ref={dialogContainerRef}
     >
       <Header
@@ -153,7 +156,7 @@ export default function ViewRecords() {
         enableDownload
         onDownload={() => setIsDownloadDialogOpen(true)}
       />
-      <main className="rt-w-full rt-flex-1 rt-flex rt-flex-col rt-bg-background">
+      <main className="rt-w-full rt-flex-1 rt-flex rt-flex-col rt-bg-[#f5f5f5]">
         <RecordsFilter
           control={control}
           errors={errors}

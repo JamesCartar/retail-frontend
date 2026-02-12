@@ -31,7 +31,7 @@ export function PaymentTabs({
     <div className="rt-w-full rt-px-5">
       <Tabs
         defaultValue={selectedTab}
-        className="rt-w-full rt-p-[10px] rt-bg-[#F7F7F7] rt-rounded-8"
+        className="rt-w-full rt-p-[10px] rt-bg-[#F7F7F7] rt-rounded-[8px]"
         onValueChange={onTabChange as (value: string) => void}
       >
         <TabsList className="rt-w-full rt-mb-[9.48px]">
@@ -58,7 +58,7 @@ export function PaymentTabs({
                   width={46.02}
                   height={46.02}
                   alt={pay.value}
-                  className="rt-rounded-5"
+                  className="rt-rounded-[5px]"
                 />
                 <If
                   isTrue={selectedPay === (pay.value as PayType)}
@@ -75,7 +75,7 @@ export function PaymentTabs({
               onClick={() => onPayChange("other")}
               className="rt-relative"
             >
-              <span className="rt-px-[4.1px] rt-py-[12.5px] rt-text-center rt-bg-primary rt-text-white rt-rounded-5">
+              <span className="rt-px-[4.1px] rt-py-[12.5px] rt-text-center rt-bg-[#1e77ed] rt-text-white rt-rounded-[5px]">
                 အခြား
               </span>
               <If
@@ -95,7 +95,7 @@ export function PaymentTabs({
                 placeholder="အခြားပေး"
                 className="rt-mt-[15px]"
                 startIcon={
-                  <ThreeLineIcon className="rt-w-[19px] rt-h-[19px] rt-text-muted" />
+                  <ThreeLineIcon className="rt-w-[19px] rt-h-[19px] rt-text-[#929292]" />
                 }
                 floatingLabel={false}
                 error={errors.description?.message}
@@ -109,7 +109,7 @@ export function PaymentTabs({
             control={control}
             placeholder="အခြားအမျိုးအစား"
             startIcon={
-              <ThreeLineIcon className="rt-w-[19px] rt-h-[19px] rt-text-muted" />
+              <ThreeLineIcon className="rt-w-[19px] rt-h-[19px] rt-text-[#929292]" />
             }
             floatingLabel={false}
             error={errors.description?.message}
