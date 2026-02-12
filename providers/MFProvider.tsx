@@ -4,7 +4,11 @@ import "tailwindcss/tailwind.css";
 import { ReactNode } from "react";
 
 const MFProvider = ({ children }: { children: ReactNode }) => {
-  return <div>{children}</div>;
+  return (
+    <div className="rt-flex rt-items-center rt-justify-center rt-bg-white rt-overflow-y-auto">
+      <div className="container">{children}</div>
+    </div>
+  );
 };
 
 export default MFProvider;
