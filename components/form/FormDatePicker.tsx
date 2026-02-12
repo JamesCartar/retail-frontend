@@ -124,35 +124,35 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
 
         if (floatingLabel) {
           return (
-            <div className={cn("w-full", className)}>
-              <div className="relative">
+            <div className={cn("tr-w-full", className)}>
+              <div className="tr-relative">
                 <Popover open={isOpen} onOpenChange={handleOpenChange}>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
                       disabled={disabled}
                       className={cn(
-                        "w-full justify-start text-left font-normal px-3 py-[10px] h-auto rounded-10 border-input bg-white hover:bg-white hover:text-black",
-                        !dateValue && "text-muted-foreground",
-                        errorMessage && "border-destructive",
-                        startIcon ? "pl-10" : "pl-3",
-                        endIcon ? "pr-10" : "pr-3",
+                        "tr-w-full tr-justify-start tr-text-left tr-font-normal tr-px-3 tr-py-[10px] tr-h-auto tr-rounded-10 tr-border-input tr-bg-white hover:tr-bg-white hover:tr-text-black",
+                        !dateValue && "tr-text-muted-foreground",
+                        errorMessage && "tr-border-destructive",
+                        startIcon ? "tr-pl-10" : "tr-pl-3",
+                        endIcon ? "tr-pr-10" : "tr-pr-3",
                         btnClassName,
                       )}
                     >
                       {startIcon && (
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
+                        <div className="tr-absolute tr-left-3 tr-top-1/2 -tr-translate-y-1/2 tr-text-muted">
                           {startIcon}
                         </div>
                       )}
                       {dateValue ? (
                         formatCalendarDate(dateValue)
                       ) : (
-                        <span className="text-transparent">{placeholder}</span>
+                        <span className="tr-text-transparent">{placeholder}</span>
                       )}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent className="tr-w-auto tr-p-0" align="start">
                     <Calendar
                       mode="single"
                       captionLayout="dropdown"
@@ -165,14 +165,14 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                       disabled={disabledDays}
                     />
                     {(showClearButton || showOkButton || showCancelButton) && (
-                      <div className="flex justify-end gap-2 p-3 mb-1">
+                      <div className="tr-flex tr-justify-end tr-gap-2 tr-p-3 tr-mb-1">
                         {showClearButton && (
                           <Button
                             type="button"
                             variant="plain"
                             size="plain"
                             onClick={handleClear}
-                            className="text-primary text-[15px] hover:text-primary font-inter px-2"
+                            className="tr-text-primary tr-text-[15px] hover:tr-text-primary tr-font-inter tr-px-2"
                           >
                             Clear
                           </Button>
@@ -183,7 +183,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                             variant="plain"
                             size="plain"
                             onClick={handleOk}
-                            className="text-primary text-[15px] hover:text-primary font-inter px-2"
+                            className="tr-text-primary tr-text-[15px] hover:tr-text-primary tr-font-inter tr-px-2"
                           >
                             OK
                           </Button>
@@ -194,7 +194,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                             variant="plain"
                             size="plain"
                             onClick={handleCancel}
-                            className="text-primary text-[15px] hover:text-primary font-inter px-2"
+                            className="tr-text-primary tr-text-[15px] hover:tr-text-primary tr-font-inter tr-px-2"
                           >
                             Cancel
                           </Button>
@@ -208,14 +208,14 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                 {label && (
                   <label
                     className={cn(
-                      "absolute left-3 top-1/2 -translate-y-1/2",
-                      "pointer-events-none font-secondary text-14px text-muted",
-                      "transition-all duration-200 ease-linear",
-                      "bg-white px-1",
-                      isFloating && "top-0 text-xs",
-                      errorMessage && isFloating && "text-destructive",
-                      startIcon && !isFloating && "left-10",
-                      startIcon && isFloating && "left-5",
+                      "tr-absolute tr-left-3 tr-top-1/2 -tr-translate-y-1/2",
+                      "tr-pointer-events-none tr-font-secondary tr-text-14px tr-text-muted",
+                      "tr-transition-all tr-duration-200 tr-ease-linear",
+                      "tr-bg-white tr-px-1",
+                      isFloating && "tr-top-0 tr-text-xs",
+                      errorMessage && isFloating && "tr-text-destructive",
+                      startIcon && !isFloating && "tr-left-10",
+                      startIcon && isFloating && "tr-left-5",
                     )}
                   >
                     {label}
@@ -225,7 +225,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
 
               {/* Error Message */}
               {showError && errorMessage && (
-                <p className=" text-11px text-destructive mt-1">
+                <p className=" tr-text-11px tr-text-destructive tr-mt-1">
                   {errorMessage}
                 </p>
               )}
@@ -235,11 +235,11 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
 
         // Normal label above input
         return (
-          <div className={cn("w-full space-y-2", className)}>
+          <div className={cn("tr-w-full tr-space-y-2", className)}>
             {label && (
               <Label
                 htmlFor={name}
-                className={cn(errorMessage && "text-destructive")}
+                className={cn(errorMessage && "tr-text-destructive")}
               >
                 {label}
               </Label>
@@ -252,21 +252,21 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                   variant="outline"
                   disabled={disabled}
                   className={cn(
-                    "w-full justify-start text-left font-primary font-normal bg-white hover:bg-white focus:bg-white relative",
-                    !dateValue && "text-muted-foreground",
-                    errorMessage && "border-destructive",
-                    startIcon ? "pl-10" : "pl-3",
-                    endIcon ? "pr-10" : "pr-3",
+                    "tr-w-full tr-justify-start tr-text-left tr-font-primary tr-font-normal tr-bg-white hover:tr-bg-white focus:tr-bg-white tr-relative",
+                    !dateValue && "tr-text-muted-foreground",
+                    errorMessage && "tr-border-destructive",
+                    startIcon ? "tr-pl-10" : "tr-pl-3",
+                    endIcon ? "tr-pr-10" : "tr-pr-3",
                     btnClassName,
                   )}
                 >
                   {startIcon && (
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
+                    <div className="tr-absolute tr-left-3 tr-top-1/2 -tr-translate-y-1/2 tr-text-muted">
                       {startIcon}
                     </div>
                   )}
                   {endIcon && (
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted">
+                    <div className="tr-absolute tr-right-3 tr-top-1/2 -tr-translate-y-1/2 tr-text-muted">
                       {endIcon}
                     </div>
                   )}
@@ -277,7 +277,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
+              <PopoverContent className="tr-w-auto tr-p-0" align="start">
                 <Calendar
                   mode="single"
                   captionLayout="dropdown"
@@ -290,14 +290,14 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                   disabled={disabledDays}
                 />
                 {(showClearButton || showOkButton || showCancelButton) && (
-                  <div className="flex justify-end gap-2 p-3 mb-1">
+                  <div className="tr-flex tr-justify-end tr-gap-2 tr-p-3 tr-mb-1">
                     {showClearButton && (
                       <Button
                         type="button"
                         variant="plain"
                         size="plain"
                         onClick={handleClear}
-                        className="text-primary text-[15px] hover:text-primary font-inter px-2"
+                        className="tr-text-primary tr-text-[15px] hover:tr-text-primary tr-font-inter tr-px-2"
                       >
                         Clear
                       </Button>
@@ -308,7 +308,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                         variant="plain"
                         size="plain"
                         onClick={handleOk}
-                        className="text-primary text-[15px] hover:text-primary font-inter px-2"
+                        className="tr-text-primary tr-text-[15px] hover:tr-text-primary tr-font-inter tr-px-2"
                       >
                         OK
                       </Button>
@@ -319,7 +319,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
                         variant="plain"
                         size="plain"
                         onClick={handleCancel}
-                        className="text-primary text-[15px] hover:text-primary font-inter px-2"
+                        className="tr-text-primary tr-text-[15px] hover:tr-text-primary tr-font-inter tr-px-2"
                       >
                         Cancel
                       </Button>
@@ -331,7 +331,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
 
             {/* Error Message */}
             {showError && errorMessage && (
-              <p className="text-11px text-destructive mt-1">{errorMessage}</p>
+              <p className="tr-text-11px tr-text-destructive tr-mt-1">{errorMessage}</p>
             )}
           </div>
         );

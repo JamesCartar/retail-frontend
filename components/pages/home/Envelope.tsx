@@ -30,23 +30,23 @@ export function Envelope() {
   }, []);
 
   return (
-    <div className="mx-auto relative w-[378px] h-[233px] bg-[url('/images/envelope-bg.png')] bg-cover bg-no-repeat flex items-center justify-center -mt-[116px]">
-      <div className="mx-auto relative w-[355px] h-[206px] bg-[url('/images/envelope-card-bg.png')] bg-cover bg-no-repeat flex items-center justify-center">
-        <div className="absolute top-3 lef-0 w-10/12 flex justify-between items-center">
+    <div className="tr-mx-auto tr-relative tr-w-[378px] tr-h-[233px] tr-bg-[url('/images/envelope-bg.png')] tr-bg-cover tr-bg-no-repeat tr-flex tr-items-center tr-justify-center -tr-mt-[116px]">
+      <div className="tr-mx-auto tr-relative tr-w-[355px] tr-h-[206px] tr-bg-[url('/images/envelope-card-bg.png')] tr-bg-cover tr-bg-no-repeat tr-flex tr-items-center tr-justify-center">
+        <div className="tr-absolute tr-top-3 lef-0 tr-w-10/12 tr-flex tr-justify-between tr-items-center">
           <Image
             src="/images/logo.png"
             alt="page logo"
             width={84}
             height={42}
           />
-          <span className="font-primary font-bold text-13 text-white">
+          <span className="tr-font-primary tr-font-bold tr-text-13 tr-text-white">
             ငွေသွင်း/ထုတ်စာရင်း
           </span>
         </div>
-        <div className="mx-auto relative w-[380px] h-[235px] bg-[url('/images/envelope-front-bg.png')] bg-contain bg-no-repeat bg-[position:0px_75px]">
-          <div className="absolute bottom-12 left-7 w-10/12 gap-8 flex justify-between">
-            <div className="flex flex-col basis-1/2 gap-[2px]">
-              <div className="flex items-center gap-[5px]">
+        <div className="tr-mx-auto tr-relative tr-w-[380px] tr-h-[235px] tr-bg-[url('/images/envelope-front-bg.png')] tr-bg-contain tr-bg-no-repeat tr-bg-[position:0px_75px]">
+          <div className="tr-absolute tr-bottom-12 tr-left-7 tr-w-10/12 tr-gap-8 tr-flex tr-justify-between">
+            <div className="tr-flex tr-flex-col tr-basis-1/2 tr-gap-[2px]">
+              <div className="tr-flex tr-items-center tr-gap-[5px]">
                 <Button
                   onClick={() => setShowAmount(!showAmount)}
                   variant="plain"
@@ -58,19 +58,19 @@ export function Envelope() {
                     elseBlock={<EyeClosedIcon />}
                   />
                 </Button>
-                <span className="font-primary text-15px text-[#313131]">
+                <span className="tr-font-primary tr-text-15px tr-text-[#313131]">
                   ငွေသွင်း/ထုတ်
                 </span>
               </div>
-              <div className="flex items-center">
-                <span className="font-inter font-semibold text-21px">
+              <div className="tr-flex tr-items-center">
+                <span className="tr-font-inter tr-font-semibold tr-text-21px">
                   {showAmount ? formatNumber(total.total) : "* * * * * *"}
                 </span>
-                <span className="text-15px ml-1"> Ks</span>
+                <span className="tr-text-15px tr-ml-1"> Ks</span>
               </div>
             </div>
-            <div className="flex flex-col basis-1/2 gap-[2px]">
-              <div className="flex items-center gap-[5px]">
+            <div className="tr-flex tr-flex-col tr-basis-1/2 tr-gap-[2px]">
+              <div className="tr-flex tr-items-center tr-gap-[5px]">
                 <Button
                   onClick={() => setShowFee(!showFee)}
                   variant="plain"
@@ -82,15 +82,15 @@ export function Envelope() {
                     elseBlock={<EyeClosedIcon />}
                   />
                 </Button>
-                <span className="font-primary text-15px text-[#313131]">
+                <span className="tr-font-primary tr-text-15px tr-text-[#313131]">
                   လွှဲခ/အမြတ်
                 </span>
               </div>
-              <div className="flex items-center font-inter">
-                <span className="font-semibold text-21px">
+              <div className="tr-flex tr-items-center tr-font-inter">
+                <span className="tr-font-semibold tr-text-21px">
                   {showFee ? formatNumber(total.fee) : "* * * * * *"}
                 </span>
-                <span className="text-15px ml-1">Ks</span>
+                <span className="tr-text-15px tr-ml-1">Ks</span>
               </div>
             </div>
           </div>

@@ -53,20 +53,20 @@ export function FormSelect<TFieldValues extends FieldValues>({
       render={({ field, fieldState }) => {
         const errorMessage = error || fieldState.error?.message;
         return (
-          <div className={cn("w-full", className)}>
+          <div className={cn("tr-w-full", className)}>
             {label && (
               <Label
                 htmlFor={name}
                 className={cn(
-                  errorMessage && "text-destructive",
-                  "font-primary text-13px text-[#4C4C4C] font-medium",
+                  errorMessage && "tr-text-destructive",
+                  "tr-font-primary tr-text-13px tr-text-[#4C4C4C] tr-font-medium",
                 )}
               >
                 {label}
               </Label>
             )}
 
-            <div className="relative flex items-center gap-2">
+            <div className="tr-relative tr-flex tr-items-center tr-gap-2">
               <Select
                 value={field.value ?? ""}
                 onValueChange={(value) => {
@@ -79,9 +79,9 @@ export function FormSelect<TFieldValues extends FieldValues>({
               >
                 <SelectTrigger
                   className={cn(
-                    "w-full rounded-10 border border-input bg-white px-4 py-[12px] text-[13px] text-muted shadow-sm h-[46px]",
-                    errorMessage && "border-destructive focus:ring-1",
-                    field.value && "text-black",
+                    "tr-w-full tr-rounded-10 tr-border tr-border-input tr-bg-white tr-px-4 tr-py-[12px] tr-text-[13px] tr-text-muted tr-shadow-sm tr-h-[46px]",
+                    errorMessage && "tr-border-destructive focus:tr-ring-1",
+                    field.value && "tr-text-black",
                   )}
                   onBlur={field.onBlur}
                 >
@@ -89,7 +89,7 @@ export function FormSelect<TFieldValues extends FieldValues>({
                   <If
                     isTrue={!!helperText && !field.value && !errorMessage}
                     ifBlock={
-                      <span className="ml-auto mr-1 text-11px text-muted whitespace-nowrap">
+                      <span className="tr-ml-auto tr-mr-1 tr-text-11px tr-text-muted tr-whitespace-nowrap">
                         {helperText}
                       </span>
                     }
@@ -107,7 +107,7 @@ export function FormSelect<TFieldValues extends FieldValues>({
 
             {/* Error Message */}
             {errorMessage && (
-              <p className="text-11px text-destructive mt-1">{errorMessage}</p>
+              <p className="tr-text-11px tr-text-destructive tr-mt-1">{errorMessage}</p>
             )}
           </div>
         );

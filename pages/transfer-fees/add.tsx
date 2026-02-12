@@ -55,14 +55,14 @@ export default function AddFee() {
   }, [fees, reset]);
 
   return (
-    <div className="h-screen font-primary flex flex-col">
+    <div className="tr-h-screen tr-font-primary tr-flex tr-flex-col">
       <Header
         navLink={ROUTES.HOME}
         navLabel="လွှဲခထည့်မည်"
         enableInstructionModal
         confirmNavigate={isDirty}
       />
-      <main className="w-full flex-1 flex flex-col pt-[17px]">
+      <main className="tr-w-full tr-flex-1 tr-flex tr-flex-col tr-pt-[17px]">
         <InfoCard append={append} />
         <FeeForm
           fields={fields}

@@ -28,22 +28,22 @@ export function PaymentTabs({
   onPayChange,
 }: PaymentTabsProps) {
   return (
-    <div className="w-full px-5">
+    <div className="tr-w-full tr-px-5">
       <Tabs
         defaultValue={selectedTab}
-        className="w-full p-[10px] bg-[#F7F7F7] rounded-8"
+        className="tr-w-full tr-p-[10px] tr-bg-[#F7F7F7] tr-rounded-8"
         onValueChange={onTabChange as (value: string) => void}
       >
-        <TabsList className="w-full mb-[9.48px]">
-          <TabsTrigger value="pay" className="w-1/2">
+        <TabsList className="tr-w-full tr-mb-[9.48px]">
+          <TabsTrigger value="pay" className="tr-w-1/2">
             ငွေလွှဲအမျိုးအစား
           </TabsTrigger>
-          <TabsTrigger value="bank" className="w-1/2">
+          <TabsTrigger value="bank" className="tr-w-1/2">
             အခြားအမျိုးအစား
           </TabsTrigger>
         </TabsList>
         <TabsContent value="pay">
-          <div className="flex items-center gap-[14px]">
+          <div className="tr-flex tr-items-center tr-gap-[14px]">
             {PAY_OPTIONS.map((pay) => (
               <Button
                 type="button"
@@ -51,19 +51,19 @@ export function PaymentTabs({
                 size="plain"
                 onClick={() => onPayChange(pay.value as PayType)}
                 key={pay.value}
-                className="relative"
+                className="tr-relative"
               >
                 <Image
                   src={pay.image}
                   width={46.02}
                   height={46.02}
                   alt={pay.value}
-                  className="rounded-5"
+                  className="tr-rounded-5"
                 />
                 <If
                   isTrue={selectedPay === (pay.value as PayType)}
                   ifBlock={
-                    <CheckCircleSmIcon className="w-[5px]! h-[5px]! absolute -right-2 -top-2" />
+                    <CheckCircleSmIcon className="tr-w-[5px]! tr-h-[5px]! tr-absolute -tr-right-2 -tr-top-2" />
                   }
                 />
               </Button>
@@ -73,15 +73,15 @@ export function PaymentTabs({
               variant="plain"
               size="plain"
               onClick={() => onPayChange("other")}
-              className="relative"
+              className="tr-relative"
             >
-              <span className="px-[4.1px] py-[12.5px] text-center bg-primary text-white rounded-5">
+              <span className="tr-px-[4.1px] tr-py-[12.5px] tr-text-center tr-bg-primary tr-text-white tr-rounded-5">
                 အခြား
               </span>
               <If
                 isTrue={selectedPay === "other"}
                 ifBlock={
-                  <CheckCircleSmIcon className="w-[5px]! h-[5px]! absolute -right-2 -top-2" />
+                  <CheckCircleSmIcon className="tr-w-[5px]! tr-h-[5px]! tr-absolute -tr-right-2 -tr-top-2" />
                 }
               />
             </Button>
@@ -93,9 +93,9 @@ export function PaymentTabs({
                 name="description"
                 control={control}
                 placeholder="အခြားပေး"
-                className="mt-[15px]"
+                className="tr-mt-[15px]"
                 startIcon={
-                  <ThreeLineIcon className="w-[19px] h-[19px] text-muted" />
+                  <ThreeLineIcon className="tr-w-[19px] tr-h-[19px] tr-text-muted" />
                 }
                 floatingLabel={false}
                 error={errors.description?.message}
@@ -109,7 +109,7 @@ export function PaymentTabs({
             control={control}
             placeholder="အခြားအမျိုးအစား"
             startIcon={
-              <ThreeLineIcon className="w-[19px] h-[19px] text-muted" />
+              <ThreeLineIcon className="tr-w-[19px] tr-h-[19px] tr-text-muted" />
             }
             floatingLabel={false}
             error={errors.description?.message}

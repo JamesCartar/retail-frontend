@@ -7,7 +7,7 @@ export interface RecordsListProps {
 
 export function RecordsList({ records }: RecordsListProps) {
   return (
-    <div className="w-full border-b last:border-0 flex flex-col">
+    <div className="tr-w-full tr-border-b last:tr-border-0 tr-flex tr-flex-col">
       {records?.map((record) => {
         return <Record key={record.id} record={record} />;
       })}

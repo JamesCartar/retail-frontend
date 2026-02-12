@@ -12,7 +12,7 @@ const AccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn("border-b", className)}
+    className={cn("tr-border-b", className)}
     {...props}
   />
 ));
@@ -24,11 +24,11 @@ const AccordionTrigger = React.forwardRef<
     chevronClassName?: string;
   }
 >(({ className, children, chevronClassName, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
+  <AccordionPrimitive.Header className="tr-flex">
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        "relative flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline text-left [&[data-state=open]>svg]:rotate-180",
+        "tr-relative tr-flex tr-flex-1 tr-items-center tr-justify-between tr-py-4 tr-text-sm tr-font-medium tr-transition-all hover:tr-underline tr-text-left [&[data-state=open]>svg]:tr-rotate-180",
         className,
       )}
       {...props}
@@ -36,7 +36,7 @@ const AccordionTrigger = React.forwardRef<
       {children}
       <ChevronDown
         className={cn(
-          "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200",
+          "tr-h-4 tr-w-4 tr-shrink-0 tr-text-muted-foreground tr-transition-transform tr-duration-200",
           chevronClassName,
         )}
       />
@@ -51,10 +51,10 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    className="tr-overflow-hidden tr-text-sm data-[state=closed]:tr-animate-accordion-up data-[state=open]:tr-animate-accordion-down"
     {...props}
   >
-    <div className={cn("pb-4 pt-0", className)}>{children}</div>
+    <div className={cn("tr-pb-4 tr-pt-0", className)}>{children}</div>
   </AccordionPrimitive.Content>
 ));
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;

@@ -101,27 +101,27 @@ export function FeeForm({
   };
 
   return (
-    <div className="mt-[15px] relative flex-1 flex flex-col">
+    <div className="tr-mt-[15px] tr-relative tr-flex-1 tr-flex tr-flex-col">
       <form
-        className="flex-1 flex flex-col"
+        className="tr-flex-1 tr-flex tr-flex-col"
         onSubmit={handleSubmit(handleFormSubmit)}
       >
-        <div className="pl-5 pr-3 last:border-0">
+        <div className="tr-pl-5 tr-pr-3 last:tr-border-0">
           {fields.map((fee, index) => (
-            <div className="border-b last:border-0 py-[15px]" key={fee.id}>
-              <div className="grid grid-cols-[188fr_132fr_30fr] gap-[10px] w-full">
+            <div className="tr-border-b last:tr-border-0 tr-py-[15px]" key={fee.id}>
+              <div className="tr-grid tr-grid-cols-[188fr_132fr_30fr] tr-gap-[10px] tr-w-full">
                 <FormInput
                   name={`fees.${index}.from`}
                   control={control}
                   label="ငွေသွင်း/ထုတ်ပမာဏ"
                   placeholder="ငွေသွင်း/ထုတ်ပမာဏထည့်ပါ"
                   startIcon={
-                    <span className="font-primary text-14px text-muted">
+                    <span className="tr-font-primary tr-text-14px tr-text-muted">
                       မှ
                     </span>
                   }
                   endIcon={
-                    <span className="font-inter text-14px text-muted">Ks</span>
+                    <span className="tr-font-inter tr-text-14px tr-text-muted">Ks</span>
                   }
                   floatingLabel={false}
                   error={errors?.fees?.[index]?.from?.message}
@@ -133,7 +133,7 @@ export function FeeForm({
                   label="လွှဲခ/အမြတ်"
                   placeholder="လွှဲခ/အမြတ်ထည့်ပါ"
                   endIcon={
-                    <span className="font-inter text-14px text-muted">Ks</span>
+                    <span className="tr-font-inter tr-text-14px tr-text-muted">Ks</span>
                   }
                   floatingLabel={false}
                   isCurrency
@@ -145,31 +145,31 @@ export function FeeForm({
                     size="plain"
                     type="button"
                     className={cn(
-                      "self-center rounded-full",
+                      "tr-self-center tr-rounded-full",
                       errors.fees?.[index]?.from
-                        ? "self-center"
-                        : "self-end mb-[10px]",
+                        ? "tr-self-center"
+                        : "tr-self-end tr-mb-[10px]",
                     )}
                     onClick={() => {
                       setCurrentSelectedFeeIndex(index);
                       setShowDeleteConfirmDialog(true);
                     }}
                   >
-                    <CircleXIcon className="rounded-full" />
+                    <CircleXIcon className="tr-rounded-full" />
                   </Button>
                 )}
               </div>
-              <div className="grid grid-cols-[188fr_132fr_30fr] gap-[10px] w-full mt-4">
+              <div className="tr-grid tr-grid-cols-[188fr_132fr_30fr] tr-gap-[10px] tr-w-full tr-mt-4">
                 <FormInput
                   name={`fees.${index}.to`}
                   control={control}
                   startIcon={
-                    <span className="font-primary text-14px text-muted">
+                    <span className="tr-font-primary tr-text-14px tr-text-muted">
                       သို့
                     </span>
                   }
                   endIcon={
-                    <span className="font-inter text-14px text-muted">Ks</span>
+                    <span className="tr-font-inter tr-text-14px tr-text-muted">Ks</span>
                   }
                   floatingLabel={false}
                   error={errors?.fees?.[index]?.to?.message}
@@ -179,13 +179,13 @@ export function FeeForm({
             </div>
           ))}
         </div>
-        <div className="flex items-center justify-center gap-3 w-full h-[94px] shadow-[0px_-2px_15px_0px_rgba(0,0,0,0.1)] sticky bottom-0 left-0 bg-white mt-auto z-50">
+        <div className="tr-flex tr-items-center tr-justify-center tr-gap-3 tr-w-full tr-h-[94px] tr-shadow-[0px_-2px_15px_0px_rgba(0,0,0,0.1)] tr-sticky tr-bottom-0 tr-left-0 tr-bg-white tr-mt-auto tr-z-50">
           <Button
             type="submit"
-            className="text-white w-11/12"
+            className="tr-text-white tr-w-11/12"
             disabled={!isDirty}
           >
-            <span className="font-primary text-15px mr-[7px] font-medium">
+            <span className="tr-font-primary tr-text-15px tr-mr-[7px] tr-font-medium">
               လွှဲခမှတ်မည်
             </span>
             <ArrowCircleRightIcon />

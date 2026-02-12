@@ -27,15 +27,15 @@ function Calendar({
       onMonthChange={setMonth}
       month={month}
       reverseYears
-      className={cn("p-3", className)}
+      className={cn("tr-p-3", className)}
       classNames={{
-        selected: `${getDefaultClassNames().selected} bg-[#DCEBFF]`,
+        selected: `${getDefaultClassNames().selected} tr-bg-[#DCEBFF]`,
         day: `${
           getDefaultClassNames().day
-        } hover:bg-primary-light rounded-full`,
+        } hover:tr-bg-primary-light tr-rounded-full`,
         day_button: `${
           getDefaultClassNames().day_button
-        } w-9 h-9 p-0 font-medium`,
+        } tr-w-9 tr-h-9 tr-p-0 tr-font-medium`,
       }}
       {...props}
     />

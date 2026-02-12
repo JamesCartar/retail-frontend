@@ -53,15 +53,15 @@ const Header = ({
   return (
     <header
       className={cn(
-        "bg-primary text-white border-b px-[19px] pt-4 pb-4 relative",
-        boldLabel ? "font-bold font-secondary" : "font-medium font-primary",
-        longHeader ? "h-[185px]" : "h-[65px]",
+        "tr-bg-primary tr-text-white tr-border-b tr-px-[19px] tr-pt-4 tr-pb-4 tr-relative",
+        boldLabel ? "tr-font-bold tr-font-secondary" : "tr-font-medium tr-font-primary",
+        longHeader ? "tr-h-[185px]" : "tr-h-[65px]",
       )}
     >
-      <div className="flex justify-between items-center">
+      <div className="tr-flex tr-justify-between tr-items-center">
         <Link
           href={navLink}
-          className="flex items-center"
+          className="tr-flex tr-items-center"
           onClick={(e) => {
             if (confirmNavigate) {
               e.preventDefault();
@@ -71,8 +71,8 @@ const Header = ({
             }
           }}
         >
-          <LeftArrowIcon className="w-9 h-9" />
-          <p className="text-17px">{navLabel}</p>
+          <LeftArrowIcon className="tr-w-9 tr-h-9" />
+          <p className="tr-text-17px">{navLabel}</p>
         </Link>
         <If
           isTrue={enableDownload}
@@ -80,11 +80,11 @@ const Header = ({
             <Button
               variant="plain"
               size="plain"
-              className="flex items-center gap-[5px] "
+              className="tr-flex tr-items-center tr-gap-[5px] "
               onClick={onDownload}
             >
               <DownloadIcon />
-              <span className="font-bold text-12px mt-[6px]">
+              <span className="tr-font-bold tr-text-12px tr-mt-[6px]">
                 ဒေါင်းလုပ်ဆွဲမည်
               </span>
             </Button>
@@ -96,11 +96,11 @@ const Header = ({
             <Button
               variant="plain"
               size="plain"
-              className="flex items-center gap-[5px] [&_svg]:w-4 [&_svg]:h-4"
+              className="tr-flex tr-items-center tr-gap-[5px] [&_svg]:tr-w-4 [&_svg]:tr-h-4"
               onClick={() => setShowInstructionModal((state) => !state)}
             >
               <Info />
-              <span className="font-bold text-12px mt-1">လွှဲခထည့်နည်း</span>
+              <span className="tr-font-bold tr-text-12px tr-mt-1">လွှဲခထည့်နည်း</span>
             </Button>
           }
         />
@@ -108,11 +108,11 @@ const Header = ({
       <If
         isTrue={showInstructionModal}
         ifBlock={
-          <Card className="absolute left-1/2 -bottom-[218px] -translate-x-1/2 -translate-y-1/2 w-11/12 bg-primary text-white rounded-5 shadow-none border-0 z-10 p-0 font-primary">
-            <CardHeader className="px-[15px] py-[10px] flex flex-row items-center justify-between">
-              <CardTitle className="text-16px font-bold flex items-center gap-[10px]">
-                <Info className="w-5 h-5" />
-                <span className="font-bold text-13px mt-[6px] mb-1">
+          <Card className="tr-absolute tr-left-1/2 -tr-bottom-[218px] -tr-translate-x-1/2 -tr-translate-y-1/2 tr-w-11/12 tr-bg-primary tr-text-white tr-rounded-5 tr-shadow-none tr-border-0 tr-z-10 tr-p-0 tr-font-primary">
+            <CardHeader className="tr-px-[15px] tr-py-[10px] tr-flex tr-flex-row tr-items-center tr-justify-between">
+              <CardTitle className="tr-text-16px tr-font-bold tr-flex tr-items-center tr-gap-[10px]">
+                <Info className="tr-w-5 tr-h-5" />
+                <span className="tr-font-bold tr-text-13px tr-mt-[6px] tr-mb-1">
                   လွှဲခထည့်နည်း
                 </span>
               </CardTitle>
@@ -120,13 +120,13 @@ const Header = ({
                 variant="plain"
                 size="plain"
                 onClick={() => setShowInstructionModal(false)}
-                className="!m-0"
+                className="!tr-m-0"
               >
-                <CrossIcon className="text-white" />
+                <CrossIcon className="tr-text-white" />
               </Button>
             </CardHeader>
-            <CardContent className="px-[15px] pb-[15px] mt-[1px]">
-              <p className="text-13px font-normal">
+            <CardContent className="tr-px-[15px] tr-pb-[15px] tr-mt-[1px]">
+              <p className="tr-text-13px tr-font-normal">
                 ၁၀၀၀ မှ ၁၀၀၀၀ အတွင်းကို လွှဲခ ၅၀၀ ကောက်လိုပါက ၁၀၀၀ ကို “မှ”
                 တွင်ထည့်၍ ၁၀၀၀၀ ကို “သို့” တွင်ထည့်ပါ။ ၅၀၀ ကို “လွှဲခ”
                 တွင်ထည့်ပါ။

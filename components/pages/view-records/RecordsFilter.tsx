@@ -38,20 +38,20 @@ export function RecordsFilter({
   const endMax = start ? addMonths(start, 3) : undefined;
 
   return (
-    <div className="py-[15px] px-5 bg-white flex flex-col gap-5">
-      <div className="grid grid-cols-[1fr_auto_1fr] items-center">
+    <div className="tr-py-[15px] tr-px-5 tr-bg-white tr-flex tr-flex-col tr-gap-5">
+      <div className="tr-grid tr-grid-cols-[1fr_auto_1fr] tr-items-center">
         <FormDatePicker
           name="startDate"
           control={control}
           placeholder="ရက်စွဲ"
-          endIcon={<CalendarIcon className="h-4 w-4 mb-1" />}
+          endIcon={<CalendarIcon className="tr-h-4 tr-w-4 tr-mb-1" />}
           floatingLabel={false}
           error={errors.startDate?.message}
           showError={false}
           showOkButton
           showCancelButton
           showClearButton
-          className="text-primary hover:text-primary"
+          className="tr-text-primary hover:tr-text-primary"
           btnClassName="hover:text-primary"
           disabledDays={{
             ...(startMin && { before: startMin }),
@@ -59,19 +59,19 @@ export function RecordsFilter({
           }}
           defaultMonth={start || end || undefined}
         />
-        <span className="px-6 text-muted font-primary">မှ</span>
+        <span className="tr-px-6 tr-text-muted tr-font-primary">မှ</span>
         <FormDatePicker
           name="endDate"
           control={control}
           placeholder="ရက်စွဲ"
-          endIcon={<CalendarIcon className="h-4 w-4 mb-1" />}
+          endIcon={<CalendarIcon className="tr-h-4 tr-w-4 tr-mb-1" />}
           floatingLabel={false}
           error={errors.endDate?.message}
           showError={false}
           showOkButton
           showCancelButton
           showClearButton
-          className="text-primary hover:text-primary"
+          className="tr-text-primary hover:tr-text-primary"
           btnClassName="hover:text-primary"
           disabledDays={{
             ...(endMin && { before: endMin }),
@@ -81,21 +81,21 @@ export function RecordsFilter({
         />
       </div>
       <div>
-        <div className="flex items-center gap-[12px]">
+        <div className="tr-flex tr-items-center tr-gap-[12px]">
           <Button
             type="button"
             variant="plain"
             size="plain"
             onClick={() => setSelectedPay(null)}
-            className="relative"
+            className="tr-relative"
           >
-            <span className="px-[14px] py-[9.5px] text-center bg-primary text-white rounded-5 text-11px">
+            <span className="tr-px-[14px] tr-py-[9.5px] tr-text-center tr-bg-primary tr-text-white tr-rounded-5 tr-text-11px">
               All
             </span>
             <If
               isTrue={selectedPay === null}
               ifBlock={
-                <CheckCircleSmIcon className="w-[5px]! h-[5px]! absolute -right-2 -top-2" />
+                <CheckCircleSmIcon className="tr-w-[5px]! tr-h-[5px]! tr-absolute -tr-right-2 -tr-top-2" />
               }
             />
           </Button>
@@ -106,19 +106,19 @@ export function RecordsFilter({
               size="plain"
               onClick={() => setSelectedPay(pay.value as PayType)}
               key={pay.value}
-              className="relative"
+              className="tr-relative"
             >
               <Image
                 src={pay.image}
                 width={43.02}
                 height={43.02}
                 alt={pay.value}
-                className="rounded-5"
+                className="tr-rounded-5"
               />
               <If
                 isTrue={selectedPay === (pay.value as PayType)}
                 ifBlock={
-                  <CheckCircleSmIcon className="w-[5px]! h-[5px]! absolute -right-2 -top-2" />
+                  <CheckCircleSmIcon className="tr-w-[5px]! tr-h-[5px]! tr-absolute -tr-right-2 -tr-top-2" />
                 }
               />
             </Button>
@@ -128,15 +128,15 @@ export function RecordsFilter({
             variant="plain"
             size="plain"
             onClick={() => setSelectedPay("other")}
-            className="relative"
+            className="tr-relative"
           >
-            <span className="px-[5.1px] py-[10px] text-center bg-primary text-white rounded-5 text-11px">
+            <span className="tr-px-[5.1px] tr-py-[10px] tr-text-center tr-bg-primary tr-text-white tr-rounded-5 tr-text-11px">
               အခြား
             </span>
             <If
               isTrue={selectedPay === "other"}
               ifBlock={
-                <CheckCircleSmIcon className="w-[5px]! h-[5px]! absolute -right-2 -top-2" />
+                <CheckCircleSmIcon className="tr-w-[5px]! tr-h-[5px]! tr-absolute -tr-right-2 -tr-top-2" />
               }
             />
           </Button>

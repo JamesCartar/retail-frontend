@@ -10,7 +10,7 @@ export interface InfoCardProps {
 
 export function InfoCard({ append }: InfoCardProps) {
   return (
-    <div className="px-5 border-0 shadow-none flex flex-col items-center justify-center gap-6 font-primary">
+    <div className="tr-px-5 tr-border-0 tr-shadow-none tr-flex tr-flex-col tr-items-center tr-justify-center tr-gap-6 tr-font-primary">
       <div>
         <Image
           src="/images/add-fee-logo.png"
@@ -19,10 +19,10 @@ export function InfoCard({ append }: InfoCardProps) {
           height={106.54}
         />
       </div>
-      <p className="text-17px font-medium">ငွေလွှဲငွေထုတ်အတွက် လွှဲခထည့်ရန်</p>
+      <p className="tr-text-17px tr-font-medium">ငွေလွှဲငွေထုတ်အတွက် လွှဲခထည့်ရန်</p>
       <Button
         variant="secondary"
-        className="bg-secondary-light py-3 px-[25px] rounded-full text-13px font-medium"
+        className="tr-bg-secondary-light tr-py-3 tr-px-[25px] tr-rounded-full tr-text-13px tr-font-medium"
         onClick={() =>
           append({ id: `temp-id-${Date.now()}`, fee: "0", from: "0", to: "0" })
         }

@@ -38,24 +38,24 @@ export function DatePicker({
   const isFloating = isOpen || !!value;
 
   return (
-    <div className={cn("w-full", className)}>
-      <div className="relative">
+    <div className={cn("tr-w-full", className)}>
+      <div className="tr-relative">
         <Popover open={isOpen} onOpenChange={setIsOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               disabled={disabled}
               className={cn(
-                "w-full justify-start text-left font-normal px-3 py-6 h-auto",
-                !value && "text-muted-foreground",
-                error && "border-destructive"
+                "tr-w-full tr-justify-start tr-text-left tr-font-normal tr-px-3 tr-py-6 tr-h-auto",
+                !value && "tr-text-muted-foreground",
+                error && "tr-border-destructive"
               )}
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
+              <CalendarIcon className="tr-mr-2 tr-h-4 tr-w-4" />
               {value ? format(value, "PPP") : <span>{placeholder}</span>}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent className="tr-w-auto tr-p-0" align="start">
             <Calendar
               mode="single"
               selected={value}
@@ -72,12 +72,12 @@ export function DatePicker({
         {label && (
           <label
             className={cn(
-              "absolute left-3 top-1/2 -translate-y-1/2",
-              "text-muted-foreground pointer-events-none",
-              "transition-all duration-200 ease-linear",
-              "bg-background px-1",
-              isFloating && "top-0 text-xs",
-              error && isFloating && "text-destructive"
+              "tr-absolute tr-left-3 tr-top-1/2 -tr-translate-y-1/2",
+              "tr-text-muted-foreground tr-pointer-events-none",
+              "tr-transition-all tr-duration-200 tr-ease-linear",
+              "tr-bg-background tr-px-1",
+              isFloating && "tr-top-0 tr-text-xs",
+              error && isFloating && "tr-text-destructive"
             )}
           >
             {label}
@@ -86,7 +86,7 @@ export function DatePicker({
       </div>
 
       {/* Error Message */}
-      {error && <p className="text-sm text-destructive mt-1.5">{error}</p>}
+      {error && <p className="tr-text-sm tr-text-destructive tr-mt-1.5">{error}</p>}
     </div>
   );
 }

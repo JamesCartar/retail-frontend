@@ -84,10 +84,10 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply tr-border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply tr-bg-background tr-text-foreground;
   }
 
   input:-webkit-autofill,

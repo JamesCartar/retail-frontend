@@ -34,14 +34,14 @@ export function RecordsList({
   }, [records]);
 
   return (
-    <div className="px-5 pt-[17px] flex-1">
+    <div className="tr-px-5 tr-pt-[17px] tr-flex-1">
       <IfElse
         isTrue={records?.length === 0 && !loading}
         ifBlock={
-          <div className="h-full">
-            <div className="flex flex-col gap-3 items-center justify-center h-full">
-              <NoRecordIcon className="text-[#EAEAEA] mt-3!" />
-              <span className="text-[#D7D7D7]">စာရင်းမှတ်တမ်းမရှိသေးပါ</span>
+          <div className="tr-h-full">
+            <div className="tr-flex tr-flex-col tr-gap-3 tr-items-center tr-justify-center tr-h-full">
+              <NoRecordIcon className="tr-text-[#EAEAEA] tr-mt-3!" />
+              <span className="tr-text-[#D7D7D7]">စာရင်းမှတ်တမ်းမရှိသေးပါ</span>
             </div>
           </div>
         }
@@ -50,47 +50,47 @@ export function RecordsList({
             type="multiple"
             value={openItems}
             onValueChange={setOpenItems}
-            className="space-y-[10px]"
+            className="tr-space-y-[10px]"
           >
             {records?.map((record, index) => (
               <AccordionItem
                 value={index.toString()}
-                className="border-0 rounded-10  [&_svg]:size-6 [&_svg]:text-primary"
+                className="tr-border-0 tr-rounded-10  [&_svg]:tr-size-6 [&_svg]:tr-text-primary"
                 key={index}
               >
                 <AccordionTrigger
-                  className="hover:no-underline border-0 items-start overflow-hidden bg-primary-lighter rounded-10 data-[state=open]:rounded-b-none"
-                  chevronClassName=" absolute top-3 right-4"
+                  className="hover:tr-no-underline tr-border-0 tr-items-start tr-overflow-hidden tr-bg-primary-lighter tr-rounded-10 data-[state=open]:tr-rounded-b-none"
+                  chevronClassName=" tr-absolute tr-top-3 tr-right-4"
                 >
-                  <div className="w-full px-[15px]">
-                    <span className="font-inter text-14px font-bold text-primary mb-[18px]">
+                  <div className="tr-w-full tr-px-[15px]">
+                    <span className="tr-font-inter tr-text-14px tr-font-bold tr-text-primary tr-mb-[18px]">
                       {formatCalendarDate(record.date)}
                     </span>
-                    <div className="flex items-center justify-between mt-3">
-                      <div className="flex flex-col">
-                        <span className="text-muted-light text-13px font-secondary">
+                    <div className="tr-flex tr-items-center tr-justify-between tr-mt-3">
+                      <div className="tr-flex tr-flex-col">
+                        <span className="tr-text-muted-light tr-text-13px tr-font-secondary">
                           စုစုပေါင်း ငွေသွင်း/ထုတ်
                         </span>
-                        <span className="font-secondary font-bold text-17px">
+                        <span className="tr-font-secondary tr-font-bold tr-text-17px">
                           {formatCurrency(record.totalAmount)} Ks
                         </span>
                       </div>
-                      <div className="flex flex-col items-end">
-                        <span className="text-muted-light text-13px font-secondary">
+                      <div className="tr-flex tr-flex-col tr-items-end">
+                        <span className="tr-text-muted-light tr-text-13px tr-font-secondary">
                           စုစုပေါင်း လွှဲခ/ အမြတ်
                         </span>
-                        <span className="font-secondary font-bold text-17px text-accent z-50">
+                        <span className="tr-font-secondary tr-font-bold tr-text-17px tr-text-accent tr-z-50">
                           {formatCurrency(record.totalFee)} Ks
                         </span>
                       </div>
                     </div>
                   </div>
-                  <div className="absolute -bottom-[70px] -right-[112px] w-36 h-36 bg-primary-light rounded-full"></div>
+                  <div className="tr-absolute -tr-bottom-[70px] -tr-right-[112px] tr-w-36 tr-h-36 tr-bg-primary-light tr-rounded-full"></div>
                 </AccordionTrigger>
                 <AccordionContent>
                   {record.records.map((recordItem, index) => (
                     <ReportRecord
-                      className="last:rounded-b-10"
+                      className="last:tr-rounded-b-10"
                       key={index}
                       record={recordItem}
                     />
@@ -98,7 +98,7 @@ export function RecordsList({
                 </AccordionContent>
               </AccordionItem>
             ))}
-            <div ref={observerRef} className="h-1" />
+            <div ref={observerRef} className="tr-h-1" />
           </Accordion>
         }
       />

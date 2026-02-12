@@ -144,7 +144,7 @@ export default function ViewRecords() {
 
   return (
     <div
-      className="h-screen font-primary flex flex-col relative"
+      className="tr-h-screen tr-font-primary tr-flex tr-flex-col tr-relative"
       ref={dialogContainerRef}
     >
       <Header
@@ -153,7 +153,7 @@ export default function ViewRecords() {
         enableDownload
         onDownload={() => setIsDownloadDialogOpen(true)}
       />
-      <main className="w-full flex-1 flex flex-col bg-background">
+      <main className="tr-w-full tr-flex-1 tr-flex tr-flex-col tr-bg-background">
         <RecordsFilter
           control={control}
           errors={errors}

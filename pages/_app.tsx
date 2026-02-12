@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div
       className={cn(
-        "flex items-center justify-center bg-white overflow-y-auto",
+        "tr-flex tr-items-center tr-justify-center tr-bg-white tr-overflow-y-auto",
         notoSansMyanmar.variable,
         pyidaungsu.variable,
         inter.variable,

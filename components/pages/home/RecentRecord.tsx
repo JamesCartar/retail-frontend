@@ -56,20 +56,20 @@ export function RecentRecord() {
   }, [fetchRecords]);
 
   return (
-    <div className="w-full flex-1 bg-white py-[14px] px-[19px] rounded-t-20 flex flex-col">
-      <div className="flex items justify-between font-secondary">
-        <p className="font-bold text-primary text-17px">
+    <div className="tr-w-full tr-flex-1 tr-bg-white tr-py-[14px] tr-px-[19px] tr-rounded-t-20 tr-flex tr-flex-col">
+      <div className="tr-flex tr-items tr-justify-between tr-font-secondary">
+        <p className="tr-font-bold tr-text-primary tr-text-17px">
           နောက်ဆုံးစာရင်းမှတ်တမ်း
         </p>
         <Link
           href={ROUTES.VIEW_RECORDS}
-          className="flex items-center font-bold"
+          className="tr-flex tr-items-center tr-font-bold"
         >
           <span>အားလုံးကြည့်ရန်</span>{" "}
-          <RightArrowIcon className="w-6 h-6 text-[#686868]" />
+          <RightArrowIcon className="tr-w-6 tr-h-6 tr-text-[#686868]" />
         </Link>
       </div>
-      <div className="w-full flex items-center justify-center flex-1 mt-[13px]">
+      <div className="tr-w-full tr-flex tr-items-center tr-justify-center tr-flex-1 tr-mt-[13px]">
         <IfElse
           isTrue={records.length > 0}
           ifBlock={
@@ -79,9 +79,9 @@ export function RecentRecord() {
             </>
           }
           elseBlock={
-            <div className="flex flex-col gap-3 items-center justify-center">
-              <NoRecordIcon className="text-[#F7F7F7]" />
-              <span className="text-[#D7D7D7]">စာရင်းမှတ်တမ်းမရှိသေးပါ</span>
+            <div className="tr-flex tr-flex-col tr-gap-3 tr-items-center tr-justify-center">
+              <NoRecordIcon className="tr-text-[#F7F7F7]" />
+              <span className="tr-text-[#D7D7D7]">စာရင်းမှတ်တမ်းမရှိသေးပါ</span>
             </div>
           }
         />
