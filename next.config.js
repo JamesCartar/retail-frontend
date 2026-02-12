@@ -18,6 +18,8 @@ const nextConfig = {
       use: ["@svgr/webpack"],
     });
 
+    config.output.publicPath = "auto";
+
     if (!dev) {
       config.plugins.push(
         new NextFederationPlugin({
