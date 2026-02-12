@@ -87,7 +87,7 @@ export function DownloadDialog({
             </DialogPrimitive.Close>
 
             <DialogHeader className="rt-space-y-3 rt-border-b rt-w-full rt-pb-2">
-              <h1 className="rt-text-[1rem] rt-leading-[1.625rem]! rt-font-semibold">
+              <h1 className="!rt-text-[1rem] !rt-leading-[1.625rem] rt-font-semibold">
                 စာရင်းဒေါင်းလုပ်ဆွဲမည်
               </h1>
             </DialogHeader>
